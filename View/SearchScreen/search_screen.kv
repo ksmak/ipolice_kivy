@@ -1,0 +1,152 @@
+<SearchScreenView>
+    md_bg_color: '#e6f6ff'
+    on_enter:
+        search_field.focus = True
+    
+    MDScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        
+        MDBoxLayout:
+            id: search_layout
+            orientation: 'vertical'
+            adaptive_height: True
+            padding: '20dp', '10dp', '20dp', '10dp'
+            spacing: '5dp' 
+            
+            MDBoxLayout:
+                adaptive_height: True
+
+                MDIconButton:
+                    id: back_button
+                    icon: 'arrow-left'
+                    theme_icon_color: "Custom"
+                    icon_color: app.theme_cls.primary_color
+                    on_press:
+                        search_field.text = ''
+                        root.manager_screens.current = 'main screen'
+            
+                MDTextField:
+                    id: search_field
+                    hint_text: 'Поиск'
+                    mode: 'rectangle'
+                    on_text_validate: root.search()
+
+            MDBoxLayout:
+                id: history_layout
+                size_hint_y: None
+                height: self.opacity == 1 and dp(40) or 0
+            
+                MDLabel:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text: 'Вы недавно искали'
+                    font_style: 'Button'
+                    theme_text_color: 'Custom'
+                    text_color: '#0072B5'
+                
+                MDFlatButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    text: "Очистить все"
+                    theme_text_color: "Custom"
+                    text_color: '#0072B5'
+                    on_press: root.remove_all_search_history_items()
+                
+            MDList:
+                id: search_history_container
+                height: self.opacity == 1 and self.height or 0
+            
+            MDBoxLayout:
+                id: result_layout
+                orientation: 'vertical'
+                adaptive_height: True
+                opacity: 0
+
+                MDBoxLayout:
+                    adaptive_height: True
+                
+                    MDLabel:
+                        id: result_count
+                        text: 'Найдено'
+                        font_style: 'Button'
+                        theme_text_color: 'Custom'
+                        text_color: '#0072B5'
+
+                    MDSegmentedButton:
+                        id: browse_type_button
+                        size_hint: .8, .4
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        on_marked: root.set_browse_type(*args)
+                        
+                        MDSegmentedButtonItem:
+                            id: gallery_button
+                            icon: 'view-gallery-outline'
+
+                        MDSegmentedButtonItem:
+                            id: list_button
+                            icon: 'view-list-outline'
+                            
+
+                        MDSegmentedButtonItem:
+                            id: grid_button
+                            icon: 'view-grid-outline'
+                            
+                MDRecycleView:
+                    id: gallery_rv
+                    viewclass: 'GalleryLabel'
+                    size_hint_y: None
+                    height: root.ids.gallery_rv_layout.height
+                    do_scroll_x: False
+                    do_scroll_y: False
+                    opacity: 0
+
+                    BoxRecycleLayout:
+                        id: gallery_rv_layout
+                        size_hint_y: None
+                        height: root.ids.gallery_rv.opacity == 1 and self.minimum_height or 0
+                        orientation: 'vertical'
+                        default_size: None, dp(250)
+                        default_size_hint: 1, None
+                        spacing: '20dp'
+                
+                MDRecycleView:
+                    id: list_rv
+                    viewclass: 'ListLabel'
+                    size_hint_y: None
+                    height: root.ids.list_rv_layout.height
+                    do_scroll_x: False
+                    do_scroll_y: False
+                    opacity: 0
+
+                    BoxRecycleLayout:
+                        id: list_rv_layout
+                        size_hint_y: None
+                        height: root.ids.list_rv.opacity == 1 and self.minimum_height or 0
+                        orientation: 'vertical'
+                        default_size: None, dp(120)
+                        default_size_hint: 1, None
+                        spacing: '20dp'
+                
+                MDRecycleView:
+                    id: grid_rv
+                    viewclass: 'GridLabel'
+                    size_hint_y: None
+                    height: root.ids.grid_rv_layout.height
+                    do_scroll_x: False
+                    do_scroll_y: False
+                    opacity: 0
+
+                    GridRecycleLayout:
+                        id: grid_rv_layout
+                        size_hint_y: None
+                        height: root.ids.grid_rv.opacity == 1 and self.minimum_height or 0
+                        default_size: None, dp(120)
+                        default_size_hint: 1, None
+                        spacing: '5dp'
+                        cols: 2
+    
+    MDSpinner:
+        id: loading
+        size_hint: None, None
+        size: dp(46), dp(46)
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        active: False

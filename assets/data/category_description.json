@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Сотовые\nтелефоны",
+        "icon": "cellphone",
+        "fields": ["color", "imei"]
+    },
+    {
+        "id": 2,
+        "name": "Автомашины",
+        "icon": "car",
+        "fields": []
+    },
+    {
+        "id": 2,
+        "name": "Велосипеды",
+        "icon": "bicycle",
+        "fields": []
+    }
+]

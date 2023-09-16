@@ -1,0 +1,71 @@
+<ItemScreenView>
+    md_bg_color: '#66f6ff'
+        
+    MDScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        
+        MDBoxLayout:
+            orientation: 'vertical'
+            padding: dp(10), 0, dp(10), 0,
+            spacing: dp(10)
+            adaptive_height: True
+
+            MDIconButton:
+                icon: 'arrow-left'
+                theme_icon_color: "Custom"
+                icon_color: '#0072B5'
+                on_press: root.manager_screens.current = 'main screen'
+                adaptive_height: True
+
+            MDCarousel:
+                id: carousel
+                size_hint: 1, None
+                height: dp(300)
+                on_slide_complete:
+                    root.ids.counter = str(self.index + 1) + '/' + str(len(self.slides))
+
+            MDLabel:
+                id: title
+                font_style: 'Button'
+                theme_text_color: 'Custom'
+                text_color: '#0072B5'
+                adaptive_height: True
+
+            MDLabel:
+                text: 'Описание'
+                font_style: 'Caption'
+                theme_text_color: 'Custom'
+                text_color: '#0072B5'
+                adaptive_height: True
+            
+            MDLabel:
+                id: text
+                font_style: 'Caption'
+                theme_text_color: 'Custom'
+                text_color: '#0072B5'
+                adaptive_height: True
+            
+            MDLabel:
+                text: 'Детали'
+                font_style: 'Caption'
+                theme_text_color: 'Custom'
+                text_color: '#0072B5'
+                adaptive_height: True
+            
+            MDLabel:
+                id: date_of_creation
+                font_style: 'Caption'
+                theme_text_color: 'Custom'
+                text_color: '#0072B5'
+                adaptive_height: True
+            
+            MDLabel:
+                id: date_of_change
+                font_style: 'Caption'
+                theme_text_color: 'Custom'
+                text_color: '#0072B5'
+                adaptive_height: True
+
+
+                

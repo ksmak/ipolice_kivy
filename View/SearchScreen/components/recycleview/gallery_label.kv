@@ -1,0 +1,48 @@
+<GalleryLabel>:
+    orientation: 'vertical'
+    md_bg_color: '#ffffff'
+    padding: '10dp'
+    radius: 12
+
+    MDRelativeLayout:
+        MDCarousel:
+            id: carousel
+            size_hint: 1, .7
+            pos_hint: {'top': 1}
+            on_slide_complete:
+                root.ids.count_info.text = str(self.index + 1) + '/' + str(root.real_count)
+        
+        MDLabel:
+            id: count_info
+            pos_hint: {'top': .4, 'x': .9}
+            color: '#0072B5'
+            font_style: 'Caption'
+            bold: True
+            adaptive_height: True
+            shorten: True
+
+        MDLabel:
+            text: root.title
+            pos_hint: {'top': .3}
+            color: '#0072B5'
+            font_style: 'Caption'
+            bold: True
+            adaptive_height: True
+            shorten: True
+        
+        MDLabel:
+            text: root.text
+            pos_hint: {'top': .22}
+            color: '#0072B5'
+            font_style: 'Caption'
+            adaptive_height: True
+            shorten: True
+        
+        MDLabel:
+            text: root.date
+            pos_hint: {'top': .07}
+            color: '#0072B5'
+            font_style: 'Caption'
+            font_size: '8sp'
+            adaptive_height: True
+            shorten: True
