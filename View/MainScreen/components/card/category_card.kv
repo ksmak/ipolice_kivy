@@ -1,5 +1,5 @@
 <CategoryCard>:
-    md_bg_color: '#e6f6ff'
+    md_bg_color: app.theme_cls.primary_light
     size_hint: None, None
     size: dp(100), dp(130)
     padding: dp(5)
@@ -13,7 +13,7 @@
             valign: 'top'
             halign: 'center'
             theme_text_color: 'Custom'
-            text_color: '#0072B5'
+            text_color: app.theme_cls.primary_color
             font_style: 'Caption'
         
         MDIconButton:
@@ -23,5 +23,5 @@
             icon_size: dp(48)
             theme_icon_color: "Custom"
             icon_color: '#ffffff'
-            md_bg_color: '#0072B5'
+            md_bg_color: app.theme_cls.primary_color
         

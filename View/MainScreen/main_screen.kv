@@ -1,41 +1,35 @@
 <MainScreenView>
     MDBottomNavigation:
         id: bottom_nav
+        selected_color_background: app.theme_cls.primary_light
+        text_color_active: app.theme_cls.primary_color
         
         MDBottomNavigationItem:
             name: 'main'
             text: 'Главная'
             icon: 'home'
-            md_bg_color: '#e6f6ff'
+            md_bg_color: app.theme_cls.primary_light
             
             MDScrollView:
                 do_scroll_x: False
                 do_scroll_y: True
-                
+
                 MDBoxLayout:
                     orientation: 'vertical'
                     adaptive_height: True
                     padding: '20dp', '10dp', '20dp', '10dp'
-                    spacing: '10dp'              
-
-                    MDTextField:
-                        icon_left: 'magnify'
-                        hint_text: 'Поиск'
-                        mode: 'rectangle'
-                        on_focus:root.to_search_screen()
+                    spacing: '15dp'
                 
-                    MDBoxLayout:
-                        adaptive_height: True
-                        
-                        MDCard:
-                            size_hint_y: None
-                            height: '120dp'
-  
+                    SearchField:
+                        icon_left: 'magnify'
+                        on_focus: root.to_search_screen()
+                
                     MDLabel:
+                        pos_hint: {'center_x': .5, 'center_y': .5}
                         text: 'Категории'
                         font_style: 'Button'
-                        theme_text_color: 'Custom'
-                        text_color: '#0072B5'
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.accent_color
 
                     MDScrollView:
                         do_scroll_x: True
@@ -49,33 +43,10 @@
                             spacing: dp(5)
                     
                     MDBoxLayout:
+                        id: result_header
+                        orientation: 'vertical'
                         adaptive_height: True
-                    
-                        MDLabel:
-                            text: 'Последние добавления'
-                            font_style: 'Button'
-                            theme_text_color: 'Custom'
-                            text_color: '#0072B5'
                         
-                        MDSegmentedButton:
-                            id: browse_type_button
-                            size_hint: .8, .4
-                            pos_hint: {'center_x': .5, 'center_y': .5}
-                            on_marked: root.set_browse_type(*args)
-                            
-                            MDSegmentedButtonItem:
-                                id: gallery_button
-                                icon: 'view-gallery-outline'
-
-                            MDSegmentedButtonItem:
-                                id: list_button
-                                icon: 'view-list-outline'
-                                
-
-                            MDSegmentedButtonItem:
-                                id: grid_button
-                                icon: 'view-grid-outline'
-
                     MDRecycleView:
                         id: gallery_rv
                         viewclass: 'GalleryLabel'
@@ -129,32 +100,39 @@
                             default_size_hint: 1, None
                             spacing: '5dp'
                             cols: 2
-
-                    
  
         MDBottomNavigationItem:
             name: 'favorit'
             text: 'Избранное'
-            icon: 'heart-outline'
+            icon: 'heart'
+            md_bg_color: app.theme_cls.primary_light
 
             MDLabel:
                 text: 'Избранное'
                 halign: 'center'
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.accent_color
 
         MDBottomNavigationItem:
             name: 'messages'
             text: 'Сообщения'
-            icon: 'message-outline'
+            icon: 'message'
+            md_bg_color: app.theme_cls.primary_light
 
             MDLabel:
                 text: 'Сообщения'
                 halign: 'center'
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.accent_color
     
         MDBottomNavigationItem:
             name: 'contacts'
             text: 'Контакты'
             icon: 'apps'
+            md_bg_color: app.theme_cls.primary_light
 
             MDLabel:
                 text: 'Контакты'
                 halign: 'center'
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.accent_color

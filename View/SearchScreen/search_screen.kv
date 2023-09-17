@@ -1,5 +1,5 @@
 <SearchScreenView>
-    md_bg_color: '#e6f6ff'
+    md_bg_color: app.theme_cls.primary_light
     on_enter:
         search_field.focus = True
     
@@ -22,14 +22,13 @@
                     icon: 'arrow-left'
                     theme_icon_color: "Custom"
                     icon_color: app.theme_cls.primary_color
+                    pos_hint: {"center_x": .5, "center_y": .5}
                     on_press:
                         search_field.text = ''
                         root.manager_screens.current = 'main screen'
             
-                MDTextField:
+                SearchField:
                     id: search_field
-                    hint_text: 'Поиск'
-                    mode: 'rectangle'
                     on_text_validate: root.search()
 
             MDBoxLayout:
@@ -62,34 +61,10 @@
                 opacity: 0
 
                 MDBoxLayout:
+                    id: result_header
+                    orientation: 'vertical'
                     adaptive_height: True
                 
-                    MDLabel:
-                        id: result_count
-                        text: 'Найдено'
-                        font_style: 'Button'
-                        theme_text_color: 'Custom'
-                        text_color: '#0072B5'
-
-                    MDSegmentedButton:
-                        id: browse_type_button
-                        size_hint: .8, .4
-                        pos_hint: {'center_x': .5, 'center_y': .5}
-                        on_marked: root.set_browse_type(*args)
-                        
-                        MDSegmentedButtonItem:
-                            id: gallery_button
-                            icon: 'view-gallery-outline'
-
-                        MDSegmentedButtonItem:
-                            id: list_button
-                            icon: 'view-list-outline'
-                            
-
-                        MDSegmentedButtonItem:
-                            id: grid_button
-                            icon: 'view-grid-outline'
-                            
                 MDRecycleView:
                     id: gallery_rv
                     viewclass: 'GalleryLabel'

@@ -11,44 +11,14 @@ https://github.com/HeaTTheatR/LoginAppMVC
 https://en.wikipedia.org/wiki/Model–view–controller
 """
 
-from kivymd.app import MDApp
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.screenmanager import MDScreenManager
-from kivymd.uix.button import MDFlatButton
-from kivymd.uix.dialog import MDDialog
+from kivy.core.text import LabelBase
 
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.popup import Popup
-from kivy.uix.label import Label
-from kivy.uix.button import Button
+from kivymd.app import MDApp
+from kivymd.uix.screenmanager import MDScreenManager
+from kivymd.font_definitions import theme_font_styles
 
 from View.screens import screens, main_model
 
-class ConfirmationPopup(Popup):
-    def __init__(self, **kwargs):
-        super(ConfirmationPopup, self).__init__(**kwargs)
-
-        layout = BoxLayout(orientation='vertical')
-        label = Label(text='Are you sure you want to exit?')
-        button_layout = BoxLayout(orientation='horizontal')
-
-        button_ok = Button(text='Ok', size_hint=(0.5, 1))
-        button_ok.bind(on_press=self.confirm)
-        button_cancel = Button(text='Cancel', size_hint=(0.5, 1))
-        button_cancel.bind(on_press=self.dismiss)
-
-        button_layout.add_widget(button_ok)
-        button_layout.add_widget(button_cancel)
-        layout.add_widget(label)
-        layout.add_widget(button_layout)
-
-        self.content = layout
-
-    def confirm(self, instance):
-        MDApp.get_running_app().stop()
-
-class MyInstance(BoxLayout):
-    pass
 
 class ipolice_kivy(MDApp):
     def __init__(self, **kwargs):
@@ -57,41 +27,28 @@ class ipolice_kivy(MDApp):
         # This is the screen manager that will contain all the screens of your
         # application.
         self.manager_screens = MDScreenManager()
-        
-        buttons = [
-            MDFlatButton(
-                text="Закрыть",
-                theme_text_color="Custom",
-                text_color=self.theme_cls.primary_color,
-            ),
-            MDFlatButton(
-                text="Отмена",
-                theme_text_color="Custom",
-                text_color=self.theme_cls.primary_color,
-            ),
-        ]
-        
-        buttons[0].bind(on_release=self.set_close_state)
-        
-        self.close_app_dialog = MDDialog(
-            text="Закрыть приложение?",
-            buttons=buttons,
-        )
 
-        self.close_state = True
-        
     def build(self) -> MDScreenManager:
+        self.theme_cls.material_style = "M3"
+        self.theme_cls.theme_style = "Light"
+        self.theme_cls.primary_palette = "Blue"
+        self.theme_cls.primary_hue = "800"
+        self.theme_cls.primary_light_hue = "50"
+        self.theme_cls.accent_palette = 'DeepOrange'
+        self.theme_cls.accent_hue = "800"
+        # LabelBase.register(
+        #     name="NotoSans",
+        #     fn_regular="assets/fonts/NotoSans-Regular.ttf"
+        # )
+        # theme_font_styles.append('NotoSans')
+        # self.theme_cls.font_styles["NotoSans"] = [
+        #     "NotoSans",
+        #     16,
+        #     False,
+        #     0.15,
+        # ]
         self.generate_application_screens()
         return self.manager_screens
-    
-    def on_stop(self):
-        if self.close_state:
-            self.close_app_dialog.open()
-        
-        return self.close_state
-    
-    def set_close_state(self):
-        self.close_state = True
 
     def generate_application_screens(self) -> None:
         """

@@ -18,24 +18,26 @@ class MainScreenController:
     def get_view(self) -> MainScreenView:
         return self.view
 
-    def set_browse_type(self, browse_type: str) -> None:
+    def set_browse_type(self, browse_type: str, *args) -> None:
         self.model.browse_type = browse_type
-    
+
     def search_by_category(self, category: int) -> None:
-        
+
         async def search(categroy: int) -> None:
+            find_items = []
             for item in self.model.items_description:
                 if (item['category'] == category):
-                    self.model.find_items.append(item)
+                    find_items.append(item)
                 await ak.sleep(0)
+            self.model.find_items = find_items
             self.model.search_loading = False
 
         self.model.is_first_search = True
         self.model.search_loading = True
         self.model.find_items = []
-        
+
         ak.start(search(category))
-    
+
     def open_search(self):
         self.model.is_first_search = False
         self.model.find_items = []

@@ -1,8 +1,6 @@
 from kivy.properties import StringProperty
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.fitimage import FitImage
 
 
 class ListLabel(RecycleDataViewBehavior, MDBoxLayout):

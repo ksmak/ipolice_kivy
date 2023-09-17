@@ -11,19 +11,21 @@
     MDRelativeLayout:
 
         MDLabel:
-            pos_hint: {'top': 1}
+            pos_hint: {'top': .95}
             text: root.title
             font_style: 'Caption'
             bold: True
-            color: '#0072B5'
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
             adaptive_height: True
             shorten: True
 
         MDLabel:
-            pos_hint: {'top': .85}
+            pos_hint: {'top': .8}
             text: root.text
             font_style: 'Caption'
-            color: '#0072B5'
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
             adaptive_height: True
             shorten: True
         
@@ -31,7 +33,8 @@
             pos_hint: {'top': .16}
             text: root.date
             font_style: 'Caption'
-            font_size: '8sp'
-            color: '#0072B5'
+            font_size: '10sp'
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
             adaptive_height: True
             shorten: True

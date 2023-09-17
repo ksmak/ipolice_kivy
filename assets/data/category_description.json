@@ -2,19 +2,22 @@
     {
         "id": 1,
         "name": "Сотовые\nтелефоны",
-        "icon": "cellphone",
-        "fields": ["color", "imei"]
+        "icon": "assets/images/category/cellphone.png",
+        "fields": [
+            "color",
+            "imei"
+        ]
     },
     {
         "id": 2,
         "name": "Автомашины",
-        "icon": "car",
+        "icon": "assets/images/category/car.png",
         "fields": []
     },
     {
         "id": 2,
         "name": "Велосипеды",
-        "icon": "bicycle",
+        "icon": "assets/images/category/bicycle.png",
         "fields": []
     }
 ]

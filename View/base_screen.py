@@ -1,12 +1,12 @@
 from kivy.properties import ObjectProperty
 
 from kivymd.app import MDApp
-from kivymd.theming import ThemableBehavior
 from kivymd.uix.screen import MDScreen
 
 from Utility.observer import Observer
 
 # ThemableBehavior
+
 
 class BaseScreenView(MDScreen, Observer):
     """
@@ -16,7 +16,8 @@ class BaseScreenView(MDScreen, Observer):
 
     controller = ObjectProperty()
     """
-    Controller object - :class:`~Controller.controller_screen.ClassScreenControler`.
+    Controller object - 
+        :class:`~Controller.controller_screen.ClassScreenControler`.
 
     :attr:`controller` is an :class:`~kivy.properties.ObjectProperty`
     and defaults to `None`.
