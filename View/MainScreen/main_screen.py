@@ -102,7 +102,7 @@ class MainScreenView(BaseScreenView):
         self.ids.category_list_container.clear_widgets()
         for category in self.model.category_description:
             card = CategoryCard(
-                category_icon=category['icon'],
+                category_icon=self.model.BASE_DIR + '/' + category['icon'],
                 category_name=category['name']
             )
             callback_function = partial(
@@ -126,11 +126,11 @@ class MainScreenView(BaseScreenView):
                 'title': item['title'],
                 'text': item['text'],
                 'date': item['date_of_creation'],
-                'photo1': item['photo1'],
-                'photo2': item['photo2'],
-                'photo3': item['photo3'],
-                'photo4': item['photo4'],
-                'photo5': item['photo5'],
+                'photo1': self.model.BASE_DIR + '/' + str(item['photo1']),
+                'photo2': self.model.BASE_DIR + '/' + str(item['photo2']),
+                'photo3': self.model.BASE_DIR + '/' + str(item['photo3']),
+                'photo4': self.model.BASE_DIR + '/' + str(item['photo4']),
+                'photo5': self.model.BASE_DIR + '/' + str(item['photo5']),
                 'image_count': self.model.ITEM_IMAGE_COUNT,
                 'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
                 'controller': self.controller,
@@ -150,11 +150,11 @@ class MainScreenView(BaseScreenView):
                 'title': item['title'],
                 'text': item['text'],
                 'date': item['date_of_creation'],
-                'photo1': item['photo1'],
-                'photo2': item['photo2'],
-                'photo3': item['photo3'],
-                'photo4': item['photo4'],
-                'photo5': item['photo5'],
+                'photo1': self.model.BASE_DIR + '/' + str(item['photo1']),
+                'photo2': self.model.BASE_DIR + '/' + str(item['photo2']),
+                'photo3': self.model.BASE_DIR + '/' + str(item['photo3']),
+                'photo4': self.model.BASE_DIR + '/' + str(item['photo4']),
+                'photo5': self.model.BASE_DIR + '/' + str(item['photo5']),
                 'image_count': self.model.ITEM_IMAGE_COUNT,
                 'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
                 'controller': self.controller,

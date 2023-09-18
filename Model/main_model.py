@@ -1,16 +1,18 @@
 import json
 from pathlib import Path
 
-from kivy.utils import platform
+from kivy.logger import Logger
 
 from Model.base_model import BaseScreenModel
 from Utility.helper import get_by_id
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-if platform == 'android':
-    DATA_DIR = 'data/data/kz.kdp.ipolice/data/files/app/'
-else:
-    DATA_DIR = BASE_DIR.joinpath("assets", "data")
+
+Logger.info('python BASE_DIR=%s', BASE_DIR)
+
+DATA_DIR = BASE_DIR.joinpath("assets", "data")
+
+Logger.info('python DATA_DIR=%s', DATA_DIR)
 
 
 class MainModel(BaseScreenModel):
@@ -20,6 +22,7 @@ class MainModel(BaseScreenModel):
     """
 
     def __init__(self):
+        self.BASE_DIR = str(BASE_DIR)
         # constants
         self.ITEM_IMAGE_COUNT = 5
         self.LAST_ITEMS_COUNT = 10
@@ -28,6 +31,7 @@ class MainModel(BaseScreenModel):
         path_to_category_description = DATA_DIR.joinpath(
             DATA_DIR, "category_description.json"
         )
+        Logger.info('python. path for category: %s', path_to_category_description)
         if path_to_category_description.exists():
             with open(path_to_category_description) as json_file:
                 self._category_description = json.loads(json_file.read())
@@ -36,6 +40,7 @@ class MainModel(BaseScreenModel):
         path_to_items_description = DATA_DIR.joinpath(
             DATA_DIR, "items_description.json"
         )
+        Logger.info('python. path for items: %s', path_to_items_description)
         if path_to_items_description.exists():
             with open(path_to_items_description) as json_file:
                 self._items_description = json.loads(json_file.read())
@@ -51,6 +56,7 @@ class MainModel(BaseScreenModel):
         path_to_search_history_description = DATA_DIR.joinpath(
             DATA_DIR, "search_history_description.json"
         )
+        Logger.info('python. path for history items: %s', path_to_search_history_description)
         if path_to_search_history_description.exists():
             with open(path_to_search_history_description) as json_file:
                 self._search_history_description = json.loads(json_file.read())
@@ -74,6 +80,7 @@ class MainModel(BaseScreenModel):
         path_to_favorite_items_description = DATA_DIR.joinpath(
             DATA_DIR, "favorite_items_description.json"
         )
+        Logger.info('python. path for favorite items: %s', path_to_favorite_items_description)
         if path_to_favorite_items_description.exists():
             with open(path_to_favorite_items_description) as json_file:
                 self._favorite_items_description = json.loads(json_file.read())

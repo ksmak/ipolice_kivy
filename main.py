@@ -35,7 +35,7 @@ class ipolice_kivy(MDApp):
         self.theme_cls.primary_hue = "800"
         self.theme_cls.primary_light_hue = "50"
         self.theme_cls.accent_palette = 'DeepOrange'
-        self.theme_cls.accent_hue = "800"
+        self.theme_cls.accent_hue = "900"
         # LabelBase.register(
         #     name="NotoSans",
         #     fn_regular="assets/fonts/NotoSans-Regular.ttf"
