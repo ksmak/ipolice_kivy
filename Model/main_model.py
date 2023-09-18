@@ -63,7 +63,16 @@ class MainModel(BaseScreenModel):
             last_items_count = len(self._items_description)
         for i in range(last_items_count):
             self._last_items.append(self._items_description[i])
-
+        # load favorite items
+        self._favorite_items_description = []
+        path_to_favorite_items_description = DATA_DIR.joinpath(
+            DATA_DIR, "favorite_items_description.json"
+        )
+        if path_to_favorite_items_description.exists():
+            with open(path_to_favorite_items_description) as json_file:
+                self._favorite_items_description = json.loads(json_file.read())
+        # set tab name
+        self._tab_name = 'main'
         self._observers = []
 
     @property
@@ -97,6 +106,15 @@ class MainModel(BaseScreenModel):
     @property
     def last_items(self):
         return self._last_items
+    
+    @property
+    def favorite_items(self):
+        return self._favorite_items_description
+    
+    @property
+    def tab_name(self):
+        return self._tab_name
+
 
     @category_description.setter
     def category_description(self, value):
@@ -136,4 +154,14 @@ class MainModel(BaseScreenModel):
     @last_items.setter
     def last_items(self, value):
         self._last_items = value
+        self.notify_observers()
+
+    @favorite_items.setter
+    def favorite_items(self, value):
+        self._favorite_items_description = value
+        self.notify_observers()
+    
+    @tab_name.setter
+    def tab_name(self, value):
+        self._tab_name = value
         self.notify_observers()

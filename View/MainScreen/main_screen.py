@@ -3,6 +3,7 @@ from functools import partial
 from View.base_screen import BaseScreenView
 from .components.card.category_card import CategoryCard
 from .components.layout.result_header import ResultHeader
+from .components.layout.favorite_header import FavoriteHeader
 from .components.recycleview.gallery_label import GalleryLabel  # noqa
 from .components.recycleview.list_label import ListLabel  # noqa
 from .components.recycleview.grid_label import GridLabel  # noqa
@@ -14,9 +15,18 @@ from .components.textfield.search import SearchField  # noqa
 class MainScreenView(BaseScreenView):
 
     def on_enter(self):
-        self.ids.category_list_container.clear_widgets()
         self.generate_category_cards()
         self.refresh_recycleview()
+        self.refresh_recycleview_fav()
+        self.create_result_header()
+        self.refresh_result_header()
+        self.create_favorite_header()
+        self.refresh_favorite_header()
+    
+    def set_tab_name(self, tab_name: str) -> None:
+        self.controller.set_tab_name(tab_name)
+
+    def create_result_header(self):
         self.result_header = ResultHeader(
             title='Последние добавления',
             button=self.model.browse_type
@@ -35,9 +45,61 @@ class MainScreenView(BaseScreenView):
 
         self.ids.result_header.clear_widgets()
         self.ids.result_header.add_widget(self.result_header)
-        self.refresh_result_header()
+    
+    def refresh_result_header(self):
+        self.result_header.button = self.model.browse_type
+
+        if self.model.browse_type == 'gallery':
+            self.ids.gallery_rv.opacity = 1
+            self.ids.list_rv.opacity = 0
+            self.ids.grid_rv.opacity = 0
+        elif self.model.browse_type == 'list':
+            self.ids.gallery_rv.opacity = 0
+            self.ids.list_rv.opacity = 1
+            self.ids.grid_rv.opacity = 0
+        elif self.model.browse_type == 'grid':
+            self.ids.gallery_rv.opacity = 0
+            self.ids.list_rv.opacity = 0
+            self.ids.grid_rv.opacity = 1
+
+    def create_favorite_header(self):
+        self.favorite_header = FavoriteHeader(
+            title='Избранное',
+            button=self.model.browse_type
+        )
+        callable_function = partial(
+            self.controller.set_browse_type, 'gallery')
+        self.favorite_header.ids.gallery_button.bind(
+            on_release=callable_function)
+        callable_function = partial(
+            self.controller.set_browse_type, 'list')
+        self.favorite_header.ids.list_button.bind(
+            on_release=callable_function)
+        callable_function = partial(self.controller.set_browse_type, 'grid')
+        self.favorite_header.ids.grid_button.bind(
+            on_release=callable_function)
+
+        self.ids.favorite_header.clear_widgets()
+        self.ids.favorite_header.add_widget(self.favorite_header)
+    
+    def refresh_favorite_header(self):
+        self.favorite_header.button = self.model.browse_type
+
+        if self.model.browse_type == 'gallery':
+            self.ids.gallery_rv_fav.opacity = 1
+            self.ids.list_rv_fav.opacity = 0
+            self.ids.grid_rv_fav.opacity = 0
+        elif self.model.browse_type == 'list':
+            self.ids.gallery_rv_fav.opacity = 0
+            self.ids.list_rv_fav.opacity = 1
+            self.ids.grid_rv_fav.opacity = 0
+        elif self.model.browse_type == 'grid':
+            self.ids.gallery_rv_fav.opacity = 0
+            self.ids.list_rv_fav.opacity = 0
+            self.ids.grid_rv_fav.opacity = 1
 
     def generate_category_cards(self):
+        self.ids.category_list_container.clear_widgets()
         for category in self.model.category_description:
             card = CategoryCard(
                 category_icon=category['icon'],
@@ -60,6 +122,7 @@ class MainScreenView(BaseScreenView):
         data = []
         for item in self.model.last_items:
             data.append({
+                'item_id': item['id'],
                 'title': item['title'],
                 'text': item['text'],
                 'date': item['date_of_creation'],
@@ -69,6 +132,8 @@ class MainScreenView(BaseScreenView):
                 'photo4': item['photo4'],
                 'photo5': item['photo5'],
                 'image_count': self.model.ITEM_IMAGE_COUNT,
+                'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
+                'controller': self.controller,
             })
         self.ids.gallery_rv.data = data
         self.ids.gallery_rv.refresh_from_data()
@@ -76,22 +141,30 @@ class MainScreenView(BaseScreenView):
         self.ids.list_rv.refresh_from_data()
         self.ids.grid_rv.data = data
         self.ids.grid_rv.refresh_from_data()
-
-    def refresh_result_header(self):
-        self.result_header.button = self.model.browse_type
-
-        if self.model.browse_type == 'gallery':
-            self.ids.gallery_rv.opacity = 1
-            self.ids.list_rv.opacity = 0
-            self.ids.grid_rv.opacity = 0
-        elif self.model.browse_type == 'list':
-            self.ids.gallery_rv.opacity = 0
-            self.ids.list_rv.opacity = 1
-            self.ids.grid_rv.opacity = 0
-        elif self.model.browse_type == 'grid':
-            self.ids.gallery_rv.opacity = 0
-            self.ids.list_rv.opacity = 0
-            self.ids.grid_rv.opacity = 1
+    
+    def refresh_recycleview_fav(self):
+        data = []
+        for item in self.model.favorite_items:
+            data.append({
+                'item_id': item['id'],
+                'title': item['title'],
+                'text': item['text'],
+                'date': item['date_of_creation'],
+                'photo1': item['photo1'],
+                'photo2': item['photo2'],
+                'photo3': item['photo3'],
+                'photo4': item['photo4'],
+                'photo5': item['photo5'],
+                'image_count': self.model.ITEM_IMAGE_COUNT,
+                'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
+                'controller': self.controller,
+            })
+        self.ids.gallery_rv_fav.data = data
+        self.ids.gallery_rv_fav.refresh_from_data()
+        self.ids.list_rv_fav.data = data
+        self.ids.list_rv_fav.refresh_from_data()
+        self.ids.grid_rv_fav.data = data
+        self.ids.grid_rv_fav.refresh_from_data()
 
     def model_is_changed(self) -> None:
         """
@@ -99,4 +172,9 @@ class MainScreenView(BaseScreenView):
         The view in this method tracks these changes and updates the UI
         according to these changes.
         """
-        self.refresh_result_header()
+        if self.model.tab_name == 'main':
+            self.refresh_result_header()
+            self.refresh_recycleview()
+        elif self.model.tab_name == 'favorite':
+            self.refresh_favorite_header()
+            self.refresh_recycleview_fav()

@@ -1,4 +1,4 @@
-<GalleryLabel>:
+<GalleryLabelFav>:
     orientation: 'vertical'
     md_bg_color: '#ffffff'
     padding: '10dp'
@@ -6,14 +6,14 @@
 
     MDRelativeLayout:
         MDCarousel:
-            id: carousel
+            id: carousel_fav
             size_hint: 1, .7
             pos_hint: {'top': 1}
             on_slide_complete:
                 root.ids.count_info.text = str(self.index + 1) + '/' + str(root.real_count)
         
         MDIconButton:
-            id: favorite_button
+            id: favorite_button_fav
             pos_hint: {'top': 1, 'x': .9}
             theme_icon_color: 'Custom'
             icon_color: app.theme_cls.primary_color
@@ -21,7 +21,7 @@
             icon: 'heart' if root.is_favorite else 'heart-outline'
 
         MDLabel:
-            id: count_info
+            id: count_info_fav
             pos_hint: {'top': .4, 'x': .9}
             theme_text_color: "Custom"
             text_color: '#ffffff'

@@ -66,6 +66,7 @@ class SearchScreenView(BaseScreenView):
         data = []
         for item in self.model.find_items:
             data.append({
+                'item_id': item['id'],
                 'title': item['title'],
                 'text': item['text'],
                 'date': item['date_of_creation'],
@@ -75,6 +76,8 @@ class SearchScreenView(BaseScreenView):
                 'photo4': item['photo4'],
                 'photo5': item['photo5'],
                 'image_count': self.model.ITEM_IMAGE_COUNT,
+                'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
+                'controller': self.controller,
             })
         self.ids.gallery_rv.data = data
         self.ids.gallery_rv.refresh_from_data()

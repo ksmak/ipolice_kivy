@@ -9,6 +9,7 @@
             text: 'Главная'
             icon: 'home'
             md_bg_color: app.theme_cls.primary_light
+            on_tab_press: root.set_tab_name('main')
             
             MDScrollView:
                 do_scroll_x: False
@@ -102,16 +103,80 @@
                             cols: 2
  
         MDBottomNavigationItem:
-            name: 'favorit'
+            name: 'favorite'
             text: 'Избранное'
             icon: 'heart'
             md_bg_color: app.theme_cls.primary_light
+            on_tab_press: root.set_tab_name('favorite')
 
-            MDLabel:
-                text: 'Избранное'
-                halign: 'center'
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.accent_color
+            MDScrollView:
+                do_scroll_x: False
+                do_scroll_y: True
+
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    padding: '20dp', '10dp', '20dp', '10dp'
+                    spacing: '15dp'
+
+                    MDBoxLayout:
+                        id: favorite_header
+                        orientation: 'vertical'
+                        adaptive_height: True
+
+                    MDRecycleView:
+                        id: gallery_rv_fav
+                        viewclass: 'GalleryLabel'
+                        size_hint_y: None
+                        height: root.ids.gallery_rv_layout_fav.height
+                        do_scroll_x: False
+                        do_scroll_y: False
+                        opacity: 0
+
+                        BoxRecycleLayout:
+                            id: gallery_rv_layout_fav
+                            size_hint_y: None
+                            height: root.ids.gallery_rv_fav.opacity == 1 and self.minimum_height or 0
+                            orientation: 'vertical'
+                            default_size: None, dp(250)
+                            default_size_hint: 1, None
+                            spacing: '20dp'
+                
+                    MDRecycleView:
+                        id: list_rv_fav
+                        viewclass: 'ListLabel'
+                        size_hint_y: None
+                        height: root.ids.list_rv_layout_fav.height
+                        do_scroll_x: False
+                        do_scroll_y: False
+                        opacity: 0
+
+                        BoxRecycleLayout:
+                            id: list_rv_layout_fav
+                            size_hint_y: None
+                            height: root.ids.list_rv_fav.opacity == 1 and self.minimum_height or 0
+                            orientation: 'vertical'
+                            default_size: None, dp(120)
+                            default_size_hint: 1, None
+                            spacing: '20dp'
+                    
+                    MDRecycleView:
+                        id: grid_rv_fav
+                        viewclass: 'GridLabel'
+                        size_hint_y: None
+                        height: root.ids.grid_rv_layout_fav.height
+                        do_scroll_x: False
+                        do_scroll_y: False
+                        opacity: 0
+
+                        GridRecycleLayout:
+                            id: grid_rv_layout_fav
+                            size_hint_y: None
+                            height: root.ids.grid_rv_fav.opacity == 1 and self.minimum_height or 0
+                            default_size: None, dp(120)
+                            default_size_hint: 1, None
+                            spacing: '5dp'
+                            cols: 2
 
         MDBottomNavigationItem:
             name: 'messages'

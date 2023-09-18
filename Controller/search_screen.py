@@ -67,3 +67,15 @@ class SearchScreenController:
 
     def set_browse_type(self, browse_type: str, *args) -> None:
         self.model.browse_type = browse_type
+    
+    def set_favorite_item(self, id: int):
+        for item in self.model.items_description:
+            if item['id'] == id:
+                self.model.favorite_items.append(item)
+                break
+    
+    def unset_favorite_item(self, id: int):
+        for item in self.model.favorite_items:
+            if item['id'] == id:
+                self.model.favorite_items.remove(item)
+                break
