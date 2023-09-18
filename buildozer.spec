@@ -7,7 +7,7 @@ title = iPolice.kz
 package.name = ipolice
 
 # (str) Package domain (needed for android/ios packaging)
-package.domain = kdp.mvd.kz
+package.domain = kz.kdp
 
 # (str) Source code where the main.py live
 source.dir = .

@@ -6,18 +6,24 @@
         "fields": [
             "color",
             "imei"
-        ]
+        ],
+        "fields_desc": {
+                "color": "Цвет",
+                "imei": "IMEI-код"
+        }
     },
     {
         "id": 2,
         "name": "Автомашины",
         "icon": "assets/images/category/car.png",
-        "fields": []
+        "fields": [],
+        "fields_desc": {}
     },
     {
         "id": 2,
         "name": "Велосипеды",
         "icon": "assets/images/category/bicycle.png",
-        "fields": []
+        "fields": [],
+        "fields_desc": {}
     }
 ]

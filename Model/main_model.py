@@ -1,10 +1,16 @@
-from Utility.helper import get_by_id
-from Model.base_model import BaseScreenModel
 import json
 from pathlib import Path
 
+from kivy.utils import platform
+
+from Model.base_model import BaseScreenModel
+from Utility.helper import get_by_id
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR.joinpath("assets", "data")
+if platform == 'android':
+    DATA_DIR = 'data/data/kz.kdp.ipolice/data/files/app/'
+else:
+    DATA_DIR = BASE_DIR.joinpath("assets", "data")
 
 
 class MainModel(BaseScreenModel):
@@ -73,6 +79,9 @@ class MainModel(BaseScreenModel):
                 self._favorite_items_description = json.loads(json_file.read())
         # set tab name
         self._tab_name = 'main'
+        # set current item
+        self._current_item = None
+
         self._observers = []
 
     @property
@@ -106,15 +115,18 @@ class MainModel(BaseScreenModel):
     @property
     def last_items(self):
         return self._last_items
-    
+
     @property
     def favorite_items(self):
         return self._favorite_items_description
-    
+
     @property
     def tab_name(self):
         return self._tab_name
 
+    @property
+    def current_item(self):
+        return self._current_item
 
     @category_description.setter
     def category_description(self, value):
@@ -160,8 +172,13 @@ class MainModel(BaseScreenModel):
     def favorite_items(self, value):
         self._favorite_items_description = value
         self.notify_observers()
-    
+
     @tab_name.setter
     def tab_name(self, value):
         self._tab_name = value
         self.notify_observers()
+
+    @current_item.setter
+    def current_item(self, value):
+        self._current_item = value
+        # self.notify_observers()

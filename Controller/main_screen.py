@@ -56,3 +56,9 @@ class MainScreenController:
     
     def set_tab_name(self, tab_name: str) -> None:
         self.model.tab_name = tab_name
+    
+    def set_current_item(self, id: int) -> None:
+        for item in self.model.items_description:
+            if item['id'] == id:
+                self.model.current_item = item
+                break

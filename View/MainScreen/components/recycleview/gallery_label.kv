@@ -5,13 +5,17 @@
     radius: 12
 
     MDRelativeLayout:
+
         MDCarousel:
             id: carousel
             size_hint: 1, .7
             pos_hint: {'top': 1}
-            on_slide_complete:
-                root.ids.count_info.text = str(self.index + 1) + '/' + str(root.real_count)
-        
+            on_touch_down: print('touch!')
+            on_slide_progress: root.sliding = True
+            on_slide_complete: 
+                root.sliding = False
+                root.ids.count_info.text = str(self.index + 1) + '/' + str(len(self.slides))
+
         MDIconButton:
             id: favorite_button
             pos_hint: {'top': 1, 'x': .9}

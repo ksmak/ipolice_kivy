@@ -15,3 +15,15 @@ class ItemScreenController:
 
     def get_view(self) -> ItemScreenView:
         return self.view
+
+    def set_favorite_item(self, id: int) -> None:
+        for item in self.model.items_description:
+            if item['id'] == id:
+                self.model.favorite_items.append(item)
+                break
+    
+    def unset_favorite_item(self, id: int) -> None:
+        for item in self.model.favorite_items:
+            if item['id'] == id:
+                self.model.favorite_items.remove(item)
+                break

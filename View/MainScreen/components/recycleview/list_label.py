@@ -17,6 +17,7 @@ class ListLabel(RecycleDataViewBehavior, MDBoxLayout):
     image_path = StringProperty()
     is_favorite = BooleanProperty()
     controller = ObjectProperty()
+    sliding = False
 
     def refresh_view_attrs(self, rv, index, data):
         self.index = index
@@ -33,9 +34,26 @@ class ListLabel(RecycleDataViewBehavior, MDBoxLayout):
         super(ListLabel, self).refresh_view_attrs(rv, index, data)
     
     def on_click_favorite_button(self, *args):
+        self.sliding = True
         if self.is_favorite:
             self.controller.unset_favorite_item(self.item_id)
         else:
             self.controller.set_favorite_item(self.item_id)
         
         self.is_favorite = not self.is_favorite
+    
+    def on_touch_up(self, touch):
+        # if super(GalleryLabel, self).on_touch_up(touch):
+        #     return True
+        if self.collide_point(*touch.pos):
+            self.parent.select_with_touch(self.index, touch)  
+            self.parent.clear_selection()
+            return False
+            
+            
+    def apply_selection(self, rv, index, is_selected):
+        if is_selected and not self.sliding:
+            self.controller.set_current_item(rv.data[index]['item_id'])
+            self.controller.view.manager_screens.current = 'item screen'
+        else:
+            self.sliding = False

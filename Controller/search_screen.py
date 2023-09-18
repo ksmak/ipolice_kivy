@@ -79,3 +79,9 @@ class SearchScreenController:
             if item['id'] == id:
                 self.model.favorite_items.remove(item)
                 break
+    
+    def set_current_item(self, id: int) -> None:
+        for item in self.model.items_description:
+            if item['id'] == id:
+                self.model.current_item = item
+                break
