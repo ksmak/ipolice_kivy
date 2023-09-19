@@ -88,6 +88,8 @@ class MainModel(BaseScreenModel):
                 self._messages = json.loads(json_file.read())
         # set user_id
         self.user_id = 15
+        # set current message
+        self._current_message = {}
 
         self._observers = []
 
@@ -138,6 +140,11 @@ class MainModel(BaseScreenModel):
     @property
     def messages(self):
         return self._messages
+
+    @property
+    def current_message(self):
+        return self._current_message
+
 
     @category_description.setter
     def category_description(self, value):
@@ -197,4 +204,9 @@ class MainModel(BaseScreenModel):
     @messages.setter
     def messages(self, value):
         self._messages = value
+        self.notify_observers()
+    
+    @current_message.setter
+    def current_message(self, value):
+        self._current_message = value
         self.notify_observers()

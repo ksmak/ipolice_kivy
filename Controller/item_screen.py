@@ -27,3 +27,6 @@ class ItemScreenController:
             if item['id'] == id:
                 self.model.favorite_items.remove(item)
                 break
+    
+    def set_current_message(self, data: dict, *args) -> None:
+        self.model.current_message = data

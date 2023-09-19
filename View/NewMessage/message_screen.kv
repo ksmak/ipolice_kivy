@@ -1,7 +1,7 @@
-<NewMessageScreen>
+<MessageScreenView>
     MDBoxLayout:
         orientation: 'vertical'
-        md_bg_color: app.theme_cls.primary_light
+        md_bg_color: app.theme_cls.primary_light       
 
         MDScrollView:
             do_scroll_x: False
@@ -19,8 +19,10 @@
                     text_color: app.theme_cls.accent_color
                     font_style: 'Button'
                 
-                TTextField:
+                MDTextField:
+                    id: message_field
                     hint_text: "Введите новое сообщение"
+                    multiline: True
                     
         MDBoxLayout:
             size_hint_y: .075
@@ -38,6 +40,7 @@
                 text_color: "white"
                 line_color: "white"
                 md_bg_color: app.theme_cls.primary_color
+                on_release: root.save_message()
 
             MDRectangleFlatIconButton:
                 icon: "close"
@@ -47,3 +50,4 @@
                 theme_text_color: "Custom"
                 text_color: app.theme_cls.primary_color
                 line_color: app.theme_cls.primary_color
+                on_release: root.close_screen()

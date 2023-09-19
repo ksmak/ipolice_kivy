@@ -64,6 +64,18 @@ class ItemScreenView(BaseScreenView):
         
         self.is_favorite = not self.is_favorite
 
+    def create_message(self, *args):
+        data = {}
+        data['id'] = 0
+        data['from_id'] = self.model.user_id
+        data['to_id'] = self.model.current_item['author']
+        data['text'] = ''
+        data['date_of_creation'] = ''
+        data['date_of_send'] = ''
+        data['date_of_read'] = ''
+        self.controller.set_current_message(data)
+        self.manager_screens.current = 'message screen'
+
     def model_is_changed(self) -> None:
         """
         Called whenever any change has occurred in the data model.

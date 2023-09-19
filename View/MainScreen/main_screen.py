@@ -148,12 +148,12 @@ class MainScreenView(BaseScreenView):
         for item in self.model.messages:
             data.append({
                 'msg_id': item['id'],
-                'from_id': item['from'],
+                'from_id': item['from_id'],
                 'text': item['text'],
                 'date_of_creation': item['date_of_creation'],
                 'is_send': True if item['date_of_send'] else False,
                 'is_read': True if item['date_of_read'] else False,
-                'is_own': item['from'] == self.model.user_id,
+                'is_own': item['from_id'] == self.model.user_id,
                 'controller': self.controller,
             })
         self.ids.messages_rv.data = data
