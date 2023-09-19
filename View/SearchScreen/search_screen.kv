@@ -11,24 +11,26 @@
             id: search_layout
             orientation: 'vertical'
             adaptive_height: True
-            padding: '20dp', '10dp', '20dp', '10dp'
+            padding: '10dp'
             spacing: '5dp' 
             
             MDBoxLayout:
                 adaptive_height: True
-
+                
                 MDIconButton:
                     id: back_button
+                    pos_hint: {'center_x': .5, 'center_y': .5}
                     icon: 'arrow-left'
                     theme_icon_color: "Custom"
                     icon_color: app.theme_cls.primary_color
-                    pos_hint: {"center_x": .5, "center_y": .5}
                     on_press:
                         search_field.text = ''
                         root.manager_screens.current = 'main screen'
             
                 SearchField:
                     id: search_field
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    size_hint: .7, None
                     on_text_validate: root.search()
 
             MDBoxLayout:

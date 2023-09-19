@@ -1,5 +1,5 @@
 from kivy.metrics import dp
-from kivy.properties import BooleanProperty
+from kivy.properties import BooleanProperty, StringProperty
 
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.fitimage import FitImage
@@ -12,8 +12,9 @@ from Utility.helper import get_by_id
 
 class ItemScreenView(BaseScreenView):
     is_favorite = BooleanProperty()
+    target_screen = StringProperty()
 
-    def on_enter(self):
+    def on_pre_enter(self):
         if self.model.current_item:
             
             self.ids.title.text = self.model.current_item['title']
@@ -27,7 +28,7 @@ class ItemScreenView(BaseScreenView):
                 self.model.current_item['date_of_change']
             
             self.ids.carousel.clear_widgets()
-            for i in range(self.model.ITEM_IMAGE_COUNT):
+            for i in range(self.app.ITEM_IMAGE_COUNT):
                 if self.model.current_item['photo' + str(i + 1)]:
                     lt = MDRelativeLayout()
                     image = FitImage(source=self.model.current_item['photo' + str(i + 1)])
@@ -51,8 +52,9 @@ class ItemScreenView(BaseScreenView):
                 self.ids.details_container.add_widget(chip)
             
             self.is_favorite = any(self.model.current_item['id'] == d['id'] for d in self.model.favorite_items)
-            
             self.ids.favorite_button.bind(on_release=self.on_click_favorite_button)
+        
+        self.target_screen = self.model.target_screen
     
     def on_click_favorite_button(self, *args):
         if self.is_favorite:

@@ -1,0 +1,49 @@
+<NewMessageScreen>
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: app.theme_cls.primary_light
+
+        MDScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+                padding: '20dp', '10dp', '20dp', '10dp'
+                spacing: '15dp'
+
+                MDLabel:
+                    text: 'Новое сообщение:'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.accent_color
+                    font_style: 'Button'
+                
+                TTextField:
+                    hint_text: "Введите новое сообщение"
+                    
+        MDBoxLayout:
+            size_hint_y: .075
+            md_bg_color: app.theme_cls.primary_light
+            padding: '5dp'
+            spacing: '10dp'
+            
+            MDRectangleFlatIconButton:
+                icon: "check-bold"
+                icon_color: 'white'
+                size_hint: 1, 1
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: "Сохранить"
+                theme_text_color: "Custom"
+                text_color: "white"
+                line_color: "white"
+                md_bg_color: app.theme_cls.primary_color
+
+            MDRectangleFlatIconButton:
+                icon: "close"
+                size_hint: 1, 1
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                text: "Отмена"
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                line_color: app.theme_cls.primary_color

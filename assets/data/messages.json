@@ -1,0 +1,29 @@
+[
+    {
+        "id": 15,
+        "from": 1,
+        "to": 15,
+        "text": "Message text text text...\n;sldfk;safldk;safldkas;lfdk;slafkd\nslkjflsadkjflsakjf\nlaskdjflaskdfj",
+        "date_of_creation": "01.01.2023 00:00:00",
+        "date_of_send": "01.01.2023 00:00:00",
+        "date_of_read": null
+    },
+    {
+        "id": 15,
+        "from": 15,
+        "to": 2,
+        "text": "Message text text text...",
+        "date_of_creation": "01.01.2023 00:00:00",
+        "date_of_send": "01.01.2023 00:00:00",
+        "date_of_read": "01.01.2023 00:00:00"
+    },
+    {
+        "id": 15,
+        "from": 1,
+        "to": 15,
+        "text": "Message text text text...",
+        "date_of_creation": "01.01.2023 00:00:00",
+        "date_of_send": null,
+        "date_of_read": null
+    }
+]

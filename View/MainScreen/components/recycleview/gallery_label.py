@@ -35,7 +35,10 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
         for i in range(self.image_count):
             if data['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
-                image = FitImage(source=data['photo' + str(i + 1)])
+                image = FitImage(
+                    source=data['photo' + str(i + 1)],
+                    radius=(12, 12, 0, 0)
+                )
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)
 

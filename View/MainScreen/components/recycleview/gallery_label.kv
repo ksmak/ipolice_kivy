@@ -1,7 +1,7 @@
 <GalleryLabel>:
     orientation: 'vertical'
     md_bg_color: '#ffffff'
-    padding: '10dp'
+    # padding: '10dp'
     radius: 12
 
     MDRelativeLayout:
@@ -10,6 +10,7 @@
             id: carousel
             size_hint: 1, .7
             pos_hint: {'top': 1}
+            radius: 12
             on_touch_down: print('touch!')
             on_slide_progress: root.sliding = True
             on_slide_complete: 
@@ -18,11 +19,11 @@
 
         MDIconButton:
             id: favorite_button
-            pos_hint: {'top': 1, 'x': .9}
+            pos_hint: {'top': 1, 'x': .85}
             theme_icon_color: 'Custom'
             icon_color: app.theme_cls.primary_color
             icon_size: '16dp'
-            icon: 'heart' if root.is_favorite else 'heart-outline'
+            icon: 'star' if root.is_favorite else 'star-outline'
 
         MDLabel:
             id: count_info
@@ -38,7 +39,7 @@
 
         MDLabel:
             text: root.title
-            pos_hint: {'top': .27}
+            pos_hint: {'top': .27, 'x': .05}
             theme_text_color: "Custom"
             text_color: app.theme_cls.primary_color
             font_style: 'Caption'
@@ -48,7 +49,7 @@
 
         MDLabel:
             text: root.text
-            pos_hint: {'top': .17}
+            pos_hint: {'top': .19, 'x': .05}
             theme_text_color: "Custom"
             text_color: app.theme_cls.primary_color
             font_style: 'Caption'
@@ -57,7 +58,7 @@
 
         MDLabel:
             text: root.date
-            pos_hint: {'top': .05}
+            pos_hint: {'top': .1, 'x': .05}
             theme_text_color: "Custom"
             text_color: app.theme_cls.primary_color
             font_style: 'Caption'

@@ -12,9 +12,8 @@ from View.MainScreen.components.layout.result_header import ResultHeader
 
 
 class SearchScreenView(BaseScreenView):
-    def on_enter(self):
-        self.generate_search_history_items()
-        self.refresh_recycleview()
+    def __init__(self, **kw):
+        super().__init__(**kw)
         self.result_header = ResultHeader(
             title='Найдено: ' + str(len(self.model.find_items)),
             button=self.model.browse_type
@@ -30,11 +29,11 @@ class SearchScreenView(BaseScreenView):
         callable_function = partial(self.controller.set_browse_type, 'grid')
         self.result_header.ids.grid_button.bind(
             on_release=callable_function)
-
-        self.ids.result_header.clear_widgets()
         self.ids.result_header.add_widget(self.result_header)
-        self.refresh_result_header()
-
+    
+    def do_enter(self):
+        self.model.target_screen = 'search screen'
+    
     def generate_search_history_items(self):
         self.ids.search_history_container.clear_widgets()
         for history_item in self.model.search_history_description:
@@ -63,34 +62,18 @@ class SearchScreenView(BaseScreenView):
         self.controller.search(self.ids.search_field.text.lower())
 
     def refresh_recycleview(self):
-        data = []
-        for item in self.model.find_items:
-            data.append({
-                'item_id': item['id'],
-                'title': item['title'],
-                'text': item['text'],
-                'date': item['date_of_creation'],
-                'photo1': self.model.BASE_DIR + '/' + str(item['photo1']),
-                'photo2': self.model.BASE_DIR + '/' + str(item['photo2']),
-                'photo3': self.model.BASE_DIR + '/' + str(item['photo3']),
-                'photo4': self.model.BASE_DIR + '/' + str(item['photo4']),
-                'photo5': self.model.BASE_DIR + '/' + str(item['photo5']),
-                'image_count': self.model.ITEM_IMAGE_COUNT,
-                'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
-                'controller': self.controller,
-            })
-        self.ids.gallery_rv.data = data
-        self.ids.gallery_rv.refresh_from_data()
-        self.ids.list_rv.data = data
-        self.ids.list_rv.refresh_from_data()
-        self.ids.grid_rv.data = data
-        self.ids.grid_rv.refresh_from_data()
+        self.app.refresh_recycleview(
+            self.ids.gallery_rv, 
+            self.ids.list_rv, 
+            self.ids.grid_rv, 
+            self.model.find_items, 
+            self.model.favorite_items, 
+            self.controller
+        )
 
     def refresh_result_header(self):
-        if not hasattr(self, 'result_header'):
-            return
-
         self.result_header.button = self.model.browse_type
+        
         self.result_header.title = 'Найдено: ' + \
             str(len(self.model.find_items))
 

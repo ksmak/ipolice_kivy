@@ -62,3 +62,13 @@ class MainScreenController:
             if item['id'] == id:
                 self.model.current_item = item
                 break
+    
+    def remove_message(self, id: int, *args) -> None:
+        for msg in self.model.messages:
+            if msg['id'] == id:
+                self.model.messages.remove(msg)
+                self.model.notify_observers()
+                break
+    
+    def remove_all_messages(self, *args) -> None:
+        self.model.messages = []

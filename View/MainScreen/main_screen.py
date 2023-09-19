@@ -10,11 +10,13 @@ from .components.recycleview.grid_label import GridLabel  # noqa
 from .components.recycleview.rv_box_layout import BoxRecycleLayout  # noqa
 from .components.recycleview.rv_grid_layout import GridRecycleLayout  # noqa
 from .components.textfield.search import SearchField  # noqa
+from .components.recycleview.messages_rv import MessageLabel # noqa
 
 
 class MainScreenView(BaseScreenView):
 
-    def on_enter(self):
+    def __init__(self, **kw):
+        super().__init__(**kw)
         self.generate_category_cards()
         self.refresh_recycleview()
         self.refresh_recycleview_fav()
@@ -22,6 +24,10 @@ class MainScreenView(BaseScreenView):
         self.refresh_result_header()
         self.create_favorite_header()
         self.refresh_favorite_header()
+        self.refresh_messages_recycleview()
+    
+    def on_enter(self):
+        self.model.target_screen = 'main screen'
     
     def set_tab_name(self, tab_name: str) -> None:
         self.controller.set_tab_name(tab_name)
@@ -48,7 +54,6 @@ class MainScreenView(BaseScreenView):
     
     def refresh_result_header(self):
         self.result_header.button = self.model.browse_type
-
         if self.model.browse_type == 'gallery':
             self.ids.gallery_rv.opacity = 1
             self.ids.list_rv.opacity = 0
@@ -102,7 +107,7 @@ class MainScreenView(BaseScreenView):
         self.ids.category_list_container.clear_widgets()
         for category in self.model.category_description:
             card = CategoryCard(
-                category_icon=self.model.BASE_DIR + '/' + category['icon'],
+                category_icon=str(self.app.BASE_DIR) + '/' + category['icon'],
                 category_name=category['name']
             )
             callback_function = partial(
@@ -119,52 +124,43 @@ class MainScreenView(BaseScreenView):
         self.manager_screens.current = 'search screen'
 
     def refresh_recycleview(self):
-        data = []
-        for item in self.model.last_items:
-            data.append({
-                'item_id': item['id'],
-                'title': item['title'],
-                'text': item['text'],
-                'date': item['date_of_creation'],
-                'photo1': self.model.BASE_DIR + '/' + str(item['photo1']),
-                'photo2': self.model.BASE_DIR + '/' + str(item['photo2']),
-                'photo3': self.model.BASE_DIR + '/' + str(item['photo3']),
-                'photo4': self.model.BASE_DIR + '/' + str(item['photo4']),
-                'photo5': self.model.BASE_DIR + '/' + str(item['photo5']),
-                'image_count': self.model.ITEM_IMAGE_COUNT,
-                'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
-                'controller': self.controller,
-            })
-        self.ids.gallery_rv.data = data
-        self.ids.gallery_rv.refresh_from_data()
-        self.ids.list_rv.data = data
-        self.ids.list_rv.refresh_from_data()
-        self.ids.grid_rv.data = data
-        self.ids.grid_rv.refresh_from_data()
+        self.app.refresh_recycleview(
+            self.ids.gallery_rv, 
+            self.ids.list_rv, 
+            self.ids.grid_rv, 
+            self.model.last_items, 
+            self.model.favorite_items, 
+            self.controller
+        )
     
     def refresh_recycleview_fav(self):
+        self.app.refresh_recycleview(
+            self.ids.gallery_rv_fav, 
+            self.ids.list_rv_fav, 
+            self.ids.grid_rv_fav, 
+            self.model.favorite_items, 
+            self.model.favorite_items, 
+            self.controller
+        )
+    
+    def refresh_messages_recycleview(self):
         data = []
-        for item in self.model.favorite_items:
+        for item in self.model.messages:
             data.append({
-                'item_id': item['id'],
-                'title': item['title'],
+                'msg_id': item['id'],
+                'from_id': item['from'],
                 'text': item['text'],
-                'date': item['date_of_creation'],
-                'photo1': self.model.BASE_DIR + '/' + str(item['photo1']),
-                'photo2': self.model.BASE_DIR + '/' + str(item['photo2']),
-                'photo3': self.model.BASE_DIR + '/' + str(item['photo3']),
-                'photo4': self.model.BASE_DIR + '/' + str(item['photo4']),
-                'photo5': self.model.BASE_DIR + '/' + str(item['photo5']),
-                'image_count': self.model.ITEM_IMAGE_COUNT,
-                'is_favorite': any(item['id'] == d['id'] for d in self.model.favorite_items),
+                'date_of_creation': item['date_of_creation'],
+                'is_send': True if item['date_of_send'] else False,
+                'is_read': True if item['date_of_read'] else False,
+                'is_own': item['from'] == self.model.user_id,
                 'controller': self.controller,
             })
-        self.ids.gallery_rv_fav.data = data
-        self.ids.gallery_rv_fav.refresh_from_data()
-        self.ids.list_rv_fav.data = data
-        self.ids.list_rv_fav.refresh_from_data()
-        self.ids.grid_rv_fav.data = data
-        self.ids.grid_rv_fav.refresh_from_data()
+        self.ids.messages_rv.data = data
+        self.ids.messages_rv.refresh_from_data()
+    
+    def remove_all_messages(self, *args):
+        self.controller.remove_all_messages()
 
     def model_is_changed(self) -> None:
         """
@@ -178,3 +174,5 @@ class MainScreenView(BaseScreenView):
         elif self.model.tab_name == 'favorite':
             self.refresh_favorite_header()
             self.refresh_recycleview_fav()
+        elif self.model.tab_name == 'messages':
+            self.refresh_messages_recycleview()

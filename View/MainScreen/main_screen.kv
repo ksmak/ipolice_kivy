@@ -1,203 +1,252 @@
 <MainScreenView>
-    MDBottomNavigation:
-        id: bottom_nav
-        selected_color_background: app.theme_cls.primary_light
-        text_color_active: app.theme_cls.primary_color
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDTopAppBar:
+            # title: "i-POLICE.KZ"
+            anchor_title: "left"
+            right_action_items: [["magnify", lambda x: root.to_search_screen()]]
         
-        MDBottomNavigationItem:
-            name: 'main'
-            text: 'Главная'
-            icon: 'home'
-            md_bg_color: app.theme_cls.primary_light
-            on_tab_press: root.set_tab_name('main')
+        MDBottomNavigation:
+            id: bottom_nav
+            selected_color_background: app.theme_cls.primary_light
+            text_color_active: app.theme_cls.primary_color
             
-            MDScrollView:
-                do_scroll_x: False
-                do_scroll_y: True
+            MDBottomNavigationItem:
+                name: 'main'
+                text: 'Главная'
+                icon: 'home'
+                md_bg_color: app.theme_cls.primary_light
+                on_tab_press: root.set_tab_name('main')
 
-                MDBoxLayout:
-                    orientation: 'vertical'
-                    adaptive_height: True
-                    padding: '20dp', '10dp', '20dp', '10dp'
-                    spacing: '15dp'
-                
-                    SearchField:
-                        icon_left: 'magnify'
-                        on_focus: root.to_search_screen()
-                
-                    MDLabel:
-                        pos_hint: {'center_x': .5, 'center_y': .5}
-                        text: 'Категории'
-                        font_style: 'Button'
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.accent_color
 
-                    MDScrollView:
-                        do_scroll_x: True
-                        do_scroll_y: False
-                        size_hint_y: None
-                        height: dp(130)
+                MDScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        padding: '20dp', '10dp', '20dp', '10dp'
+                        spacing: '15dp'
+                    
+                        MDLabel:
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            text: 'Категории'
+                            font_style: 'Button'
+                            theme_text_color: "Custom"
+                            text_color: app.theme_cls.accent_color
+
+                        MDScrollView:
+                            do_scroll_x: True
+                            do_scroll_y: False
+                            size_hint_y: None
+                            height: dp(130)
+
+                            MDBoxLayout:
+                                id: category_list_container
+                                adaptive_size: True
+                                spacing: dp(5)
+                        
+                        MDBoxLayout:
+                            id: result_header
+                            orientation: 'vertical'
+                            adaptive_height: True
+                            
+                        MDRecycleView:
+                            id: gallery_rv
+                            viewclass: 'GalleryLabel'
+                            size_hint_y: None
+                            height: root.ids.gallery_rv_layout.height
+                            do_scroll_x: False
+                            do_scroll_y: False
+                            opacity: 0
+
+                            BoxRecycleLayout:
+                                id: gallery_rv_layout
+                                size_hint_y: None
+                                height: root.ids.gallery_rv.opacity == 1 and self.minimum_height or 0
+                                orientation: 'vertical'
+                                default_size: None, dp(250)
+                                default_size_hint: 1, None
+                                spacing: '20dp'
+                    
+                        MDRecycleView:
+                            id: list_rv
+                            viewclass: 'ListLabel'
+                            size_hint_y: None
+                            height: root.ids.list_rv_layout.height
+                            do_scroll_x: False
+                            do_scroll_y: False
+                            opacity: 0
+
+                            BoxRecycleLayout:
+                                id: list_rv_layout
+                                size_hint_y: None
+                                height: root.ids.list_rv.opacity == 1 and self.minimum_height or 0
+                                orientation: 'vertical'
+                                default_size: None, dp(120)
+                                default_size_hint: 1, None
+                                spacing: '20dp'
+                        
+                        MDRecycleView:
+                            id: grid_rv
+                            viewclass: 'GridLabel'
+                            size_hint_y: None
+                            height: root.ids.grid_rv_layout.height
+                            do_scroll_x: False
+                            do_scroll_y: False
+                            opacity: 0
+
+                            GridRecycleLayout:
+                                id: grid_rv_layout
+                                size_hint_y: None
+                                height: root.ids.grid_rv.opacity == 1 and self.minimum_height or 0
+                                default_size: None, dp(120)
+                                default_size_hint: 1, None
+                                spacing: '5dp'
+                                cols: 2
+    
+            MDBottomNavigationItem:
+                name: 'favorite'
+                text: 'Избранное'
+                icon: 'star'
+                md_bg_color: app.theme_cls.primary_light
+                on_tab_press: root.set_tab_name('favorite')
+
+                MDScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        padding: '20dp', '10dp', '20dp', '10dp'
+                        spacing: '15dp'
 
                         MDBoxLayout:
-                            id: category_list_container
-                            adaptive_size: True
-                            spacing: dp(5)
+                            id: favorite_header
+                            orientation: 'vertical'
+                            adaptive_height: True
+
+                        MDRecycleView:
+                            id: gallery_rv_fav
+                            viewclass: 'GalleryLabel'
+                            size_hint_y: None
+                            height: root.ids.gallery_rv_layout_fav.height
+                            do_scroll_x: False
+                            do_scroll_y: False
+                            opacity: 0
+
+                            BoxRecycleLayout:
+                                id: gallery_rv_layout_fav
+                                size_hint_y: None
+                                height: root.ids.gallery_rv_fav.opacity == 1 and self.minimum_height or 0
+                                orientation: 'vertical'
+                                default_size: None, dp(250)
+                                default_size_hint: 1, None
+                                spacing: '20dp'
                     
-                    MDBoxLayout:
-                        id: result_header
-                        orientation: 'vertical'
-                        adaptive_height: True
+                        MDRecycleView:
+                            id: list_rv_fav
+                            viewclass: 'ListLabel'
+                            size_hint_y: None
+                            height: root.ids.list_rv_layout_fav.height
+                            do_scroll_x: False
+                            do_scroll_y: False
+                            opacity: 0
+
+                            BoxRecycleLayout:
+                                id: list_rv_layout_fav
+                                size_hint_y: None
+                                height: root.ids.list_rv_fav.opacity == 1 and self.minimum_height or 0
+                                orientation: 'vertical'
+                                default_size: None, dp(120)
+                                default_size_hint: 1, None
+                                spacing: '20dp'
                         
-                    MDRecycleView:
-                        id: gallery_rv
-                        viewclass: 'GalleryLabel'
-                        size_hint_y: None
-                        height: root.ids.gallery_rv_layout.height
-                        do_scroll_x: False
-                        do_scroll_y: False
-                        opacity: 0
-
-                        BoxRecycleLayout:
-                            id: gallery_rv_layout
+                        MDRecycleView:
+                            id: grid_rv_fav
+                            viewclass: 'GridLabel'
                             size_hint_y: None
-                            height: root.ids.gallery_rv.opacity == 1 and self.minimum_height or 0
-                            orientation: 'vertical'
-                            default_size: None, dp(250)
-                            default_size_hint: 1, None
-                            spacing: '20dp'
-                
-                    MDRecycleView:
-                        id: list_rv
-                        viewclass: 'ListLabel'
-                        size_hint_y: None
-                        height: root.ids.list_rv_layout.height
-                        do_scroll_x: False
-                        do_scroll_y: False
-                        opacity: 0
+                            height: root.ids.grid_rv_layout_fav.height
+                            do_scroll_x: False
+                            do_scroll_y: False
+                            opacity: 0
 
-                        BoxRecycleLayout:
-                            id: list_rv_layout
-                            size_hint_y: None
-                            height: root.ids.list_rv.opacity == 1 and self.minimum_height or 0
-                            orientation: 'vertical'
-                            default_size: None, dp(120)
-                            default_size_hint: 1, None
-                            spacing: '20dp'
-                    
-                    MDRecycleView:
-                        id: grid_rv
-                        viewclass: 'GridLabel'
-                        size_hint_y: None
-                        height: root.ids.grid_rv_layout.height
-                        do_scroll_x: False
-                        do_scroll_y: False
-                        opacity: 0
+                            GridRecycleLayout:
+                                id: grid_rv_layout_fav
+                                size_hint_y: None
+                                height: root.ids.grid_rv_fav.opacity == 1 and self.minimum_height or 0
+                                default_size: None, dp(120)
+                                default_size_hint: 1, None
+                                spacing: '5dp'
+                                cols: 2
 
-                        GridRecycleLayout:
-                            id: grid_rv_layout
-                            size_hint_y: None
-                            height: root.ids.grid_rv.opacity == 1 and self.minimum_height or 0
-                            default_size: None, dp(120)
-                            default_size_hint: 1, None
-                            spacing: '5dp'
-                            cols: 2
- 
-        MDBottomNavigationItem:
-            name: 'favorite'
-            text: 'Избранное'
-            icon: 'heart'
-            md_bg_color: app.theme_cls.primary_light
-            on_tab_press: root.set_tab_name('favorite')
+            MDBottomNavigationItem:
+                name: 'messages'
+                text: 'Сообщения'
+                icon: 'message'
+                md_bg_color: app.theme_cls.primary_light
+                on_tab_press: root.set_tab_name('messages')
 
-            MDScrollView:
-                do_scroll_x: False
-                do_scroll_y: True
-
-                MDBoxLayout:
-                    orientation: 'vertical'
-                    adaptive_height: True
-                    padding: '20dp', '10dp', '20dp', '10dp'
-                    spacing: '15dp'
+                MDScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
 
                     MDBoxLayout:
-                        id: favorite_header
                         orientation: 'vertical'
                         adaptive_height: True
+                        padding: '20dp', '10dp', '20dp', '10dp'
+                        spacing: '15dp'
 
-                    MDRecycleView:
-                        id: gallery_rv_fav
-                        viewclass: 'GalleryLabel'
-                        size_hint_y: None
-                        height: root.ids.gallery_rv_layout_fav.height
-                        do_scroll_x: False
-                        do_scroll_y: False
-                        opacity: 0
+                        MDBoxLayout:
+                            id: history_layout
+                                                    
+                            MDLabel:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                text: 'Сообщения'
+                                font_style: 'Button'
+                                theme_text_color: 'Custom'
+                                text_color: app.theme_cls.accent_color
+                            
+                            MDFlatButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                text: "Очистить все"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.accent_color
+                                on_release: root.remove_all_messages()
 
-                        BoxRecycleLayout:
-                            id: gallery_rv_layout_fav
+                        MDRecycleView:
+                            id: messages_rv
+                            viewclass: 'MessageLabel'
                             size_hint_y: None
-                            height: root.ids.gallery_rv_fav.opacity == 1 and self.minimum_height or 0
-                            orientation: 'vertical'
-                            default_size: None, dp(250)
-                            default_size_hint: 1, None
-                            spacing: '20dp'
-                
-                    MDRecycleView:
-                        id: list_rv_fav
-                        viewclass: 'ListLabel'
-                        size_hint_y: None
-                        height: root.ids.list_rv_layout_fav.height
-                        do_scroll_x: False
-                        do_scroll_y: False
-                        opacity: 0
+                            height: root.ids.messages_rv_layout.height
+                            do_scroll_x: False
+                            do_scroll_y: False
 
-                        BoxRecycleLayout:
-                            id: list_rv_layout_fav
-                            size_hint_y: None
-                            height: root.ids.list_rv_fav.opacity == 1 and self.minimum_height or 0
-                            orientation: 'vertical'
-                            default_size: None, dp(120)
-                            default_size_hint: 1, None
-                            spacing: '20dp'
+                            BoxRecycleLayout:
+                                id: messages_rv_layout
+                                size_hint_y: None
+                                height: self.minimum_height
+                                orientation: 'vertical'
+                                default_size: None, dp(150)
+                                default_size_hint: 1, None
+                                spacing: '20dp'
                     
-                    MDRecycleView:
-                        id: grid_rv_fav
-                        viewclass: 'GridLabel'
-                        size_hint_y: None
-                        height: root.ids.grid_rv_layout_fav.height
-                        do_scroll_x: False
-                        do_scroll_y: False
-                        opacity: 0
-
-                        GridRecycleLayout:
-                            id: grid_rv_layout_fav
-                            size_hint_y: None
-                            height: root.ids.grid_rv_fav.opacity == 1 and self.minimum_height or 0
-                            default_size: None, dp(120)
-                            default_size_hint: 1, None
-                            spacing: '5dp'
-                            cols: 2
-
-        MDBottomNavigationItem:
-            name: 'messages'
-            text: 'Сообщения'
-            icon: 'message'
-            md_bg_color: app.theme_cls.primary_light
-
-            MDLabel:
-                text: 'Сообщения'
-                halign: 'center'
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.accent_color
-    
-        MDBottomNavigationItem:
-            name: 'contacts'
-            text: 'Контакты'
-            icon: 'apps'
-            md_bg_color: app.theme_cls.primary_light
-
-            MDLabel:
+                
+        
+            MDBottomNavigationItem:
+                name: 'contacts'
                 text: 'Контакты'
-                halign: 'center'
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.accent_color
+                icon: 'apps'
+                md_bg_color: app.theme_cls.primary_light
+
+                MDLabel:
+                    text: 'Контакты'
+                    halign: 'center'
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.accent_color
+       
+        
+       

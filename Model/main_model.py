@@ -1,18 +1,9 @@
 import json
-from pathlib import Path
 
 from kivy.logger import Logger
 
 from Model.base_model import BaseScreenModel
 from Utility.helper import get_by_id
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-Logger.info('python BASE_DIR=%s', BASE_DIR)
-
-DATA_DIR = BASE_DIR.joinpath("assets", "data")
-
-Logger.info('python DATA_DIR=%s', DATA_DIR)
 
 
 class MainModel(BaseScreenModel):
@@ -21,11 +12,7 @@ class MainModel(BaseScreenModel):
     :class:`~View.main_screen.MainScreen.MainScreenView` class.
     """
 
-    def __init__(self):
-        self.BASE_DIR = str(BASE_DIR)
-        # constants
-        self.ITEM_IMAGE_COUNT = 5
-        self.LAST_ITEMS_COUNT = 10
+    def __init__(self, DATA_DIR, LAST_ITEMS_COUNT):
         # loading categories
         self._category_description = []
         path_to_category_description = DATA_DIR.joinpath(
@@ -70,8 +57,8 @@ class MainModel(BaseScreenModel):
         self._browse_type = 'gallery'
         # set last items list
         self._last_items = []
-        last_items_count = self.LAST_ITEMS_COUNT
-        if len(self._items_description) < self.LAST_ITEMS_COUNT:
+        last_items_count = LAST_ITEMS_COUNT
+        if len(self._items_description) < LAST_ITEMS_COUNT:
             last_items_count = len(self._items_description)
         for i in range(last_items_count):
             self._last_items.append(self._items_description[i])
@@ -88,6 +75,19 @@ class MainModel(BaseScreenModel):
         self._tab_name = 'main'
         # set current item
         self._current_item = None
+        # set target screen
+        self.target_screen = 'main screen'
+        # load text messages
+        self._messages = []
+        path_to_messages = DATA_DIR.joinpath(
+            DATA_DIR, "messages.json"
+        )
+        Logger.info('python. path for messages: %s', path_to_messages)
+        if path_to_messages.exists():
+            with open(path_to_messages) as json_file:
+                self._messages = json.loads(json_file.read())
+        # set user_id
+        self.user_id = 15
 
         self._observers = []
 
@@ -134,6 +134,10 @@ class MainModel(BaseScreenModel):
     @property
     def current_item(self):
         return self._current_item
+
+    @property
+    def messages(self):
+        return self._messages
 
     @category_description.setter
     def category_description(self, value):
@@ -189,3 +193,8 @@ class MainModel(BaseScreenModel):
     def current_item(self, value):
         self._current_item = value
         # self.notify_observers()
+    
+    @messages.setter
+    def messages(self, value):
+        self._messages = value
+        self.notify_observers()
