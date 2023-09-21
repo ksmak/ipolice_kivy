@@ -2,112 +2,40 @@ from functools import partial
 
 from View.base_screen import BaseScreenView
 from .components.card.category_card import CategoryCard
-from .components.layout.result_header import ResultHeader
-from .components.layout.favorite_header import FavoriteHeader
 from .components.recycleview.gallery_label import GalleryLabel  # noqa
 from .components.recycleview.list_label import ListLabel  # noqa
 from .components.recycleview.grid_label import GridLabel  # noqa
 from .components.recycleview.rv_box_layout import BoxRecycleLayout  # noqa
 from .components.recycleview.rv_grid_layout import GridRecycleLayout  # noqa
-from .components.textfield.search import SearchField  # noqa
-from .components.recycleview.messages_rv import MessageLabel # noqa
+from .components.recycleview.message_label import MessageLabel  # noqa
 
 
 class MainScreenView(BaseScreenView):
 
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.controller.generate_category_items()
+        self.controller.generate_items()
+        self.controller.generate_fav_items()
+        self.controller.generate_last_items()
+        self.controller.generate_message_items()
         self.generate_category_cards()
-        self.refresh_recycleview()
-        self.refresh_recycleview_fav()
-        self.create_result_header()
-        self.refresh_result_header()
-        self.create_favorite_header()
-        self.refresh_favorite_header()
-        self.refresh_messages_recycleview()
-    
-    def on_enter(self):
-        self.model.target_screen = 'main screen'
-    
-    def set_tab_name(self, tab_name: str) -> None:
-        self.controller.set_tab_name(tab_name)
 
-    def create_result_header(self):
-        self.result_header = ResultHeader(
-            title='Последние добавления',
-            button=self.model.browse_type
-        )
-        callable_function = partial(
-            self.controller.set_browse_type, 'gallery')
-        self.result_header.ids.gallery_button.bind(
-            on_release=callable_function)
-        callable_function = partial(
-            self.controller.set_browse_type, 'list')
-        self.result_header.ids.list_button.bind(
-            on_release=callable_function)
-        callable_function = partial(self.controller.set_browse_type, 'grid')
-        self.result_header.ids.grid_button.bind(
-            on_release=callable_function)
-
-        self.ids.result_header.clear_widgets()
-        self.ids.result_header.add_widget(self.result_header)
-    
-    def refresh_result_header(self):
-        self.result_header.button = self.model.browse_type
+    def on_pre_enter(self) -> None:
         if self.model.browse_type == 'gallery':
-            self.ids.gallery_rv.opacity = 1
-            self.ids.list_rv.opacity = 0
-            self.ids.grid_rv.opacity = 0
+            self.ids.gallery_rv.refresh_from_data()
         elif self.model.browse_type == 'list':
-            self.ids.gallery_rv.opacity = 0
-            self.ids.list_rv.opacity = 1
-            self.ids.grid_rv.opacity = 0
+            self.ids.list_rv.refresh_from_data()
         elif self.model.browse_type == 'grid':
-            self.ids.gallery_rv.opacity = 0
-            self.ids.list_rv.opacity = 0
-            self.ids.grid_rv.opacity = 1
+            self.ids.grid_rv.refresh_from_data()
+        self.controller.set_target_screen('main screen')
 
-    def create_favorite_header(self):
-        self.favorite_header = FavoriteHeader(
-            title='Избранное',
-            button=self.model.browse_type
-        )
-        callable_function = partial(
-            self.controller.set_browse_type, 'gallery')
-        self.favorite_header.ids.gallery_button.bind(
-            on_release=callable_function)
-        callable_function = partial(
-            self.controller.set_browse_type, 'list')
-        self.favorite_header.ids.list_button.bind(
-            on_release=callable_function)
-        callable_function = partial(self.controller.set_browse_type, 'grid')
-        self.favorite_header.ids.grid_button.bind(
-            on_release=callable_function)
-
-        self.ids.favorite_header.clear_widgets()
-        self.ids.favorite_header.add_widget(self.favorite_header)
-    
-    def refresh_favorite_header(self):
-        self.favorite_header.button = self.model.browse_type
-
-        if self.model.browse_type == 'gallery':
-            self.ids.gallery_rv_fav.opacity = 1
-            self.ids.list_rv_fav.opacity = 0
-            self.ids.grid_rv_fav.opacity = 0
-        elif self.model.browse_type == 'list':
-            self.ids.gallery_rv_fav.opacity = 0
-            self.ids.list_rv_fav.opacity = 1
-            self.ids.grid_rv_fav.opacity = 0
-        elif self.model.browse_type == 'grid':
-            self.ids.gallery_rv_fav.opacity = 0
-            self.ids.list_rv_fav.opacity = 0
-            self.ids.grid_rv_fav.opacity = 1
-
-    def generate_category_cards(self):
+    def generate_category_cards(self) -> None:
         self.ids.category_list_container.clear_widgets()
-        for category in self.model.category_description:
+        for category in self.model.category_items:
             card = CategoryCard(
-                category_icon=str(self.app.BASE_DIR) + '/' + category['icon'],
+                category_icon=str(self.model.BASE_DIR) +
+                '/' + category['icon'],
                 category_name=category['name']
             )
             callback_function = partial(
@@ -119,47 +47,11 @@ class MainScreenView(BaseScreenView):
         self.controller.search_by_category(category)
         self.manager_screens.current = 'search screen'
 
-    def to_search_screen(self):
+    def to_search_screen(self) -> None:
         self.controller.open_search()
         self.manager_screens.current = 'search screen'
 
-    def refresh_recycleview(self):
-        self.app.refresh_recycleview(
-            self.ids.gallery_rv, 
-            self.ids.list_rv, 
-            self.ids.grid_rv, 
-            self.model.last_items, 
-            self.model.favorite_items, 
-            self.controller
-        )
-    
-    def refresh_recycleview_fav(self):
-        self.app.refresh_recycleview(
-            self.ids.gallery_rv_fav, 
-            self.ids.list_rv_fav, 
-            self.ids.grid_rv_fav, 
-            self.model.favorite_items, 
-            self.model.favorite_items, 
-            self.controller
-        )
-    
-    def refresh_messages_recycleview(self):
-        data = []
-        for item in self.model.messages:
-            data.append({
-                'msg_id': item['id'],
-                'from_id': item['from_id'],
-                'text': item['text'],
-                'date_of_creation': item['date_of_creation'],
-                'is_send': True if item['date_of_send'] else False,
-                'is_read': True if item['date_of_read'] else False,
-                'is_own': item['from_id'] == self.model.user_id,
-                'controller': self.controller,
-            })
-        self.ids.messages_rv.data = data
-        self.ids.messages_rv.refresh_from_data()
-    
-    def remove_all_messages(self, *args):
+    def remove_all_messages(self, *args) -> None:
         self.controller.remove_all_messages()
 
     def model_is_changed(self) -> None:
@@ -168,11 +60,3 @@ class MainScreenView(BaseScreenView):
         The view in this method tracks these changes and updates the UI
         according to these changes.
         """
-        if self.model.tab_name == 'main':
-            self.refresh_result_header()
-            self.refresh_recycleview()
-        elif self.model.tab_name == 'favorite':
-            self.refresh_favorite_header()
-            self.refresh_recycleview_fav()
-        elif self.model.tab_name == 'messages':
-            self.refresh_messages_recycleview()

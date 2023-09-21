@@ -18,4 +18,5 @@ class MessageScreenController:
     
     def save_message(self, data, *args) -> None:
         self.model.current_message = data
-        self.model.messages.append(data)
+        self.model.message_items.append(data)
+    

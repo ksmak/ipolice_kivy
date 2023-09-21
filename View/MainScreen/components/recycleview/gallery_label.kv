@@ -1,7 +1,6 @@
 <GalleryLabel>:
     orientation: 'vertical'
     md_bg_color: '#ffffff'
-    # padding: '10dp'
     radius: 12
 
     MDRelativeLayout:
@@ -11,7 +10,6 @@
             size_hint: 1, .7
             pos_hint: {'top': 1}
             radius: 12
-            on_touch_down: print('touch!')
             on_slide_progress: root.sliding = True
             on_slide_complete: 
                 root.sliding = False
@@ -19,12 +17,12 @@
 
         MDIconButton:
             id: favorite_button
-            pos_hint: {'top': 1, 'x': .85}
+            pos_hint:{'top': 1.03, 'x': .88}
             theme_icon_color: 'Custom'
             icon_color: app.theme_cls.primary_color
-            icon_size: '16dp'
+            icon_size: '18dp'
             icon: 'star' if root.is_favorite else 'star-outline'
-
+        
         MDLabel:
             id: count_info
             pos_hint: {'top': .4, 'x': .9}
@@ -35,7 +33,7 @@
             adaptive_size: True
             shorten: True
             md_bg_color: .7, .7, .7, 1
-            padding: dp(1)
+            padding: '1dp'
 
         MDLabel:
             text: root.title

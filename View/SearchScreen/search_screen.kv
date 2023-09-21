@@ -27,77 +27,110 @@
                         search_field.text = ''
                         root.manager_screens.current = 'main screen'
             
-                SearchField:
+                MDTextField:
                     id: search_field
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     size_hint: .7, None
                     on_text_validate: root.search()
+                    hint_text: 'Поиск'
+                    mode: 'round'
+                    fill_color_normal: app.theme_cls.primary_light
 
             MDBoxLayout:
                 id: history_layout
                 size_hint_y: None
-                height: self.opacity == 1 and dp(40) or 0
+                height: '40dp' if self.opacity == 1 else 0
             
                 MDLabel:
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     text: 'Вы недавно искали'
                     font_style: 'Button'
                     theme_text_color: 'Custom'
-                    text_color: '#0072B5'
+                    text_color: app.theme_cls.primary_color
                 
                 MDFlatButton:
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     text: "Очистить все"
                     theme_text_color: "Custom"
-                    text_color: '#0072B5'
-                    on_press: root.remove_all_search_history_items()
-                
+                    text_color: app.theme_cls.primary_color
+                    on_press: root.remove_all_history_items()
+            
             MDList:
-                id: search_history_container
-                height: self.opacity == 1 and self.height or 0
+                id: history_container
+                height: self.height if self.opacity == 1 else 0
             
             MDBoxLayout:
                 id: result_layout
                 orientation: 'vertical'
                 adaptive_height: True
-                opacity: 0
-
+                
                 MDBoxLayout:
-                    id: result_header
-                    orientation: 'vertical'
                     adaptive_height: True
+                    
+                    MDLabel:
+                        text: 'Найдено: ' + str(len(root.model.find_items))
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        font_style: 'Button'
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.accent_color
+
+                    MDIconButton:
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        theme_icon_color: "Custom"
+                        icon: 'square'
+                        icon_size: '16sp'
+                        icon_color: app.theme_cls.accent_color if root.model.browse_type == 'gallery' else app.theme_cls.primary_color
+                        on_release: root.controller.set_browse_type('gallery')
+
+                    MDIconButton:
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        theme_icon_color: "Custom"
+                        icon: 'view-agenda'
+                        icon_size: '16sp'
+                        icon_color: app.theme_cls.accent_color if root.model.browse_type == 'list' else app.theme_cls.primary_color
+                        on_release: root.controller.set_browse_type('list')
+
+                    MDIconButton:
+                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        theme_icon_color: "Custom"
+                        icon: 'view-grid'
+                        icon_size: '16sp'
+                        icon_color: app.theme_cls.accent_color if root.model.browse_type == 'grid' else app.theme_cls.primary_color
+                        on_release: root.controller.set_browse_type('grid')
                 
                 MDRecycleView:
                     id: gallery_rv
+                    data: root.model.find_items
                     viewclass: 'GalleryLabel'
                     size_hint_y: None
                     height: root.ids.gallery_rv_layout.height
                     do_scroll_x: False
                     do_scroll_y: False
-                    opacity: 0
+                    opacity: 1 if root.model.browse_type == 'gallery' else 0
 
                     BoxRecycleLayout:
                         id: gallery_rv_layout
                         size_hint_y: None
-                        height: root.ids.gallery_rv.opacity == 1 and self.minimum_height or 0
+                        height: self.minimum_height if root.ids.gallery_rv.opacity == 1 else 0
                         orientation: 'vertical'
                         default_size: None, dp(250)
                         default_size_hint: 1, None
                         spacing: '20dp'
-                
+            
                 MDRecycleView:
                     id: list_rv
+                    data: root.model.find_items
                     viewclass: 'ListLabel'
                     size_hint_y: None
                     height: root.ids.list_rv_layout.height
                     do_scroll_x: False
                     do_scroll_y: False
-                    opacity: 0
+                    opacity: 1 if root.model.browse_type == 'list' else 0
 
                     BoxRecycleLayout:
                         id: list_rv_layout
                         size_hint_y: None
-                        height: root.ids.list_rv.opacity == 1 and self.minimum_height or 0
+                        height: self.minimum_height if root.ids.list_rv.opacity == 1 else 0
                         orientation: 'vertical'
                         default_size: None, dp(120)
                         default_size_hint: 1, None
@@ -105,25 +138,25 @@
                 
                 MDRecycleView:
                     id: grid_rv
+                    data: root.model.find_items
                     viewclass: 'GridLabel'
                     size_hint_y: None
                     height: root.ids.grid_rv_layout.height
                     do_scroll_x: False
                     do_scroll_y: False
-                    opacity: 0
+                    opacity: 1 if root.model.browse_type == 'grid' else 0
 
                     GridRecycleLayout:
                         id: grid_rv_layout
                         size_hint_y: None
-                        height: root.ids.grid_rv.opacity == 1 and self.minimum_height or 0
+                        height: self.minimum_height if root.ids.grid_rv.opacity == 1 else 0
                         default_size: None, dp(120)
                         default_size_hint: 1, None
                         spacing: '5dp'
                         cols: 2
     
     MDSpinner:
-        id: loading
         size_hint: None, None
-        size: dp(46), dp(46)
+        size: '46dp', '46dp'
         pos_hint: {'center_x': .5, 'center_y': .5}
-        active: False
+        active: root.model.is_loading

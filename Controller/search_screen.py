@@ -1,3 +1,5 @@
+import json
+
 import asynckivy as ak
 
 from View.SearchScreen.search_screen import SearchScreenView
@@ -18,19 +20,32 @@ class SearchScreenController:
     def get_view(self) -> SearchScreenView:
         return self.view
 
-    def remove_search_history_item(self, item):
-        if item in self.model.search_history_description:
-            self.model.search_history_description.remove(item)
-            self.model.notify_observers()
+    def set_target_screen(self, target_screen: str) -> None:
+        self.model.target_screen = target_screen
 
-    def remove_all_search_history_items(self):
-        self.model.search_history_description = []
+    def generate_history_items(self, *args) -> None:
+        history_items = []
+        path_to_history_items = self.model.DATA_DIR.joinpath(
+            self.model.DATA_DIR, "history_items.json"
+        )
+        if path_to_history_items.exists():
+            with open(path_to_history_items) as json_file:
+                history_items = json.loads(json_file.read())
+        self.model.history_items = history_items
+
+    def remove_history_item(self, item):
+        if item in self.model.history_items:
+            self.model.history_items.remove(item)
+        self.model.notify_observers()    
+
+    def remove_all_history_items(self):
+        self.model.history_items = []
+        self.model.notify_observers()
 
     def search(self, sf: str, *args):
-
         async def search_process(st: str):
             find_items = []
-            for item in self.model.items_description:
+            for item in self.model.items:
                 if (item['fulltext'].find(st) > 0):
                     find_items.append(item)
                     await ak.sleep(0)
@@ -44,44 +59,37 @@ class SearchScreenController:
             )
 
             if tasks[0].finished and self.model.find_items:
-                for history in self.model.search_history_description:
+                for history in self.model.history_items:
                     if history['title'].lower() == sf.lower():
                         break
                 else:
-                    self.model.search_history_description.append(
+                    self.model.history_items.append(
                         {
                             "title": sf
                         }
                     )
+            self.model.is_loading = False
+            self.model.notify_observers()
 
-            self.model.search_loading = False
-
-        self.model.is_first_search = True
-        self.model.search_loading = True
+        self.model.is_first_open = False
+        self.model.is_loading = True
         self.model.find_items = []
 
         ak.start(async_search(sf))
 
-    def set_is_first_search(self, value: bool) -> None:
-        self.model.isFirstSearch = value
-
     def set_browse_type(self, browse_type: str, *args) -> None:
         self.model.browse_type = browse_type
-    
+
     def set_favorite_item(self, id: int):
-        for item in self.model.items_description:
-            if item['id'] == id:
-                self.model.favorite_items.append(item)
-                break
-    
-    def unset_favorite_item(self, id: int):
-        for item in self.model.favorite_items:
-            if item['id'] == id:
-                self.model.favorite_items.remove(item)
-                break
-    
+        res = [d for d in self.model.items if d['id'] == id]
+        if res:
+            res[0]['is_favorite'] = not res[0]['is_favorite']
+            if res[0] not in self.model.fav_items and res[0]['is_favorite']:
+                self.model.fav_items.append(res[0])
+            else:
+                self.model.fav_items.remove(res[0])
+
     def set_current_item(self, id: int) -> None:
-        for item in self.model.items_description:
-            if item['id'] == id:
-                self.model.current_item = item
-                break
+        res = [d for d in self.model.items if d['id'] == id]
+        if res:
+            self.model.current_item = res[0]

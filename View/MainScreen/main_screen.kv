@@ -17,7 +17,6 @@
                 text: 'Главная'
                 icon: 'home'
                 md_bg_color: app.theme_cls.primary_light
-                on_tab_press: root.set_tab_name('main')
 
 
                 MDScrollView:
@@ -49,23 +48,54 @@
                                 spacing: dp(5)
                         
                         MDBoxLayout:
-                            id: result_header
-                            orientation: 'vertical'
                             adaptive_height: True
+                            
+                            MDLabel:
+                                text: 'Последние добавления:'
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                font_style: 'Button'
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.accent_color
+
+                            MDIconButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                theme_icon_color: "Custom"
+                                icon: 'square'
+                                icon_size: '16sp'
+                                icon_color: app.theme_cls.accent_color if root.model.browse_type == 'gallery' else app.theme_cls.primary_color
+                                on_release: root.controller.set_browse_type('gallery')
+
+                            MDIconButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                theme_icon_color: "Custom"
+                                icon: 'view-agenda'
+                                icon_size: '16sp'
+                                icon_color: app.theme_cls.accent_color if root.model.browse_type == 'list' else app.theme_cls.primary_color
+                                on_release: root.controller.set_browse_type('list')
+
+                            MDIconButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                theme_icon_color: "Custom"
+                                icon: 'view-grid'
+                                icon_size: '16sp'
+                                icon_color: app.theme_cls.accent_color if root.model.browse_type == 'grid' else app.theme_cls.primary_color
+                                on_release: root.controller.set_browse_type('grid')
+
                             
                         MDRecycleView:
                             id: gallery_rv
+                            data: root.model.last_items
                             viewclass: 'GalleryLabel'
                             size_hint_y: None
                             height: root.ids.gallery_rv_layout.height
                             do_scroll_x: False
                             do_scroll_y: False
-                            opacity: 0
+                            opacity: 1 if root.model.browse_type == 'gallery' else 0
 
                             BoxRecycleLayout:
                                 id: gallery_rv_layout
                                 size_hint_y: None
-                                height: root.ids.gallery_rv.opacity == 1 and self.minimum_height or 0
+                                height: self.minimum_height if root.ids.gallery_rv.opacity == 1 else 0
                                 orientation: 'vertical'
                                 default_size: None, dp(250)
                                 default_size_hint: 1, None
@@ -73,17 +103,18 @@
                     
                         MDRecycleView:
                             id: list_rv
+                            data: root.model.last_items
                             viewclass: 'ListLabel'
                             size_hint_y: None
                             height: root.ids.list_rv_layout.height
                             do_scroll_x: False
                             do_scroll_y: False
-                            opacity: 0
+                            opacity: 1 if root.model.browse_type == 'list' else 0
 
                             BoxRecycleLayout:
                                 id: list_rv_layout
                                 size_hint_y: None
-                                height: root.ids.list_rv.opacity == 1 and self.minimum_height or 0
+                                height: self.minimum_height if root.ids.list_rv.opacity == 1 else 0
                                 orientation: 'vertical'
                                 default_size: None, dp(120)
                                 default_size_hint: 1, None
@@ -91,18 +122,19 @@
                         
                         MDRecycleView:
                             id: grid_rv
+                            data: root.model.last_items
                             viewclass: 'GridLabel'
                             size_hint_y: None
                             height: root.ids.grid_rv_layout.height
                             do_scroll_x: False
                             do_scroll_y: False
-                            opacity: 0
+                            opacity: 1 if root.model.browse_type == 'grid' else 0
 
                             GridRecycleLayout:
                                 id: grid_rv_layout
                                 size_hint_y: None
-                                height: root.ids.grid_rv.opacity == 1 and self.minimum_height or 0
-                                default_size: None, dp(120)
+                                height: self.minimum_height if root.ids.grid_rv.opacity == 1 else 0
+                                default_size: None, '120dp'
                                 default_size_hint: 1, None
                                 spacing: '5dp'
                                 cols: 2
@@ -112,7 +144,6 @@
                 text: 'Избранное'
                 icon: 'star'
                 md_bg_color: app.theme_cls.primary_light
-                on_tab_press: root.set_tab_name('favorite')
 
                 MDScrollView:
                     do_scroll_x: False
@@ -124,61 +155,94 @@
                         padding: '20dp', '10dp', '20dp', '10dp'
                         spacing: '15dp'
 
+                    
                         MDBoxLayout:
-                            id: favorite_header
-                            orientation: 'vertical'
                             adaptive_height: True
+                            
+                            MDLabel:
+                                text: 'Избранное:'
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                font_style: 'Button'
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.accent_color
+
+                            MDIconButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                theme_icon_color: "Custom"
+                                icon: 'square'
+                                icon_size: '16sp'
+                                icon_color: app.theme_cls.accent_color if root.model.browse_type == 'gallery' else app.theme_cls.primary_color
+                                on_release: root.controller.set_browse_type('gallery')
+
+                            MDIconButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                theme_icon_color: "Custom"
+                                icon: 'view-agenda'
+                                icon_size: '16sp'
+                                icon_color: app.theme_cls.accent_color if root.model.browse_type == 'list' else app.theme_cls.primary_color
+                                on_release: root.controller.set_browse_type('list')
+
+                            MDIconButton:
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                theme_icon_color: "Custom"
+                                icon: 'view-grid'
+                                icon_size: '16sp'
+                                icon_color: app.theme_cls.accent_color if root.model.browse_type == 'grid' else app.theme_cls.primary_color
+                                on_release: root.controller.set_browse_type('grid')
 
                         MDRecycleView:
                             id: gallery_rv_fav
+                            data: root.model.fav_items
                             viewclass: 'GalleryLabel'
                             size_hint_y: None
                             height: root.ids.gallery_rv_layout_fav.height
                             do_scroll_x: False
                             do_scroll_y: False
-                            opacity: 0
+                            opacity: 1 if root.model.browse_type == 'gallery' else 0
 
                             BoxRecycleLayout:
                                 id: gallery_rv_layout_fav
                                 size_hint_y: None
-                                height: root.ids.gallery_rv_fav.opacity == 1 and self.minimum_height or 0
+                                height: self.minimum_height if root.ids.gallery_rv_fav.opacity == 1 else 0
                                 orientation: 'vertical'
-                                default_size: None, dp(250)
+                                default_size: None, '250dp'
                                 default_size_hint: 1, None
                                 spacing: '20dp'
                     
                         MDRecycleView:
                             id: list_rv_fav
+                            data: root.model.fav_items
                             viewclass: 'ListLabel'
                             size_hint_y: None
                             height: root.ids.list_rv_layout_fav.height
                             do_scroll_x: False
                             do_scroll_y: False
-                            opacity: 0
+                            opacity: 1 if root.model.browse_type == 'list' else 0
 
                             BoxRecycleLayout:
                                 id: list_rv_layout_fav
                                 size_hint_y: None
-                                height: root.ids.list_rv_fav.opacity == 1 and self.minimum_height or 0
+                                height: self.minimum_height if root.ids.list_rv_fav.opacity == 1 else 0
                                 orientation: 'vertical'
-                                default_size: None, dp(120)
+                                default_size: None, '120dp'
                                 default_size_hint: 1, None
                                 spacing: '20dp'
                         
                         MDRecycleView:
                             id: grid_rv_fav
+                            data: root.model.fav_items
                             viewclass: 'GridLabel'
                             size_hint_y: None
                             height: root.ids.grid_rv_layout_fav.height
                             do_scroll_x: False
                             do_scroll_y: False
-                            opacity: 0
+                            opacity: 1 if root.model.browse_type == 'grid' else 0
 
                             GridRecycleLayout:
                                 id: grid_rv_layout_fav
                                 size_hint_y: None
-                                height: root.ids.grid_rv_fav.opacity == 1 and self.minimum_height or 0
-                                default_size: None, dp(120)
+                                height: self.minimum_height if root.ids.grid_rv_fav.opacity == 1 else 0
+                                default_size: None, '120dp'
                                 default_size_hint: 1, None
                                 spacing: '5dp'
                                 cols: 2
@@ -188,7 +252,6 @@
                 text: 'Сообщения'
                 icon: 'message'
                 md_bg_color: app.theme_cls.primary_light
-                on_tab_press: root.set_tab_name('messages')
 
                 MDScrollView:
                     do_scroll_x: False
@@ -218,7 +281,7 @@
                                 on_release: root.remove_all_messages()
 
                         MDRecycleView:
-                            id: messages_rv
+                            data: root.model.message_items
                             viewclass: 'MessageLabel'
                             size_hint_y: None
                             height: root.ids.messages_rv_layout.height
@@ -230,7 +293,7 @@
                                 size_hint_y: None
                                 height: self.minimum_height
                                 orientation: 'vertical'
-                                default_size: None, dp(150)
+                                default_size: None, '150dp'
                                 default_size_hint: 1, None
                                 spacing: '20dp'
                     

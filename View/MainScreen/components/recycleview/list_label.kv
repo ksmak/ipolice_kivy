@@ -4,7 +4,7 @@
     spacing: dp(10)
 
     FitImage:
-        source: root.image_path
+        source: root.photo
         size_hint: .45, 1
         radius: (12, 0, 0, 12)
     
@@ -12,10 +12,10 @@
 
         MDIconButton:
             id: favorite_button
-            pos_hint: {'top': 1, 'x': .8}
+            pos_hint:{'top': 1.08, 'x': .85}
             theme_icon_color: 'Custom'
             icon_color: app.theme_cls.primary_color
-            icon_size: '16dp'
+            icon_size: '18dp'
             icon: 'star' if root.is_favorite else 'star-outline'
 
         MDLabel:

@@ -17,16 +17,13 @@ class ItemScreenController:
         return self.view
 
     def set_favorite_item(self, id: int) -> None:
-        for item in self.model.items_description:
-            if item['id'] == id:
-                self.model.favorite_items.append(item)
-                break
-    
-    def unset_favorite_item(self, id: int) -> None:
-        for item in self.model.favorite_items:
-            if item['id'] == id:
-                self.model.favorite_items.remove(item)
-                break
+        res = [d for d in self.model.items if d['id'] == id]
+        if res:
+            res[0]['is_favorite'] = not res[0]['is_favorite']
+            if res[0] not in self.model.fav_items and res[0]['is_favorite']:
+                self.model.fav_items.append(res[0])
+            else:
+                self.model.fav_items.remove(res[0])
     
     def set_current_message(self, data: dict, *args) -> None:
         self.model.current_message = data

@@ -5,7 +5,6 @@ class MessageScreenView(BaseScreenView):
     def save_message(self, *args):
         data = self.model.current_message
         data['text'] = self.ids.message_field.text
-        data['date_of_creation'] = datetime.datetime.now().strftime('D.M.Y H:m:s')
         self.controller.save_message(data)
         self.manager_screens.current = self.model.target_screen
     
