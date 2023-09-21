@@ -22,6 +22,7 @@ class MainScreenView(BaseScreenView):
         self.generate_category_cards()
 
     def on_pre_enter(self) -> None:
+        self.app.target_screen = None
         if self.model.browse_type == 'gallery':
             self.ids.gallery_rv.refresh_from_data()
         elif self.model.browse_type == 'list':

@@ -14,7 +14,7 @@ from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
 
 from kivy.loader import Loader
-# from kivy.logger import Logger
+from kivy.core.window import Window
 
 from View.screens import screens, main_model
 
@@ -30,6 +30,8 @@ class ipolice_kivy(MDApp):
         # This is the screen manager that will contain all the screens of your
         # application.
         self.manager_screens = MDScreenManager()
+        self.target_screen = ''
+        Window.bind(on_request_close=self.on_request_close)
 
     def build(self) -> MDScreenManager:
         self.theme_cls.material_style = "M3"
@@ -62,5 +64,11 @@ class ipolice_kivy(MDApp):
             view.name = name_screen
             self.manager_screens.add_widget(view)
 
-
+    def on_request_close(self, *largs, **kwargs) -> bool:
+        if self.target_screen:
+            self.manager_screens.current = self.target_screen
+            return True
+        
+        return False
+    
 ipolice_kivy().run()

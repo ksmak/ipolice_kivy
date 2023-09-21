@@ -14,6 +14,7 @@ class ItemScreenView(BaseScreenView):
     target_screen = StringProperty()
 
     def on_pre_enter(self):
+        self.app.target_screen = self.model.target_screen
         self.ids.title.text = self.model.current_item['title']
         self.ids.text.text = self.model.current_item['text']
         self.ids.date_of_creation.text = 'Добавлен: ' + \

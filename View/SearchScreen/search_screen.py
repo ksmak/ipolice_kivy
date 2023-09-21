@@ -15,8 +15,9 @@ class SearchScreenView(BaseScreenView):
         self.controller.generate_history_items()
         
     def on_pre_enter(self):
-        self.create_history_items()
+        self.app.target_screen = 'main screen'
         self.controller.set_target_screen('search screen')
+        self.create_history_items()
         self.refresh_layouts()
 
     def create_history_items(self):
@@ -47,10 +48,10 @@ class SearchScreenView(BaseScreenView):
         self.controller.search(self.ids.search_field.text.lower())
     
     def refresh_layouts(self):
-        print(f'is_first_open={self.model.is_first_open}')
-        print(f'is_loading={self.model.is_loading}')
-        print(f'history_items={self.model.history_items}')
-        print(f'find_items={self.model.find_items}')
+        # print(f'is_first_open={self.model.is_first_open}')
+        # print(f'is_loading={self.model.is_loading}')
+        # print(f'history_items={self.model.history_items}')
+        # print(f'find_items={self.model.find_items}')
         if not self.model.is_first_open \
                 or not self.model.history_items:
             self.ids.history_layout.opacity = 0
@@ -65,7 +66,7 @@ class SearchScreenView(BaseScreenView):
             self.ids.result_layout.opacity = 1
         else:
             self.ids.result_layout.opacity = 0
-
+    
     def model_is_changed(self) -> None:
         """
         Called whenever any change has occurred in the data model.

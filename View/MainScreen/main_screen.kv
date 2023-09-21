@@ -18,19 +18,17 @@
                 icon: 'home'
                 md_bg_color: app.theme_cls.primary_light
 
-
                 MDScrollView:
                     do_scroll_x: False
                     do_scroll_y: True
 
                     MDBoxLayout:
                         orientation: 'vertical'
-                        adaptive_height: True
                         padding: '20dp', '10dp', '20dp', '10dp'
+                        adaptive_height: True
                         spacing: '15dp'
                     
                         MDLabel:
-                            pos_hint: {'center_x': .5, 'center_y': .5}
                             text: 'Категории'
                             font_style: 'Button'
                             theme_text_color: "Custom"
@@ -40,12 +38,12 @@
                             do_scroll_x: True
                             do_scroll_y: False
                             size_hint_y: None
-                            height: dp(130)
+                            height: '130dp'
 
                             MDBoxLayout:
                                 id: category_list_container
                                 adaptive_size: True
-                                spacing: dp(5)
+                                spacing: '5dp'
                         
                         MDBoxLayout:
                             adaptive_height: True

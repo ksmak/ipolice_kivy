@@ -23,6 +23,7 @@
                     id: message_field
                     hint_text: "Введите новое сообщение"
                     multiline: True
+                    helper_text_color_focus: "red"
                     
         MDBoxLayout:
             size_hint_y: .075
@@ -31,11 +32,11 @@
             spacing: '10dp'
             
             MDRectangleFlatIconButton:
-                icon: "check-bold"
+                icon: "send"
                 icon_color: 'white'
                 size_hint: 1, 1
                 pos_hint: {'center_x': .5, 'center_y': .5}
-                text: "Сохранить"
+                text: "Отправить"
                 theme_text_color: "Custom"
                 text_color: "white"
                 line_color: "white"

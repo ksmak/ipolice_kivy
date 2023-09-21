@@ -26,8 +26,7 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
         self.item_id = data['id']
         self.title = data['title']
         self.text = data['text']
-        # self.date = data['date_of_creation']
-        self.date = str(data['is_favorite'])
+        self.date = data['date_of_creation']
         self.is_favorite = data['is_favorite']
         self.controller = data['controller']
 

@@ -1,10 +1,22 @@
 from View.base_screen import BaseScreenView
-import datetime
+
 
 class MessageScreenView(BaseScreenView):
+    def on_pre_enter(self):
+        self.app.target_screen = self.model.target_screen
+        self.ids.message_field.focus = True
+        self.ids.message_field.helper_text = ''
+
     def save_message(self, *args):
+        msg = self.ids.message_field.text
+        
+        if len(msg) == 0:
+            self.ids.message_field.helper_text = 'Сообщение не должно быть пустым'
+            self.ids.message_field.focus = True
+            return
+        
         data = self.model.current_message
-        data['text'] = self.ids.message_field.text
+        data['text'] = msg
         self.controller.save_message(data)
         self.manager_screens.current = self.model.target_screen
     
