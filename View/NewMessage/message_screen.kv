@@ -26,29 +26,32 @@
                     helper_text_color_focus: "red"
                     
         MDBoxLayout:
-            size_hint_y: .075
-            md_bg_color: app.theme_cls.primary_light
-            padding: '5dp'
+            size_hint_y: .1
+            md_bg_color: app.theme_cls.primary_color
+            padding: '20dp', 0, '20dp', 0
             spacing: '10dp'
             
             MDRectangleFlatIconButton:
                 icon: "send"
                 icon_color: 'white'
-                size_hint: 1, 1
+                size_hint: .6, .6
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 text: "Отправить"
                 theme_text_color: "Custom"
                 text_color: "white"
                 line_color: "white"
                 md_bg_color: app.theme_cls.primary_color
+                font_size: '10sp'
                 on_release: root.save_message()
 
             MDRectangleFlatIconButton:
                 icon: "close"
-                size_hint: 1, 1
+                size_hint: .6, .6
                 pos_hint: {'center_x': .5, 'center_y': .5}
                 text: "Отмена"
                 theme_text_color: "Custom"
                 text_color: app.theme_cls.primary_color
                 line_color: app.theme_cls.primary_color
+                md_bg_color: "white"
+                font_size: '10sp'
                 on_release: root.close_screen()

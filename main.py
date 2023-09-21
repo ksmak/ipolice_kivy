@@ -10,19 +10,35 @@ You can read more about this template at the links below:
 https://github.com/HeaTTheatR/LoginAppMVC
 https://en.wikipedia.org/wiki/Model–view–controller
 """
-from kivymd.app import MDApp
-from kivymd.uix.screenmanager import MDScreenManager
+from functools import partial
 
 from kivy.loader import Loader
 from kivy.core.window import Window
+from kivy.logger import Logger
+from kivy.uix.popup import Popup
+from kivy.uix.button import Button
+
+from kivymd.app import MDApp
+from kivymd.uix.screenmanager import MDScreenManager
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.boxlayout import MDBoxLayout
 
 from View.screens import screens, main_model
 
-
 Loader.num_workers = 4
 
+class ExitPopup(Popup):
+    def __init__(self, **kwargs):
+        super(ExitPopup, self).__init__(**kwargs)
+
+    def confirm(self):
+        app = MDApp.get_running_app()
+        app.close_app()
 
 class ipolice_kivy(MDApp):
+    dialog = None
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # load kv
@@ -31,6 +47,8 @@ class ipolice_kivy(MDApp):
         # application.
         self.manager_screens = MDScreenManager()
         self.target_screen = ''
+        Window.bind(on_hide=self.on_hide)
+        Window.bind(on_keyboard=self.on_keyboard)
         Window.bind(on_request_close=self.on_request_close)
 
     def build(self) -> MDScreenManager:
@@ -63,12 +81,26 @@ class ipolice_kivy(MDApp):
             view.manager_screens = self.manager_screens
             view.name = name_screen
             self.manager_screens.add_widget(view)
-
-    def on_request_close(self, *largs, **kwargs) -> bool:
-        if self.target_screen:
-            self.manager_screens.current = self.target_screen
+    
+    def close_app(self, *largs):
+        super(ipolice_kivy, self).stop(*largs)
+    
+    def on_keyboard(self, window, key, *largs):
+        if key == 27:
+            Logger.info('python. Escape key pressed...')
+            if self.target_screen:
+                self.manager_screens.current = self.target_screen
+                return True
+            
+            popup = ExitPopup(title="Закрыть приложение?", size=(400, 300), size_hint=(None, None))
+            popup.open()
             return True
-        
+            
+    def on_hide(self, *largs):
+        Logger.info('python. Hide window event...')
+
+    def on_request_close(self, *largs, **kwargs) -> bool:       
+        Logger.info('pyhon. Request close event...')
         return False
     
 ipolice_kivy().run()

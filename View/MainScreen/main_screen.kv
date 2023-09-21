@@ -24,7 +24,7 @@
 
                     MDBoxLayout:
                         orientation: 'vertical'
-                        padding: '20dp', '10dp', '20dp', '10dp'
+                        padding: '20dp'
                         adaptive_height: True
                         spacing: '15dp'
                     
@@ -45,18 +45,17 @@
                                 adaptive_size: True
                                 spacing: '5dp'
                         
-                        MDBoxLayout:
-                            adaptive_height: True
-                            
+                        MDRelativeLayout:
+                                                       
                             MDLabel:
                                 text: 'Последние добавления:'
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'left': 0, 'center_y': .5}
                                 font_style: 'Button'
                                 theme_text_color: "Custom"
                                 text_color: app.theme_cls.accent_color
 
                             MDIconButton:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'right': .8, 'center_y': .5}
                                 theme_icon_color: "Custom"
                                 icon: 'square'
                                 icon_size: '16sp'
@@ -64,7 +63,7 @@
                                 on_release: root.controller.set_browse_type('gallery')
 
                             MDIconButton:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'right': .9, 'center_y': .5}
                                 theme_icon_color: "Custom"
                                 icon: 'view-agenda'
                                 icon_size: '16sp'
@@ -72,7 +71,7 @@
                                 on_release: root.controller.set_browse_type('list')
 
                             MDIconButton:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'right': 1, 'center_y': .5}
                                 theme_icon_color: "Custom"
                                 icon: 'view-grid'
                                 icon_size: '16sp'
@@ -95,7 +94,7 @@
                                 size_hint_y: None
                                 height: self.minimum_height if root.ids.gallery_rv.opacity == 1 else 0
                                 orientation: 'vertical'
-                                default_size: None, dp(250)
+                                default_size: None, '250dp'
                                 default_size_hint: 1, None
                                 spacing: '20dp'
                     
@@ -114,7 +113,7 @@
                                 size_hint_y: None
                                 height: self.minimum_height if root.ids.list_rv.opacity == 1 else 0
                                 orientation: 'vertical'
-                                default_size: None, dp(120)
+                                default_size: None, '120dp'
                                 default_size_hint: 1, None
                                 spacing: '20dp'
                         
@@ -134,7 +133,7 @@
                                 height: self.minimum_height if root.ids.grid_rv.opacity == 1 else 0
                                 default_size: None, '120dp'
                                 default_size_hint: 1, None
-                                spacing: '5dp'
+                                spacing: '20dp'
                                 cols: 2
     
             MDBottomNavigationItem:
@@ -150,22 +149,21 @@
                     MDBoxLayout:
                         orientation: 'vertical'
                         adaptive_height: True
-                        padding: '20dp', '10dp', '20dp', '10dp'
+                        padding: '20dp'
                         spacing: '15dp'
 
                     
-                        MDBoxLayout:
-                            adaptive_height: True
-                            
+                        MDRelativeLayout:
                             MDLabel:
                                 text: 'Избранное:'
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'left': 0, 'center_y': .5}
                                 font_style: 'Button'
                                 theme_text_color: "Custom"
                                 text_color: app.theme_cls.accent_color
+                                adaptive_size: True
 
                             MDIconButton:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'right': .8, 'center_y': .5}
                                 theme_icon_color: "Custom"
                                 icon: 'square'
                                 icon_size: '16sp'
@@ -173,7 +171,7 @@
                                 on_release: root.controller.set_browse_type('gallery')
 
                             MDIconButton:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'right': .9, 'center_y': .5}
                                 theme_icon_color: "Custom"
                                 icon: 'view-agenda'
                                 icon_size: '16sp'
@@ -181,7 +179,7 @@
                                 on_release: root.controller.set_browse_type('list')
 
                             MDIconButton:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
+                                pos_hint: {'right': 1, 'center_y': .5}
                                 theme_icon_color: "Custom"
                                 icon: 'view-grid'
                                 icon_size: '16sp'
@@ -246,11 +244,12 @@
                                 cols: 2
 
             MDBottomNavigationItem:
+                id: messages
                 name: 'messages'
                 text: 'Сообщения'
                 icon: 'message'
                 md_bg_color: app.theme_cls.primary_light
-
+                
                 MDScrollView:
                     do_scroll_x: False
                     do_scroll_y: True
@@ -258,7 +257,7 @@
                     MDBoxLayout:
                         orientation: 'vertical'
                         adaptive_height: True
-                        padding: '20dp', '10dp', '20dp', '10dp'
+                        padding: '20dp'
                         spacing: '15dp'
 
                         MDBoxLayout:
@@ -303,11 +302,15 @@
                 icon: 'apps'
                 md_bg_color: app.theme_cls.primary_light
 
+                
+
                 MDLabel:
                     text: 'Контакты'
                     halign: 'center'
                     theme_text_color: "Custom"
                     text_color: app.theme_cls.accent_color
-       
-        
-       
+    MDSpinner:
+        size_hint: None, None
+        size: '46dp', '46dp'
+        pos_hint: {'center_x': .5, 'center_y': .5}
+        active: root.model.is_loading

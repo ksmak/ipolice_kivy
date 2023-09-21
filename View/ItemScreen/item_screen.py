@@ -1,4 +1,3 @@
-from kivy.metrics import dp
 from kivy.properties import BooleanProperty, StringProperty
 
 from kivymd.uix.relativelayout import MDRelativeLayout

@@ -1,0 +1,25 @@
+<ExitPopup>
+    AnchorLayout:
+        anchor_x: 'center'
+        anchor_y: 'center'
+
+        MDBoxLayout:
+            adaptive_size: True
+            halign: 'center'
+            spacing: '15dp'
+
+            MDRectangleFlatButton:
+                text: 'Отмена'
+                theme_text_color: "Custom"
+                text_color: "white"
+                line_color: "white"
+                font_size: '10sp'
+                on_release: root.dismiss()
+
+            MDRectangleFlatButton:
+                text: 'Закрыть'
+                theme_text_color: "Custom"
+                text_color: "white"
+                line_color: "white"
+                font_size: '10sp'
+                on_release: root.confirm()

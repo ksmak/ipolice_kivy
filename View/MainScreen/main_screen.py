@@ -1,5 +1,8 @@
 from functools import partial
 
+from kivymd.uix.button import MDFlatButton
+from kivymd.uix.dialog import MDDialog
+
 from View.base_screen import BaseScreenView
 from .components.card.category_card import CategoryCard
 from .components.recycleview.gallery_label import GalleryLabel  # noqa
@@ -11,6 +14,7 @@ from .components.recycleview.message_label import MessageLabel  # noqa
 
 
 class MainScreenView(BaseScreenView):
+    dialog = None
 
     def __init__(self, **kw):
         super().__init__(**kw)
@@ -30,6 +34,7 @@ class MainScreenView(BaseScreenView):
         elif self.model.browse_type == 'grid':
             self.ids.grid_rv.refresh_from_data()
         self.controller.set_target_screen('main screen')
+
 
     def generate_category_cards(self) -> None:
         self.ids.category_list_container.clear_widgets()

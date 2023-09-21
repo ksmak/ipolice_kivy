@@ -63,19 +63,19 @@
                 id: result_layout
                 orientation: 'vertical'
                 adaptive_height: True
+                spacing: '15dp'
                 
-                MDBoxLayout:
-                    adaptive_height: True
-                    
+                MDRelativeLayout:
+                                        
                     MDLabel:
                         text: 'Найдено: ' + str(len(root.model.find_items))
-                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        pos_hint: {'left': 0, 'center_y': .5}
                         font_style: 'Button'
                         theme_text_color: "Custom"
                         text_color: app.theme_cls.accent_color
 
                     MDIconButton:
-                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        pos_hint: {'right': .8, 'center_y': .5}
                         theme_icon_color: "Custom"
                         icon: 'square'
                         icon_size: '16sp'
@@ -83,7 +83,7 @@
                         on_release: root.controller.set_browse_type('gallery')
 
                     MDIconButton:
-                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        pos_hint: {'right': .9, 'center_y': .5}
                         theme_icon_color: "Custom"
                         icon: 'view-agenda'
                         icon_size: '16sp'
@@ -91,7 +91,7 @@
                         on_release: root.controller.set_browse_type('list')
 
                     MDIconButton:
-                        pos_hint: {'center_x': .5, 'center_y': .5}
+                        pos_hint: {'right': 1, 'center_y': .5}
                         theme_icon_color: "Custom"
                         icon: 'view-grid'
                         icon_size: '16sp'
@@ -113,7 +113,7 @@
                         size_hint_y: None
                         height: self.minimum_height if root.ids.gallery_rv.opacity == 1 else 0
                         orientation: 'vertical'
-                        default_size: None, dp(250)
+                        default_size: None, '250dp'
                         default_size_hint: 1, None
                         spacing: '20dp'
             
@@ -132,7 +132,7 @@
                         size_hint_y: None
                         height: self.minimum_height if root.ids.list_rv.opacity == 1 else 0
                         orientation: 'vertical'
-                        default_size: None, dp(120)
+                        default_size: None, '120dp'
                         default_size_hint: 1, None
                         spacing: '20dp'
                 
@@ -150,7 +150,7 @@
                         id: grid_rv_layout
                         size_hint_y: None
                         height: self.minimum_height if root.ids.grid_rv.opacity == 1 else 0
-                        default_size: None, dp(120)
+                        default_size: None, '120dp'
                         default_size_hint: 1, None
                         spacing: '5dp'
                         cols: 2
