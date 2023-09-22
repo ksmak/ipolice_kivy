@@ -40,6 +40,7 @@
                 id: history_layout
                 size_hint_y: None
                 height: '40dp' if self.opacity == 1 else 0
+                padding: '20dp'
             
                 MDLabel:
                     pos_hint: {'center_x': .5, 'center_y': .5}
@@ -63,6 +64,7 @@
                 id: result_layout
                 orientation: 'vertical'
                 adaptive_height: True
+                padding: '20dp'
                 spacing: '15dp'
                 
                 MDRelativeLayout:

@@ -1,15 +1,13 @@
 <GridLabel>:
     orientation: 'vertical'
     md_bg_color: '#ffffff'
-    # spacing: '10dp'
-    radius: 12
 
     MDRelativeLayout:
-        FitImage:
+        AsyncImage:
             size_hint: 1, .7
             pos_hint: {'top': 1}
             source: root.photo
-            radius: (12, 12, 0, 0)
+            fit_mode: 'fill'
         
         MDIconButton:
             id: favorite_button
@@ -19,22 +17,28 @@
             icon_size: '18dp'
             icon: 'star' if root.is_favorite else 'star-outline'
     
-        MDLabel:
-            text: root.title
-            pos_hint: {'top': .29, 'x': .05}
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
-            font_style: 'Caption'
-            bold: True
-            adaptive_height: True
-            shorten: True
-        
-        MDLabel:
-            text: root.date
-            pos_hint: {'top': .1, 'x': .05}
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
-            font_style: 'Caption'
-            font_size: '8sp'
-            adaptive_height: True
-            shorten: True
+        MDBoxLayout:
+            orientation: 'vertical'
+            pos_hint: {'top': .3}
+            adaptive_size: True
+            padding: '4dp'
+
+            MDLabel:
+                text: root.title
+                # pos_hint: {'top': .3, 'x': .05}
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                font_style: 'Caption'
+                bold: True
+                adaptive_size: True
+                shorten: True
+            
+            MDLabel:
+                text: root.place_info
+                # pos_hint: {'top': .16, 'x': .05}
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                font_style: 'Caption'
+                font_size: '9sp'
+                adaptive_size: True
+                shorten: True

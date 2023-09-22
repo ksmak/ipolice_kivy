@@ -23,6 +23,7 @@ class MainModel(BaseScreenModel, EventDispatcher):
     DATA_DIR = BASE_DIR.joinpath("assets", "data")
     ITEM_IMAGE_COUNT = 5
     LAST_ITEMS_COUNT = 10
+    HOST_API = 'https://ipolice-production.up.railway.app/api/'
     # properties
     category_items = ListProperty()
     items = ListProperty()

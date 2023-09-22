@@ -13,7 +13,8 @@
         "imei": "123",
         "date_of_creation": "01.01.2023 13:00:00",
         "date_of_change": "02.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 2,
@@ -29,7 +30,8 @@
         "imei": "123",
         "date_of_creation": "01.01.2023 13:00:00",
         "date_of_change": "02.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 3,
@@ -45,7 +47,8 @@
         "imei": "123",
         "date_of_creation": "01.01.2023 13:00:00",
         "date_of_change": "02.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 4,
@@ -61,7 +64,8 @@
         "imei": "123",
         "date_of_creation": "02.01.2023 13:00:00",
         "date_of_change": "03.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 5,
@@ -77,7 +81,8 @@
         "imei": "123",
         "date_of_creation": "02.01.2023 13:00:00",
         "date_of_change": "03.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 6,
@@ -93,7 +98,8 @@
         "imei": "123",
         "date_of_creation": "02.01.2023 13:00:00",
         "date_of_change": "03.01.2023 13:01:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 7,
@@ -109,7 +115,8 @@
         "imei": "123",
         "date_of_creation": "01.01.2023 13:00:00",
         "date_of_change": "02.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 8,
@@ -125,7 +132,8 @@
         "imei": "1235563",
         "date_of_creation": "05.01.2023 13:00:00",
         "date_of_change": "05.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 9,
@@ -141,7 +149,8 @@
         "imei": "123",
         "date_of_creation": "01.01.2023 13:00:00",
         "date_of_change": "02.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     },
     {
         "id": 10,
@@ -157,6 +166,7 @@
         "imei": "123",
         "date_of_creation": "10.01.2023 13:00:00",
         "date_of_change": "12.01.2023 13:00:00",
-        "author": 1
+        "author": 1,
+        "phone": 77003475747
     }
 ]

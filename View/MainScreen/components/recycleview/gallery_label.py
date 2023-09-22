@@ -1,20 +1,25 @@
+from datetime import datetime
 from kivy.properties import (
     NumericProperty,
     StringProperty,
     BooleanProperty,
     ObjectProperty,
+    DictProperty,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.fitimage import FitImage
+# from kivymd.uix.fitimage import FitImage
+from kivy.uix.image import AsyncImage
+
+from Utility.helper import format_date
 
 
 class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
     index = 0
     item_id = StringProperty()
     title = StringProperty()
-    text = StringProperty()
+    place_info = StringProperty()
     date = StringProperty()
     is_favorite = BooleanProperty()
     image_count = NumericProperty()
@@ -25,18 +30,21 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
         self.index = index
         self.item_id = data['id']
         self.title = data['title']
-        self.text = data['text']
-        self.date = data['date_of_creation']
+        self.place_info = ", ".join([data['region']['title'], data['district']['title'], data['punkt']])
         self.is_favorite = data['is_favorite']
         self.controller = data['controller']
+
+        dt = datetime.strptime(data['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        self.date = format_date(dt)
+
 
         self.ids.carousel.clear_widgets()
         for i in range(data['image_count']):
             if data['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
-                image = FitImage(
+                image = AsyncImage(
                     source=data['photo' + str(i + 1)],
-                    radius=(12, 12, 0, 0)
+                    fit_mode='fill'
                 )
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)

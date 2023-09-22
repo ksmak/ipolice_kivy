@@ -143,7 +143,8 @@
                 text_color: "white"
                 line_color: "white"
                 md_bg_color: app.theme_cls.primary_color
-                font_size: '10sp'
+                font_style: 'Button'
+                on_release: root.call_phone()
 
             MDRectangleFlatIconButton:
                 icon: "message-processing-outline"
@@ -154,7 +155,7 @@
                 text_color: app.theme_cls.primary_color
                 line_color: app.theme_cls.primary_color
                 md_bg_color: "white"
-                font_size: '10sp'
+                font_style: 'Button'
                 on_release: root.create_message()
     
 

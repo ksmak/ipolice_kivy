@@ -4,6 +4,8 @@ from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.fitimage import FitImage
 from kivymd.uix.chip import MDChip, MDChipText
 
+from plyer import call
+
 from View.base_screen import BaseScreenView
 from Utility.helper import get_by_id
 
@@ -34,16 +36,22 @@ class ItemScreenView(BaseScreenView):
         self.ids.details_container.clear_widgets()
         category = get_by_id(self.model.current_item['category'], self.model.category_items)
         for field in category['fields']:
-            chidp_text = MDChipText(
-                text=category['fields_desc'][field] + ': ' + self.model.current_item[field],
-                theme_text_color='Custom',
-                text_color='#ffffff',
-                font_style='Caption')
-            chip = MDChip(
-                type="assist",
-                md_bg_color='#10739E')
-            chip.add_widget(chidp_text)
-            self.ids.details_container.add_widget(chip)
+            txt: str
+            if category['fields'][field]['type'] == 'text':
+                txt = str(self.model.current_item[field])
+            else:
+                txt = self.model.current_item[field]['title']
+            if self.model.current_item[field]:
+                chidp_text = MDChipText(
+                    text=category['fields'][field]['title'] + ': ' + txt,
+                    theme_text_color='Custom',
+                    text_color='#ffffff',
+                    font_style='Caption')
+                chip = MDChip(
+                    type="assist",
+                    md_bg_color='#10739E')
+                chip.add_widget(chidp_text)
+                self.ids.details_container.add_widget(chip)
         
         self.is_favorite = any(self.model.current_item['id'] == d['id'] for d in self.model.fav_items)
         self.ids.favorite_button.bind(on_release=self.on_click_favorite_button)
@@ -67,6 +75,9 @@ class ItemScreenView(BaseScreenView):
         data['controller'] = self.controller
         self.controller.set_current_message(data)
         self.manager_screens.current = 'message screen'
+    
+    def call_phone(self, *args):
+        call.makecall(tel=self.model.current_item['phone'])
 
     def model_is_changed(self) -> None:
         """

@@ -1,3 +1,4 @@
+from datetime import datetime
 from kivy.properties import (
     StringProperty,
     BooleanProperty,
@@ -6,6 +7,8 @@ from kivy.properties import (
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
+from Utility.helper import format_date
+
 
 class ListLabel(RecycleDataViewBehavior, MDBoxLayout):
     index = 0
@@ -13,7 +16,7 @@ class ListLabel(RecycleDataViewBehavior, MDBoxLayout):
     photo = StringProperty()
     title = StringProperty()
     text = StringProperty()
-    date = StringProperty()
+    place_info = StringProperty()
     is_favorite = BooleanProperty()
     controller = ObjectProperty()
     sliding = False
@@ -24,9 +27,13 @@ class ListLabel(RecycleDataViewBehavior, MDBoxLayout):
         self.photo = data['photo1']
         self.title = data['title']
         self.text = data['text']
-        self.date = data['date_of_creation']
+
+        dt = datetime.strptime(data['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        self.place_info = ", ".join([data['region']['title'], data['district']['title'], data['punkt'], format_date(dt)])
+
         self.is_favorite = data['is_favorite']
         self.controller = data['controller']
+
 
         self.ids.favorite_button.bind(on_release=self.on_click_favorite_button)
 

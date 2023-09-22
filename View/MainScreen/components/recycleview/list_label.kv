@@ -1,48 +1,50 @@
 <ListLabel>
     md_bg_color: '#ffffff'
-    radius: 12
-    # spacing: dp(10)
 
-    FitImage:
+    AsyncImage:
         source: root.photo
         size_hint: .45, 1
-        radius: (12, 0, 0, 12)
+        fit_mode: 'fill'
     
-    MDRelativeLayout:
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: '5dp'
 
-        MDIconButton:
-            id: favorite_button
-            pos_hint:{'top': 1.08, 'x': .85}
-            theme_icon_color: 'Custom'
-            icon_color: app.theme_cls.primary_color
-            icon_size: '18dp'
-            icon: 'star' if root.is_favorite else 'star-outline'
+        MDRelativeLayout:
 
-        MDLabel:
-            pos_hint: {'top': .95}
-            text: root.title
-            font_style: 'Caption'
-            bold: True
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
-            adaptive_height: True
-            shorten: True
+            MDIconButton:
+                id: favorite_button
+                pos_hint:{'top': 1.08, 'x': .85}
+                theme_icon_color: 'Custom'
+                icon_color: app.theme_cls.primary_color
+                icon_size: '18dp'
+                icon: 'star' if root.is_favorite else 'star-outline'
 
-        MDLabel:
-            pos_hint: {'top': .8}
-            text: root.text
-            font_style: 'Caption'
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
-            adaptive_height: True
-            shorten: True
-        
-        MDLabel:
-            pos_hint: {'top': .16}
-            text: root.date
-            font_style: 'Caption'
-            font_size: '10sp'
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
-            adaptive_height: True
-            shorten: True
+            MDLabel:
+                pos_hint: {'top': 1}
+                text: root.title
+                font_style: 'Caption'
+                font_size: '13sp'
+                bold: True
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                adaptive_height: True
+                shorten: True
+
+            MDLabel:
+                pos_hint: {'top': .85}
+                text: root.text
+                font_style: 'Caption'
+                font_size: '10sp'
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                adaptive_height: True
+            
+            MDLabel:
+                pos_hint: {'top': .2}
+                text: root.place_info
+                font_style: 'Caption'
+                font_size: '10sp'
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                adaptive_height: True

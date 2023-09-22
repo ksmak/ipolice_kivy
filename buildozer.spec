@@ -1,10 +1,10 @@
 [app]
 
 # (str) Title of your application
-title = iPolice.kz
+title = e-krim-v
 
-# (str) Package name
-package.name = ipolice
+# (str) Package name 
+package.name = ekrimv
 
 # (str) Package domain (needed for android/ios packaging)
 package.domain = kz.kdp
@@ -37,7 +37,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.2.1,asynckivy,asyncgui,exceptiongroup,https://github.com/kivymd/KivyMD/archive/master.zip
+requirements = python3,kivy==2.2.1,asynckivy,asyncgui,exceptiongroup,plyer,https://github.com/kivymd/KivyMD/archive/master.zip
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes

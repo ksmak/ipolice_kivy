@@ -1,6 +1,8 @@
 import json
-
 import asynckivy as ak
+
+from kivy.network.urlrequest import UrlRequest
+from kivy.clock import Clock
 
 from View.MainScreen.main_screen import MainScreenView
 from Utility.helper import get_by_id
@@ -25,34 +27,30 @@ class MainScreenController:
         self.model.target_screen = target_screen
 
     def generate_category_items(self, *args) -> None:
-        category_items = []
-        path_to_category_items = self.model.DATA_DIR.joinpath(
-            self.model.DATA_DIR, "category_items.json"
-        )
-        if path_to_category_items.exists():
-            with open(path_to_category_items) as json_file:
-                category_items = json.loads(json_file.read())
-        self.model.category_items = category_items
+        Clock.start_clock()
+        req = UrlRequest(self.model.HOST_API + 'categories/')
+        while not req.is_finished:  
+            Clock.tick()            
+        Clock.stop_clock()   
+        self.model.category_items = req.result
 
     def generate_items(self, *args) -> None:
-        items = []
-        path_to_items = self.model.DATA_DIR.joinpath(
-            self.model.DATA_DIR, "items.json"
-        )
-        if path_to_items.exists():
-            with open(path_to_items) as json_file:
-                items = json.loads(json_file.read())
+        Clock.start_clock()
+        req = UrlRequest(self.model.HOST_API + 'items/')
+        while not req.is_finished:  
+            Clock.tick()            
+        Clock.stop_clock()   
+        items = req.result
+        # append additional fields
         for item in items:
             item['id'] = str(item['id'])
             item['image_count'] = self.model.ITEM_IMAGE_COUNT
             item['is_favorite'] = False
             item['controller'] = self
             s = [item['title'], item['text']]
-            category = get_by_id(item['category'], self.model.category_items)
-            for field in category['fields']:
-                s.append(item[field])
             item['fulltext'] = ('#').join(s).lower()
-        self.model.items = items
+        
+        self.model.items = items      
 
     def generate_fav_items(self, *args) -> None:
         f_items = []

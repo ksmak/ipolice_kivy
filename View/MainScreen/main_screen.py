@@ -40,13 +40,12 @@ class MainScreenView(BaseScreenView):
         self.ids.category_list_container.clear_widgets()
         for category in self.model.category_items:
             card = CategoryCard(
-                category_icon=str(self.model.BASE_DIR) +
-                '/' + category['icon'],
-                category_name=category['name']
+                category_icon=category['photo'],
+                category_name=category['title']
             )
             callback_function = partial(
                 self.open_category_items, category['id'])
-            card.ids.card_button.bind(on_release=callback_function)
+            card.ids.card_button.bind(on_touch_down=callback_function)
             self.ids.category_list_container.add_widget(card)
 
     def open_category_items(self, category: int, *args) -> None:

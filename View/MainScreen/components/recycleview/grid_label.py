@@ -1,3 +1,4 @@
+from datetime import datetime
 from kivy.properties import (
     StringProperty,
     BooleanProperty,
@@ -6,6 +7,7 @@ from kivy.properties import (
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
+from Utility.helper import format_date
 
 class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
     index = 0
@@ -13,7 +15,7 @@ class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
     photo = StringProperty()
     title = StringProperty()
     text = StringProperty()
-    date = StringProperty()
+    place_info = StringProperty()
     is_favorite = BooleanProperty()
     controller = ObjectProperty()
     sliding = False
@@ -24,7 +26,8 @@ class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
         self.photo = data['photo1']
         self.title = data['title']
         self.text = data['text']
-        self.date = data['date_of_creation']
+        dt = datetime.strptime(data['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        self.place_info = ", ".join([data['punkt'], format_date(dt)])
         self.is_favorite = data['is_favorite']
         self.controller = data['controller']
 
