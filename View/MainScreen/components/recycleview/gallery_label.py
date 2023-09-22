@@ -28,23 +28,25 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
         self.index = index
         self.item_id = data['id']
         self.title = data['title']
-        self.place_info = ", ".join([data['region']['title'], data['district']['title'], data['punkt']])
+        self.place_info = ", ".join(
+            [data['region']['title'], data['district']['title'], data['punkt']])
         self.is_favorite = data['is_favorite']
         self.controller = data['controller']
 
-        dt = datetime.strptime(data['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        dt = datetime.strptime(
+            data['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
         self.date = format_date(dt)
-
 
         self.ids.carousel.clear_widgets()
         for i in range(data['image_count']):
             if data['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
                 image = AsyncImage(
-                    source=data['photo' + str(i + 1)],
-                    fit_mode='fill'
+                    source=data['photo' + str(i + 1)]
+
                 )
                 lt.add_widget(image)
+                image.fit_mode = 'fill'
                 self.ids.carousel.add_widget(lt)
 
         self.ids.count_info.text = '1/' + str(len(self.ids.carousel.slides))

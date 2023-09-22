@@ -2,17 +2,13 @@ from datetime import datetime
 from plyer import call
 
 from kivy.properties import BooleanProperty, StringProperty
-from kivy.graphics import Color, Rectangle
-from kivy.utils import get_color_from_hex
 
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.fitimage import FitImage
 from kivymd.uix.label import MDLabel
-from kivymd.uix.boxlayout import MDBoxLayout
-
 
 from View.base_screen import BaseScreenView
-from Utility.helper import get_by_id, format_date
+from Utility.helper import get_by_id, format_date, format_date_without_time
 
 
 class ItemScreenView(BaseScreenView):
@@ -22,19 +18,29 @@ class ItemScreenView(BaseScreenView):
     def on_pre_enter(self):
         self.app.target_screen = self.model.target_screen
         self.ids.title.text = self.model.current_item['title']
+
+        dt = datetime.strptime(
+            self.model.current_item['date_of_action'], '%Y-%m-%d')
+        self.ids.place_info.text = ", ".join([self.model.current_item['region']['title'],
+                                              self.model.current_item['district']['title'],
+                                              self.model.current_item['punkt'],
+                                              format_date_without_time(dt)])
         self.ids.text.text = self.model.current_item['text']
-                   
+
         self.ids.carousel.clear_widgets()
         for i in range(self.model.ITEM_IMAGE_COUNT):
             if self.model.current_item['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
-                image = FitImage(source=self.model.current_item['photo' + str(i + 1)])
+                image = FitImage(
+                    source=self.model.current_item['photo' + str(i + 1)])
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)
-            
-        self.ids.counter.text = str(self.ids.carousel.index + 1) + '/' + str(len(self.ids.carousel.slides))
-        category = get_by_id(self.model.current_item['category'], self.model.category_items)
-        
+
+        self.ids.counter.text = str(
+            self.ids.carousel.index + 1) + '/' + str(len(self.ids.carousel.slides))
+        category = get_by_id(
+            self.model.current_item['category'], self.model.category_items)
+
         self.ids.details_container.clear_widgets()
         for field in category['fields']:
             if self.model.current_item[field]:
@@ -46,22 +52,29 @@ class ItemScreenView(BaseScreenView):
                 label = MDLabel(
                     text=category['fields'][field]['title'] + ': ' + txt,
                     font_style='Caption',
+                    text_color='white',
                     theme_text_color='Custom',
-                    text_color=self.app.theme_cls.primary_color,
-                    adaptive_height=True
+                    padding='2dp',
+                    adaptive_size=True
+
                 )
+                label.md_bg_color = (
+                    40 / 255, 24 / 255, 177 / 255)
 
                 self.ids.details_container.add_widget(label)
 
-        self.is_favorite = any(self.model.current_item['id'] == d['id'] for d in self.model.fav_items)
+        self.is_favorite = any(
+            self.model.current_item['id'] == d['id'] for d in self.model.fav_items)
         self.ids.favorite_button.bind(on_release=self.on_click_favorite_button)
 
-        dt = datetime.strptime(self.model.current_item['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
+        dt = datetime.strptime(
+            self.model.current_item['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
         self.ids.date_of_creation.text = 'Добавлен: ' + format_date(dt)
-        
-        dt = datetime.strptime(self.model.current_item['date_of_change'], '%Y-%m-%dT%H:%M:%S.%fZ')
+
+        dt = datetime.strptime(
+            self.model.current_item['date_of_change'], '%Y-%m-%dT%H:%M:%S.%fZ')
         self.ids.date_of_change.text = 'Изменен: ' + format_date(dt)
-    
+
     def on_click_favorite_button(self, *args):
         self.controller.set_favorite_item(self.model.current_item['id'])
         self.is_favorite = not self.is_favorite
@@ -82,7 +95,7 @@ class ItemScreenView(BaseScreenView):
         # self.controller.set_current_message(data)
         # self.manager_screens.current = 'message screen'
         pass
-    
+
     def call_phone(self, *args):
         # call.makecall(tel=self.model.current_item['phone'])
         pass

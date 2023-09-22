@@ -1,5 +1,7 @@
 from functools import partial
 
+from kivy.animation import Animation
+
 from View.base_screen import BaseScreenView
 from .components.list.history_item import HistoryItem
 from View.MainScreen.components.recycleview.gallery_label import GalleryLabel  # noqa
@@ -13,7 +15,7 @@ class SearchScreenView(BaseScreenView):
     def __init__(self, **kw):
         super().__init__(**kw)
         self.controller.generate_history_items()
-        
+
     def on_pre_enter(self):
         self.app.target_screen = 'main screen'
         self.controller.set_target_screen('search screen')
@@ -26,6 +28,7 @@ class SearchScreenView(BaseScreenView):
             item = HistoryItem(
                 title=history_item['title']
             )
+            item.opacity = 0
             callback_function = partial(
                 self.history_search, history_item['title'])
             item.bind(on_press=callback_function)
@@ -33,6 +36,7 @@ class SearchScreenView(BaseScreenView):
                 self.remove_history_item, history_item)
             item.ids.history_icon.bind(on_press=callback_function)
             self.ids.history_container.add_widget(item)
+            Animation(opacity=1, duration=.25).start(item)
 
     def remove_history_item(self, item: dict, *args) -> None:
         self.controller.remove_history_item(item)
@@ -46,7 +50,7 @@ class SearchScreenView(BaseScreenView):
 
     def search(self):
         self.controller.search(self.ids.search_field.text.lower())
-    
+
     def refresh_layouts(self):
         # print(f'is_first_open={self.model.is_first_open}')
         # print(f'is_loading={self.model.is_loading}')
@@ -66,7 +70,7 @@ class SearchScreenView(BaseScreenView):
             self.ids.result_layout.opacity = 1
         else:
             self.ids.result_layout.opacity = 0
-    
+
     def model_is_changed(self) -> None:
         """
         Called whenever any change has occurred in the data model.
