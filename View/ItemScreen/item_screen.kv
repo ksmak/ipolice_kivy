@@ -51,7 +51,7 @@
                 MDBoxLayout:
                     orientation: 'vertical'
                     adaptive_height: True
-                    padding: '20dp'
+                    padding: ('20dp', '5dp', '20dp', '5dp')
                     spacing: '15dp'
 
                     MDLabel:
@@ -91,7 +91,6 @@
 
                         MDLabel:
                             text: 'Детали:'
-                            pos_hint: {"center_x": .5, "center_y": .5}
                             font_style: 'Button'
                             theme_text_color: 'Custom'
                             text_color: app.theme_cls.accent_color
@@ -100,9 +99,11 @@
                         
                         MDBoxLayout:
                             id: details_container
-                            adaptive_size: True
-                            spacing: '10dp'
-                            padding: '5dp', 0, 0, 0
+                            orientation: 'vertical'
+                            adaptive_height: True
+                            padding: '5dp'
+                            spacing: '5dp'
+
 
                     MDBoxLayout:
                         orientation: 'vertical'
@@ -112,7 +113,7 @@
                             id: date_of_creation
                             pos_hint: {"center_x": .5, "center_y": .5}
                             font_style: 'Caption'
-                            font_size: '10sp'
+                            font_size: '11sp'
                             theme_text_color: 'Custom'
                             text_color: app.theme_cls.primary_color
                             adaptive_height: True
@@ -121,41 +122,40 @@
                             id: date_of_change
                             pos_hint: {"center_x": .5, "center_y": .5}
                             font_style: 'Caption'
-                            font_size: '10sp'
+                            font_size: '11sp'
                             theme_text_color: 'Custom'
                             text_color: app.theme_cls.primary_color
                             adaptive_height: True
     
 
-        MDBoxLayout:
-            size_hint_y: .1
+        MDRelativeLayout:
+            size_hint_y: None
+            height: '40dp'
             md_bg_color: app.theme_cls.primary_color
-            padding: '20dp', 0, '20dp', 0
-            spacing: '10dp'
             
+
             MDRectangleFlatIconButton:
+                pos_hint: {'x': .1, 'center_y': .5}
+                size_hint: None, .9
+                width: '135dp'
                 icon: "phone"
-                icon_color: 'white'
-                size_hint: .6, .6
-                pos_hint: {'center_x': .5, 'center_y': .5}
                 text: "Позвонить"
                 theme_text_color: "Custom"
-                text_color: "white"
-                line_color: "white"
-                md_bg_color: app.theme_cls.primary_color
-                font_style: 'Button'
+                text_color: app.theme_cls.primary_color
+                line_color: app.theme_cls.primary_color
+                md_bg_color: "white"
                 on_release: root.call_phone()
 
             MDRectangleFlatIconButton:
+                pos_hint: {'right': .9, 'center_y': .5}
+                size_hint: None, .9
+                width: '135dp'
                 icon: "message-processing-outline"
-                size_hint: .6, .6
-                pos_hint: {'center_x': .5, 'center_y': .5}
                 text: "Написать"
                 theme_text_color: "Custom"
                 text_color: app.theme_cls.primary_color
                 line_color: app.theme_cls.primary_color
                 md_bg_color: "white"
-                font_style: 'Button'
                 on_release: root.create_message()
     
 

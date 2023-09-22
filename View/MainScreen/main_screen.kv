@@ -242,59 +242,6 @@
                                 default_size_hint: 1, None
                                 spacing: '5dp'
                                 cols: 2
-
-            MDBottomNavigationItem:
-                id: messages
-                name: 'messages'
-                text: 'Сообщения'
-                icon: 'message'
-                md_bg_color: app.theme_cls.primary_light
-                
-                MDScrollView:
-                    do_scroll_x: False
-                    do_scroll_y: True
-
-                    MDBoxLayout:
-                        orientation: 'vertical'
-                        adaptive_height: True
-                        padding: '20dp'
-                        spacing: '15dp'
-
-                        MDBoxLayout:
-                            id: history_layout
-                                                    
-                            MDLabel:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
-                                text: 'Сообщения'
-                                font_style: 'Button'
-                                theme_text_color: 'Custom'
-                                text_color: app.theme_cls.accent_color
-                            
-                            MDFlatButton:
-                                pos_hint: {'center_x': .5, 'center_y': .5}
-                                text: "Очистить все"
-                                theme_text_color: "Custom"
-                                text_color: app.theme_cls.accent_color
-                                on_release: root.remove_all_messages()
-
-                        MDRecycleView:
-                            data: root.model.message_items
-                            viewclass: 'MessageLabel'
-                            size_hint_y: None
-                            height: root.ids.messages_rv_layout.height
-                            do_scroll_x: False
-                            do_scroll_y: False
-
-                            BoxRecycleLayout:
-                                id: messages_rv_layout
-                                size_hint_y: None
-                                height: self.minimum_height
-                                orientation: 'vertical'
-                                default_size: None, '150dp'
-                                default_size_hint: 1, None
-                                spacing: '20dp'
-                    
-                
         
             MDBottomNavigationItem:
                 name: 'contacts'

@@ -4,12 +4,10 @@ from kivy.properties import (
     StringProperty,
     BooleanProperty,
     ObjectProperty,
-    DictProperty,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivymd.uix.relativelayout import MDRelativeLayout
-# from kivymd.uix.fitimage import FitImage
 from kivy.uix.image import AsyncImage
 
 from Utility.helper import format_date
