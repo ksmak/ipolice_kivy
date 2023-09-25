@@ -1,25 +1,36 @@
 <ExitPopup>
-    AnchorLayout:
-        anchor_x: 'center'
-        anchor_y: 'center'
+    background: ''
+    anchor_x: 'center'
+    anchor_y: 'top'
 
-        MDBoxLayout:
-            adaptive_size: True
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: 'white'
+
+        MDLabel:
+            valign: 'top'
             halign: 'center'
-            spacing: '15dp'
+            text: 'Закрыть приложение?'
+            font_style: 'H6'
+           
+        
+        MDBoxLayout:
+            pos_hint: {'right': 1, 'top': .1}
+            spacing: '10dp'
+            adaptive_width: True
 
             MDRectangleFlatButton:
                 text: 'Отмена'
                 theme_text_color: "Custom"
-                text_color: "white"
+                text_color: app.theme_cls.primary_color
                 line_color: "white"
-                font_size: '10sp'
-                on_release: root.dismiss()
+                font_style: 'Button'
+                on_release: on_release: root.dismiss()
 
             MDRectangleFlatButton:
                 text: 'Закрыть'
                 theme_text_color: "Custom"
-                text_color: "white"
+                text_color: app.theme_cls.primary_color
                 line_color: "white"
-                font_size: '10sp'
+                font_style: 'Button'
                 on_release: root.confirm()

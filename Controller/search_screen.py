@@ -3,6 +3,7 @@ import json
 import asynckivy as ak
 
 from View.SearchScreen.search_screen import SearchScreenView
+from Utility.helper import save_file
 
 
 class SearchScreenController:
@@ -36,10 +37,12 @@ class SearchScreenController:
     def remove_history_item(self, item):
         if item in self.model.history_items:
             self.model.history_items.remove(item)
+        save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
         self.model.notify_observers()    
 
     def remove_all_history_items(self):
         self.model.history_items = []
+        save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
         self.model.notify_observers()
 
     def search(self, sf: str, *args):
@@ -65,11 +68,11 @@ class SearchScreenController:
                     if history['title'].lower() == sf.lower():
                         break
                 else:
-                    self.model.history_items.append(
-                        {
-                            "title": sf
-                        }
-                    )
+                    self.model.history_items.append({
+                        "title": sf
+                    })
+                    save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
+            
             self.model.is_loading = False
             self.model.notify_observers()
 

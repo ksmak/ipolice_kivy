@@ -1,6 +1,6 @@
 from functools import partial
 
-from kivy.animation import Animation
+from kivy.properties import StringProperty
 
 from View.base_screen import BaseScreenView
 from .components.card.category_card import CategoryCard
@@ -13,17 +13,8 @@ from .components.recycleview.message_label import MessageLabel  # noqa
 
 
 class MainScreenView(BaseScreenView):
-    dialog = None
-
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.controller.generate_category_items()
-        self.controller.generate_items()
-        self.controller.generate_fav_items()
-        self.controller.generate_last_items()
+    def on_pre_enter(self) -> None:
         self.generate_category_cards()
-
-    def on_enter(self) -> None:
         self.app.target_screen = None
         if self.model.browse_type == 'gallery':
             self.ids.gallery_rv.refresh_from_data()

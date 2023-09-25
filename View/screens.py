@@ -3,6 +3,7 @@
 
 
 from Model.main_model import MainModel
+from Controller.start_screen import StartScreenController
 from Controller.main_screen import MainScreenController
 from Controller.search_screen import SearchScreenController
 from Controller.item_screen import ItemScreenController
@@ -10,6 +11,9 @@ from Controller.item_screen import ItemScreenController
 main_model = MainModel
 
 screens = {
+    "start screen": {
+        "controller": StartScreenController,
+    },
     "main screen": {
         "controller": MainScreenController,
     },

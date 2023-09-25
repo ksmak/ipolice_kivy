@@ -1,4 +1,6 @@
+from pathlib import Path
 from datetime import datetime, timedelta
+import json
 
 
 def get_by_id(id: int, items: list) -> object | None:
@@ -64,3 +66,11 @@ def format_date_without_time(dt: datetime) -> str:
         return f"год назад"
     else:
         return dt.strftime("%d.%m.%Y")
+
+def save_file(path: Path, file_name: str, obj_list: list) -> None:
+    dir_path = path.joinpath(
+        path, file_name
+    )
+    with open(dir_path, 'w', encoding='utf-8') as f:
+        json.dump(obj_list, f, ensure_ascii=False)
+            

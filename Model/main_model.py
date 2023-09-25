@@ -8,6 +8,7 @@ from kivy.properties import (
     BooleanProperty,
     ListProperty,
     ObjectProperty,
+    DictProperty,
 )
 
 from Model.base_model import BaseScreenModel
@@ -32,17 +33,17 @@ class MainModel(BaseScreenModel, EventDispatcher):
     find_items = ListProperty()
     message_items = ListProperty()
     history_items = ListProperty()
-    user_id = NumericProperty(15)
     is_loading = BooleanProperty(False)
     target_screen = StringProperty()
     is_first_open = BooleanProperty()
-    browse_type = StringProperty('gallery')
     current_item = ObjectProperty()
     current_message = ObjectProperty()
     search_field = StringProperty()
+    browse_type = StringProperty()
+    is_finished = BooleanProperty(False)
 
     def __init__(self):
-        pass
+        self.user = {}
 
         # # set search_loading
         # self._search_loading = False
