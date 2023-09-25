@@ -43,8 +43,9 @@ class MainScreenController:
             item['image_count'] = self.model.ITEM_IMAGE_COUNT
             item['is_favorite'] = False
             item['controller'] = self
-            s = [item['title'], item['text']]
-            item['fulltext'] = ('#').join(s).lower()
+            # fulltext search field
+            s = [item['title'].lower(), item['text'].lower()]
+            item['fulltext'] = ('#').join(s)
         
         self.model.items = items      
 

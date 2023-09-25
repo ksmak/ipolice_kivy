@@ -43,11 +43,13 @@ class SearchScreenController:
         self.model.notify_observers()
 
     def search(self, sf: str, *args):
-        async def search_process(st: str):
+        async def search_process(sf: str):
             find_items = []
+            arr = sf.split()
             for item in self.model.items:
-                if (item['fulltext'].find(st) > 0):
-                    find_items.append(item)
+                for st in arr:
+                    if (item['fulltext'].find(st) > 0):
+                        find_items.append(item)
                     await ak.sleep(0)
             self.model.find_items = find_items
 
