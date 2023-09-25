@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = e-krim-v
+title = e-KrimV
 
 # (str) Package name 
 package.name = ekrimv
@@ -13,7 +13,7 @@ package.domain = kz.kdp
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-#source.include_exts = py,png,jpg,kv,atlas
+#source.include_exts = py,png,jpg,kv,atlas,gif
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
@@ -45,6 +45,7 @@ requirements = python3,kivy==2.2.1,asynckivy,asyncgui,exceptiongroup,plyer,https
 
 # (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png
+#presplash.filename = start.png
 
 # (str) Icon of the application
 #icon.filename = %(source.dir)s/data/icon.png

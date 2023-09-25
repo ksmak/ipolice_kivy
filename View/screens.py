@@ -6,7 +6,6 @@ from Model.main_model import MainModel
 from Controller.main_screen import MainScreenController
 from Controller.search_screen import SearchScreenController
 from Controller.item_screen import ItemScreenController
-from Controller.message_screen import MessageScreenController
 
 main_model = MainModel
 
@@ -19,8 +18,5 @@ screens = {
     },
     "item screen": {
         "controller": ItemScreenController,
-    },
-    "message screen": {
-        "controller": MessageScreenController,
     },
 }

@@ -20,8 +20,9 @@ from kivymd.uix.screenmanager import MDScreenManager
 
 from View.screens import screens, main_model
 
+
 Loader.num_workers = 4
-Loader.loading_image = 'assets/images/loading/loading.gif'
+# Loader.loading_image = Image('loading.gif')
 
 
 class ExitPopup(Popup):
@@ -44,9 +45,7 @@ class ipolice_kivy(MDApp):
         # application.
         self.manager_screens = MDScreenManager()
         self.target_screen = ''
-        Window.bind(on_hide=self.on_hide)
         Window.bind(on_keyboard=self.on_keyboard)
-        Window.bind(on_request_close=self.on_request_close)
 
     def build(self) -> MDScreenManager:
         self.theme_cls.material_style = "M3"
@@ -78,7 +77,7 @@ class ipolice_kivy(MDApp):
             view.manager_screens = self.manager_screens
             view.name = name_screen
             self.manager_screens.add_widget(view)
-
+    
     def close_app(self, *largs):
         super(ipolice_kivy, self).stop(*largs)
 
@@ -93,13 +92,5 @@ class ipolice_kivy(MDApp):
                               size=(400, 300), size_hint=(None, None))
             popup.open()
             return True
-
-    def on_hide(self, *largs):
-        Logger.info('python. Hide window event...')
-
-    def on_request_close(self, *largs, **kwargs) -> bool:
-        Logger.info('pyhon. Request close event...')
-        return False
-
 
 ipolice_kivy().run()

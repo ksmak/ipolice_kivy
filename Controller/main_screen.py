@@ -1,11 +1,10 @@
 import json
 import asynckivy as ak
 
-from kivy.network.urlrequest import UrlRequest
 from kivy.clock import Clock
+from kivy.network.urlrequest import UrlRequest
 
 from View.MainScreen.main_screen import MainScreenView
-from Utility.helper import get_by_id
 
 
 class MainScreenController:
@@ -17,15 +16,12 @@ class MainScreenController:
     """
 
     def __init__(self, model):
-        self.model = model  # Model.main_screen.MainScreenModel
+        self.model = model
         self.view = MainScreenView(controller=self, model=self.model)
 
     def get_view(self) -> MainScreenView:
         return self.view
-
-    def set_target_screen(self, target_screen: str) -> None:
-        self.model.target_screen = target_screen
-
+    
     def generate_category_items(self, *args) -> None:
         Clock.start_clock()
         req = UrlRequest(self.model.HOST_API + 'categories/')
@@ -76,21 +72,8 @@ class MainScreenController:
             last_items.append(self.model.items[i])
         self.model.last_items = last_items
 
-    def generate_message_items(self, *args) -> None:
-        messages = []
-        path_to_message_items = self.model.DATA_DIR.joinpath(
-            self.model.DATA_DIR, "message_items.json"
-        )
-        if path_to_message_items.exists():
-            with open(path_to_message_items) as json_file:
-                messages = json.loads(json_file.read())
-        for msg in messages:
-            msg['id'] = str(msg['id'])
-            msg['is_own'] = msg['from_id'] == self.model.user_id
-            msg['is_read'] = not msg['date_of_read']
-            msg['is_send'] = not msg['date_of_send']
-            msg['controller'] = self
-        self.model.message_items = messages
+    def set_target_screen(self, target_screen: str) -> None:
+        self.model.target_screen = target_screen
 
     def set_browse_type(self, browse_type: str, *args) -> None:
         self.model.browse_type = browse_type

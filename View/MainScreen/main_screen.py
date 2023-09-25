@@ -1,7 +1,6 @@
 from functools import partial
 
-from kivymd.uix.button import MDFlatButton
-from kivymd.uix.dialog import MDDialog
+from kivy.animation import Animation
 
 from View.base_screen import BaseScreenView
 from .components.card.category_card import CategoryCard
@@ -22,10 +21,9 @@ class MainScreenView(BaseScreenView):
         self.controller.generate_items()
         self.controller.generate_fav_items()
         self.controller.generate_last_items()
-        self.controller.generate_message_items()
         self.generate_category_cards()
 
-    def on_pre_enter(self) -> None:
+    def on_enter(self) -> None:
         self.app.target_screen = None
         if self.model.browse_type == 'gallery':
             self.ids.gallery_rv.refresh_from_data()
