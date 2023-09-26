@@ -47,13 +47,13 @@
                     text: 'Вы недавно искали'
                     font_style: 'Button'
                     theme_text_color: 'Custom'
-                    text_color: app.theme_cls.primary_color
+                    text_color: app.theme_cls.accent_color
                 
                 MDFlatButton:
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     text: "Очистить все"
                     theme_text_color: "Custom"
-                    text_color: app.theme_cls.primary_color
+                    text_color: app.theme_cls.accent_color
                     on_press: root.remove_all_history_items()
             
             MDList:

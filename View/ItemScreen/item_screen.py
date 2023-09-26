@@ -34,8 +34,8 @@ class ItemScreenView(BaseScreenView):
             bg_color_stack_button=self.app.theme_cls.primary_color,
             data=self.data
         )       
-        float_button.anchor = 'right'
-        self.add_widget(float_button)
+        self.ids.float_layout.clear_widgets()
+        self.ids.float_layout.add_widget(float_button)
 
     def on_pre_enter(self):
         self.app.target_screen = self.model.target_screen

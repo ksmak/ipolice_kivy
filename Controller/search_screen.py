@@ -51,7 +51,7 @@ class SearchScreenController:
             arr = sf.split()
             for item in self.model.items:
                 for st in arr:
-                    if (item['fulltext'].find(st) > 0):
+                    if (item['fulltext'].find(st) >= 0):
                         find_items.append(item)
                     await ak.sleep(0)
             self.model.find_items = find_items
