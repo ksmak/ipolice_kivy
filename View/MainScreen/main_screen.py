@@ -14,6 +14,7 @@ from .components.recycleview.message_label import MessageLabel  # noqa
 
 class MainScreenView(BaseScreenView):
     def on_pre_enter(self) -> None:
+        self.controller.set_controller_for_items()
         self.generate_category_cards()
         self.app.target_screen = None
         if self.model.browse_type == 'gallery':

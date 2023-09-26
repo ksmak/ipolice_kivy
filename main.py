@@ -58,7 +58,7 @@ class ipolice_kivy(MDApp):
         self.theme_cls.primary_palette = "Blue"
         self.theme_cls.primary_hue = "800"
         self.theme_cls.primary_light_hue = "50"
-        self.theme_cls.accent_palette = 'DeepOrange'
+        self.theme_cls.accent_palette = 'BlueGray'
         self.theme_cls.accent_hue = "900"
         self.generate_application_screens()
         ak.start(self.load_data())
@@ -153,7 +153,7 @@ class ipolice_kivy(MDApp):
         self.model.browse_type = self.model.user['browse_type']
     
     async def load_data(self) -> None:
-        await ak.sleep(0)
+        await ak.sleep(2)
         self.generate_category_items()
         self.generate_items()
         self.generate_fav_items()

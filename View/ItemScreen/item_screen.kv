@@ -1,8 +1,10 @@
 <ItemScreenView>
+           
     MDBoxLayout:
         orientation: 'vertical'
         md_bg_color: app.theme_cls.primary_light
-
+                        
+    
         MDScrollView:
             do_scroll_x: False
             do_scroll_y: True
@@ -148,37 +150,4 @@
                             theme_text_color: 'Custom'
                             text_color: app.theme_cls.primary_color
                             adaptive_height: True
-    
-
-        MDRelativeLayout:
-            size_hint_y: None
-            height: '40dp'
-            md_bg_color: app.theme_cls.primary_color
-            
-
-            MDRectangleFlatIconButton:
-                pos_hint: {'x': .1, 'center_y': .5}
-                size_hint: None, .9
-                width: '135dp'
-                icon: "phone"
-                text: "Позвонить"
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                line_color: app.theme_cls.primary_color
-                md_bg_color: "white"
-                on_release: root.call_phone()
-
-            MDRectangleFlatIconButton:
-                pos_hint: {'right': .9, 'center_y': .5}
-                size_hint: None, .9
-                width: '135dp'
-                icon: "message-processing-outline"
-                text: "Написать"
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                line_color: app.theme_cls.primary_color
-                md_bg_color: "white"
-                on_release: root.create_message()
-    
-
-                    
+                            

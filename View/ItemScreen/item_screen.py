@@ -6,6 +6,7 @@ from kivy.properties import BooleanProperty, StringProperty
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.fitimage import FitImage
 from kivymd.uix.label import MDLabel
+from kivymd.uix.button import MDFloatingActionButtonSpeedDial
 
 from View.base_screen import BaseScreenView
 from Utility.helper import get_by_id, format_date, format_date_without_time
@@ -14,6 +15,27 @@ from Utility.helper import get_by_id, format_date, format_date_without_time
 class ItemScreenView(BaseScreenView):
     is_favorite = BooleanProperty()
     target_screen = StringProperty()
+
+    def create_floating_button(self):
+        self.data = {'Позвонить': [
+            'phone',
+            'on_release', lambda x: self.call_phone(),
+        ],
+        'Написать': [
+            'whatsapp',
+            'on_release', lambda x: self.send_message(),
+        ]}
+        float_button = MDFloatingActionButtonSpeedDial(
+            icon="card-account-phone",
+            label_text_color="white",
+            hint_animation=True,
+            bg_hint_color=self.app.theme_cls.primary_dark,
+            bg_color_root_button=self.app.theme_cls.primary_color,
+            bg_color_stack_button=self.app.theme_cls.primary_color,
+            data=self.data
+        )       
+        float_button.anchor = 'right'
+        self.add_widget(float_button)
 
     def on_pre_enter(self):
         self.app.target_screen = self.model.target_screen
@@ -75,30 +97,17 @@ class ItemScreenView(BaseScreenView):
             self.model.current_item['date_of_change'], '%Y-%m-%dT%H:%M:%S.%fZ')
         self.ids.date_of_change.text = 'Изменен: ' + format_date(dt)
 
+        self.create_floating_button()
+
     def on_click_favorite_button(self, *args):
         self.controller.set_favorite_item(self.model.current_item['id'])
         self.is_favorite = not self.is_favorite
 
-    def create_message(self, *args):
-        # data = {}
-        # data['id'] = '0'
-        # data['is_own'] = True
-        # data['from_id'] = self.model.user_id
-        # data['to_id'] = self.model.current_item['author']
-        # data['text'] = ''
-        # data['date_of_creation'] = ''
-        # data['date_of_send'] = ''
-        # data['date_of_read'] = ''
-        # data['is_send'] = False
-        # data['is_read'] = False
-        # data['controller'] = self.controller
-        # self.controller.set_current_message(data)
-        # self.manager_screens.current = 'message screen'
-        pass
+    def send_message(self, *args):
+        pass 
 
     def call_phone(self, *args):
-        # call.makecall(tel=self.model.current_item['phone'])
-        pass
+        call.makecall(self.model.current_item['author']['phone'])
 
     def model_is_changed(self) -> None:
         """

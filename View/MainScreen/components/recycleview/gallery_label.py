@@ -46,7 +46,7 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
 
                 )
                 lt.add_widget(image)
-                image.fit_mode = 'fill'
+                # image.fit_mode = 'fill'
                 self.ids.carousel.add_widget(lt)
 
         self.ids.count_info.text = '1/' + str(len(self.ids.carousel.slides))

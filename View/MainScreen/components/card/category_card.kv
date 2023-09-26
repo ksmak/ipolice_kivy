@@ -23,8 +23,17 @@
             size_hint: .6, .6
             canvas.before:
                 Color:
-                    rgb: app.theme_cls.primary_color
+                    rgb: 1, 1, 1
+
                 Ellipse:
-                    pos: self.x - 18, self.y + 3
-                    size: self.width + 30, self.height
+                    pos: self.x - 17, self.y - 2
+                    size: self.width + 33, self.height + 5
+                
+                Color:
+                    rgb: app.theme_cls.primary_color
+                    
+                Line:
+                    circle: self.center_x, self.center_y, 60
+                    width: 1.5
+
         

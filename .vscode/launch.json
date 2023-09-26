@@ -9,7 +9,10 @@
             "type": "python",
             "request": "launch",
             "program": "main.py",
-            "args": ["-m", "screen:note2,portrait,scale=.75"],
+            "args": [
+                "-m",
+                "screen:note2,portrait,scale=.75"
+            ],
             "console": "integratedTerminal",
             "justMyCode": true
         }

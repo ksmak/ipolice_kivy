@@ -19,6 +19,10 @@ class MainScreenController:
     def get_view(self) -> MainScreenView:
         return self.view
     
+    def set_controller_for_items(self, *args) -> None:
+        for item in self.model.items:
+            item['controller'] = self
+    
     def set_target_screen(self, target_screen: str) -> None:
         self.model.target_screen = target_screen
 
