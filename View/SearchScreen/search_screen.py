@@ -2,6 +2,8 @@ from functools import partial
 
 from kivy.animation import Animation
 
+from kivymd.uix.menu import MDDropdownMenu
+
 from View.base_screen import BaseScreenView
 from .components.list.history_item import HistoryItem
 from View.MainScreen.components.recycleview.gallery_label import GalleryLabel  # noqa
@@ -21,6 +23,7 @@ class SearchScreenView(BaseScreenView):
         self.controller.set_target_screen('search screen')
         self.create_history_items()
         self.refresh_layouts()
+        self.create_category_menu()
 
     def create_history_items(self):
         self.ids.history_container.clear_widgets()
@@ -52,10 +55,6 @@ class SearchScreenView(BaseScreenView):
         self.controller.search(self.ids.search_field.text.lower())
 
     def refresh_layouts(self):
-        # print(f'is_first_open={self.model.is_first_open}')
-        # print(f'is_loading={self.model.is_loading}')
-        # print(f'history_items={self.model.history_items}')
-        # print(f'find_items={self.model.find_items}')
         if not self.model.is_first_open \
                 or not self.model.history_items:
             self.ids.history_layout.opacity = 0
@@ -68,8 +67,33 @@ class SearchScreenView(BaseScreenView):
         if not self.model.is_first_open \
                 and not self.model.is_loading:
             self.ids.result_layout.opacity = 1
-        else:
+        else:  
             self.ids.result_layout.opacity = 0
+    
+    def create_category_menu(self):
+        self.menu_items = [
+            {
+                "text": c['title'],
+                "on_release": lambda x=c['title']: self.category_menu_callback(x),
+            } for c in self.model.category_items
+        ]
+        self.category_menu = MDDropdownMenu(
+            caller=self.ids.cat_item, 
+            items=self.menu_items,
+            position="center"
+        )
+        self.category_menu.bind()
+        if self.model.current_category:
+            self.ids.cat_item.set_item(self.model.current_category['title'])
+        else:
+            self.ids.cat_item.set_item('Все')
+
+    def category_menu_callback(self, category_title: str):
+        self.category_menu.dismiss()
+        self.controller.set_current_category(category_title)
+        self.ids.cat_item.set_item(category_title)
+        self.controller.search(self.ids.search_field.text.lower())
+
 
     def model_is_changed(self) -> None:
         """

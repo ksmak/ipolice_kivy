@@ -1,7 +1,5 @@
 from functools import partial
 
-from kivy.properties import StringProperty
-
 from View.base_screen import BaseScreenView
 from .components.card.category_card import CategoryCard
 from .components.recycleview.gallery_label import GalleryLabel  # noqa
@@ -35,12 +33,14 @@ class MainScreenView(BaseScreenView):
             )
             callback_function = partial(
                 self.open_category_items, category['id'])
-            card.ids.card_button.bind(on_touch_down=callback_function)
+            card.ids.card_button.bind(on_touch_up=callback_function)
             self.ids.category_list_container.add_widget(card)
 
-    def open_category_items(self, category: int, *args) -> None:
-        self.controller.search_by_category(category)
-        self.manager_screens.current = 'search screen'
+    def open_category_items(self, category: int, card_button, touch) -> None:
+        if card_button.collide_point(*touch.pos):
+            self.controller.set_current_category(category)
+            self.controller.search_by_category(category)
+            self.manager_screens.current = 'search screen'
 
     def to_search_screen(self) -> None:
         self.controller.open_search()

@@ -1,0 +1,30 @@
+<ErrorPopup>
+    background: ''
+    anchor_x: 'center'
+    anchor_y: 'top'
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: 'white'
+
+        MDLabel:
+            valign: 'top'
+            halign: 'center'
+            text: 'Ошибка при запуске приложения!'
+            font_style: 'H6'
+        
+        MDLabel:
+            valign: 'top'
+            halign: 'center'
+            text: 'Сервер не доступен'
+            font_style: 'Caption'
+            bold: True
+           
+        
+        MDRectangleFlatButton:
+            text: 'Закрыть'
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
+            line_color: "white"
+            font_style: 'Button'
+            on_release: root.confirm()

@@ -28,6 +28,29 @@ from View.screens import screens, main_model
 Loader.num_workers = 4
 # Loader.loading_image = Image('loading.gif')
 
+colors = {
+    "Teal": {
+        "200": "#FFFFFF",
+        "500": "#008B8B",
+        "700": "#008B8B",
+        "A700": "#008B8B",
+    },
+    "Red": {
+        "200": "##003329",
+        "500": "##003329",
+        "700": "##003329",
+        "A700": "##003329",
+
+    },
+    "Light": {
+        "StatusBar": "E0E0E0",
+        "AppBar": "#f2f2f2",
+        "Background": "#ffffff",
+        "CardsDialogs": "#FFFFFF",
+        "FlatButtonDown": "#CCCCCC",
+    },
+}
+
 
 class ExitPopup(Popup):
     def __init__(self, **kwargs):
@@ -38,8 +61,18 @@ class ExitPopup(Popup):
         app.close_app()
 
 
+class ErrorPopup(Popup):
+    def __init__(self, **kwargs):
+        super(ErrorPopup, self).__init__(**kwargs)
+    
+    def confirm(self):
+        app = MDApp.get_running_app()
+        app.close_app()
+
+
 class ipolice_kivy(MDApp):
     dialog = None
+    
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -55,11 +88,14 @@ class ipolice_kivy(MDApp):
     def build(self) -> MDScreenManager:
         self.theme_cls.material_style = "M3"
         self.theme_cls.theme_style = "Light"
-        self.theme_cls.primary_palette = "Blue"
-        self.theme_cls.primary_hue = "800"
-        self.theme_cls.primary_light_hue = "50"
-        self.theme_cls.accent_palette = 'BlueGray'
-        self.theme_cls.accent_hue = "900"
+        # self.theme_cls.primary_palette = "Blue"
+        # self.theme_cls.primary_hue = "800"
+        # self.theme_cls.primary_light_hue = "50"
+        # self.theme_cls.accent_palette = 'BlueGray'
+        # self.theme_cls.accent_hue = "900"
+        self.theme_cls.colors = colors
+        self.theme_cls.primary_palette = "Teal"
+        self.theme_cls.accent_palette = "Red"
         self.generate_application_screens()
         ak.start(self.load_data())
         return self.manager_screens
@@ -99,8 +135,13 @@ class ipolice_kivy(MDApp):
             popup.open()
             return True
     
+    def show_error(self, req, error):
+        popup = ErrorPopup(separator_height=0, title="Ошибка при запуске приложения!",
+                              size=(500, 300), size_hint=(None, None))
+        popup.open()
+
     def generate_category_items(self, *args) -> None:
-        req = UrlRequest(self.model.HOST_API + 'categories/')
+        req = UrlRequest(self.model.HOST_API + 'categories/', on_error=self.show_error)
         req.wait()
         self.model.category_items = req.result
 
@@ -153,7 +194,7 @@ class ipolice_kivy(MDApp):
         self.model.browse_type = self.model.user['browse_type']
     
     async def load_data(self) -> None:
-        await ak.sleep(2)
+        await ak.sleep(0)
         self.generate_category_items()
         self.generate_items()
         self.generate_fav_items()

@@ -1,9 +1,7 @@
 from pathlib import Path
 
-# from kivy.logger import Logger
 from kivy.event import EventDispatcher
 from kivy.properties import (
-    NumericProperty,
     StringProperty,
     BooleanProperty,
     ListProperty,
@@ -41,39 +39,8 @@ class MainModel(BaseScreenModel, EventDispatcher):
     search_field = StringProperty()
     browse_type = StringProperty()
     is_finished = BooleanProperty(False)
+    current_category = DictProperty()
 
     def __init__(self):
         self.user = {}
-
-        # # set search_loading
-        # self._search_loading = False
-        # # set find items
-        # self._find_items = []
-        # # set first search detect
-        # self._is_first_search = False
-        # # browse type (gallery, list, grid)
-        # self._browse_type = 'gallery'
-
-        # # load favorite items
-        # self._favorite_items_description = []
-        # path_to_favorite_items_description = DATA_DIR.joinpath(
-        #     DATA_DIR, "favorite_items_description.json"
-        # )
-        # Logger.info('python. path for favorite items: %s',
-        #             path_to_favorite_items_description)
-        # if path_to_favorite_items_description.exists():
-        #     with open(path_to_favorite_items_description) as json_file:
-        #       self._favorite_items_description = json.loads(json_file.read())
-        # # set tab name
-        # self._tab_name = 'main'
-        # # set current item
-        # self._current_item = None
-        # # set target screen
-        # self.target_screen = 'main screen'
-
-        # # set user_id
-        # self.user_id = 15
-        # # set current message
-        # self._current_message = {}
-
         self._observers = []

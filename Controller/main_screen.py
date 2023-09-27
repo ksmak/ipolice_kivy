@@ -71,3 +71,8 @@ class MainScreenController:
         res = [d for d in self.model.items if d['id'] == id]
         if res:
             self.model.current_item = res[0]
+    
+    def set_current_category(self, id: int) -> None:
+        res = [d for d in self.model.category_items if d['id'] == id]
+        if res:
+            self.model.current_category = res[0]

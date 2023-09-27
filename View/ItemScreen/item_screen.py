@@ -16,7 +16,8 @@ class ItemScreenView(BaseScreenView):
     is_favorite = BooleanProperty()
     target_screen = StringProperty()
 
-    def create_floating_button(self):
+    def __init__(self, **kw):
+        super().__init__(**kw)
         self.data = {'Позвонить': [
             'phone',
             'on_release', lambda x: self.call_phone(),
@@ -25,7 +26,14 @@ class ItemScreenView(BaseScreenView):
             'whatsapp',
             'on_release', lambda x: self.send_message(),
         ]}
-        float_button = MDFloatingActionButtonSpeedDial(
+
+        self.float_button = None
+
+    def create_floating_button(self):
+        if self.float_button:
+            self.remove_widget(self.float_button)
+        
+        self.float_button = MDFloatingActionButtonSpeedDial(
             icon="card-account-phone",
             label_text_color="white",
             hint_animation=True,
@@ -33,9 +41,9 @@ class ItemScreenView(BaseScreenView):
             bg_color_root_button=self.app.theme_cls.primary_color,
             bg_color_stack_button=self.app.theme_cls.primary_color,
             data=self.data
-        )       
-        self.ids.float_layout.clear_widgets()
-        self.ids.float_layout.add_widget(float_button)
+        )   
+        
+        self.add_widget(self.float_button)
 
     def on_pre_enter(self):
         self.app.target_screen = self.model.target_screen
@@ -81,7 +89,8 @@ class ItemScreenView(BaseScreenView):
 
                 )
                 label.md_bg_color = (
-                    40 / 255, 24 / 255, 177 / 255)
+                    # 40 / 255, 24 / 255, 177 / 255)
+                    16 / 255, 122/ 255, 94 / 255)
 
                 self.ids.details_container.add_widget(label)
 

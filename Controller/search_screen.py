@@ -48,12 +48,26 @@ class SearchScreenController:
     def search(self, sf: str, *args):
         async def search_process(sf: str):
             find_items = []
-            arr = sf.split()
             for item in self.model.items:
-                for st in arr:
-                    if (item['fulltext'].find(st) >= 0):
+                check = False
+                if self.model.current_category:
+                    if self.model.current_category['id'] == item['category']:
+                        check = True
+                    else:
+                        check = False
+                else:
+                    check = True
+                if check:    
+                    if sf:
+                        arr = sf.split()
+                        for st in arr:
+                            if (item['fulltext'].find(st) >= 0):
+                                find_items.append(item)
+                                await ak.sleep(0)
+                    else:
                         find_items.append(item)
-                    await ak.sleep(0)
+                        await ak.sleep(0)
+    
             self.model.find_items = find_items
 
         async def async_search(sf: str):
@@ -63,15 +77,15 @@ class SearchScreenController:
                 ak.event(self.view.ids.search_field, 'on_text_validate')
             )
 
-            if tasks[0].finished and self.model.find_items:
-                for history in self.model.history_items:
-                    if history['title'].lower() == sf.lower():
-                        break
-                else:
-                    self.model.history_items.append({
-                        "title": sf
-                    })
-                    save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
+            if sf and tasks[0].finished and self.model.find_items:
+                    for history in self.model.history_items:
+                        if history['title'].lower() == sf.lower():
+                            break
+                    else:
+                        self.model.history_items.append({
+                            "title": sf
+                        })
+                        save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
             
             self.model.is_loading = False
             self.model.notify_observers()
@@ -98,3 +112,8 @@ class SearchScreenController:
         res = [d for d in self.model.items if d['id'] == id]
         if res:
             self.model.current_item = res[0]
+    
+    def set_current_category(self, title: str) -> None:
+        res = [d for d in self.model.category_items if d['title'] == title]
+        if res:
+            self.model.current_category = res[0]

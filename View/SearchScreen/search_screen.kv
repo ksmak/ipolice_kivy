@@ -36,6 +36,26 @@
                     mode: 'round'
                     fill_color_normal: app.theme_cls.primary_light
 
+            MDBoxLayout:   
+                adaptive_height: True 
+                padding: '20dp', 0, 0, 0
+               
+                MDLabel:
+                    pos_hint: {'center_y': .5}
+                    text: 'Категория: '
+                    font_style: 'Caption'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.accent_color
+                    
+
+                MDDropDownItem:
+                    id: cat_item
+                    pos_hint: {'center_y': .5}
+                    font_style: 'Caption'
+                    theme_text_color: 'Custom'
+                    text_color: app.theme_cls.accent_color
+                    on_release: root.category_menu.open()
+
             MDBoxLayout:
                 id: history_layout
                 size_hint_y: None
@@ -99,7 +119,7 @@
                         icon_size: '16sp'
                         icon_color: app.theme_cls.accent_color if root.model.browse_type == 'grid' else app.theme_cls.primary_color
                         on_release: root.controller.set_browse_type('grid')
-                
+
                 MDRecycleView:
                     id: gallery_rv
                     data: root.model.find_items
