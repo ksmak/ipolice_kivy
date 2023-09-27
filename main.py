@@ -141,9 +141,20 @@ class ipolice_kivy(MDApp):
         popup.open()
 
     def generate_category_items(self, *args) -> None:
-        req = UrlRequest(self.model.HOST_API + 'categories/', on_error=self.show_error)
-        req.wait()
-        self.model.category_items = req.result
+        # req = UrlRequest(self.model.HOST_API + 'categories/', on_error=self.show_error)
+        # req.wait()
+        # self.model.category_items = req.result
+        c_items = []
+        
+        path_to_c_items = self.model.DATA_DIR.joinpath(
+            self.model.DATA_DIR, "category_items.json"
+        )
+        
+        if path_to_c_items.exists():
+            with open(path_to_c_items) as json_file:
+                c_items = json.loads(json_file.read())
+        
+        self.model.category_items = c_items
 
     def generate_items(self, *args) -> None:
         req = UrlRequest(self.model.HOST_API + 'items/')

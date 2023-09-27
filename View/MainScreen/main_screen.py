@@ -27,8 +27,12 @@ class MainScreenView(BaseScreenView):
     def generate_category_cards(self) -> None:
         self.ids.category_list_container.clear_widgets()
         for category in self.model.category_items:
+            image_path = 'default.png'
+            image = self.model.BASE_DIR.joinpath('category', category['photo'])
+            if image.exists():
+                image_path = str(image)
             card = CategoryCard(
-                category_icon=category['photo'],
+                category_icon=image_path,
                 category_name=category['title']
             )
             callback_function = partial(
