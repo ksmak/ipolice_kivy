@@ -1,5 +1,4 @@
 import json
-
 import asynckivy as ak
 
 from View.SearchScreen.search_screen import SearchScreenView
@@ -8,10 +7,7 @@ from Utility.helper import save_file
 
 class SearchScreenController:
     """
-    The `MainScreenController` class represents a controller implementation.
-    Coordinates work of the view with the model.
-    The controller implements the strategy pattern. The controller connects to
-    the view to control its actions.
+    Search screen controller
     """
 
     def __init__(self, model):
@@ -37,12 +33,14 @@ class SearchScreenController:
     def remove_history_item(self, item):
         if item in self.model.history_items:
             self.model.history_items.remove(item)
-        save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
-        self.model.notify_observers()    
+        save_file(self.model.DATA_DIR, "history_items.json",
+                  self.model.history_items)
+        self.model.notify_observers()
 
     def remove_all_history_items(self):
         self.model.history_items = []
-        save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
+        save_file(self.model.DATA_DIR, "history_items.json",
+                  self.model.history_items)
         self.model.notify_observers()
 
     def search(self, sf: str, *args):
@@ -57,7 +55,7 @@ class SearchScreenController:
                         check = False
                 else:
                     check = True
-                if check:    
+                if check:
                     if sf:
                         arr = sf.split()
                         for st in arr:
@@ -67,7 +65,7 @@ class SearchScreenController:
                     else:
                         find_items.append(item)
                         await ak.sleep(0)
-    
+
             self.model.find_items = find_items
 
         async def async_search(sf: str):
@@ -78,15 +76,16 @@ class SearchScreenController:
             )
 
             if sf and tasks[0].finished and self.model.find_items:
-                    for history in self.model.history_items:
-                        if history['title'].lower() == sf.lower():
-                            break
-                    else:
-                        self.model.history_items.append({
-                            "title": sf
-                        })
-                        save_file(self.model.DATA_DIR, "history_items.json", self.model.history_items)
-            
+                for history in self.model.history_items:
+                    if history['title'].lower() == sf.lower():
+                        break
+                else:
+                    self.model.history_items.append({
+                        "title": sf
+                    })
+                    save_file(self.model.DATA_DIR,
+                              "history_items.json", self.model.history_items)
+
             self.model.is_loading = False
             self.model.notify_observers()
 
@@ -112,12 +111,10 @@ class SearchScreenController:
         res = [d for d in self.model.items if d['id'] == id]
         if res:
             self.model.current_item = res[0]
-    
+
     def set_current_category(self, title: str) -> None:
         self.model.current_category = {}
-        
         if title:
             res = [d for d in self.model.category_items if d['title'] == title]
             if res:
                 self.model.current_category = res[0]
-

@@ -1,8 +1,11 @@
 from datetime import datetime
 from plyer import call
+from jnius import cast
+from jnius import autoclass
 
 from kivy.properties import BooleanProperty, StringProperty
 from kivy.uix.image import AsyncImage
+from kivy.utils import platform
 
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.label import MDLabel
@@ -22,7 +25,7 @@ class ItemScreenView(BaseScreenView):
             'phone',
             'on_release', lambda x: self.call_phone(),
         ],
-        'Написать': [
+            'Написать': [
             'whatsapp',
             'on_release', lambda x: self.send_message(),
         ]}
@@ -32,7 +35,7 @@ class ItemScreenView(BaseScreenView):
     def create_floating_button(self):
         if self.float_button:
             self.remove_widget(self.float_button)
-        
+
         self.float_button = MDFloatingActionButtonSpeedDial(
             icon="card-account-phone",
             label_text_color="white",
@@ -41,8 +44,8 @@ class ItemScreenView(BaseScreenView):
             bg_color_root_button=self.app.theme_cls.primary_color,
             bg_color_stack_button=self.app.theme_cls.primary_color,
             data=self.data
-        )   
-        
+        )
+
         self.add_widget(self.float_button)
 
     def on_pre_enter(self):
@@ -90,7 +93,7 @@ class ItemScreenView(BaseScreenView):
                 )
                 label.md_bg_color = (
                     # 40 / 255, 24 / 255, 177 / 255)
-                    16 / 255, 122/ 255, 94 / 255)
+                    16 / 255, 122 / 255, 94 / 255)
 
                 self.ids.details_container.add_widget(label)
 
@@ -113,10 +116,21 @@ class ItemScreenView(BaseScreenView):
         self.is_favorite = not self.is_favorite
 
     def send_message(self, *args):
-        pass 
+        if platform == 'android':
+            PythonActivity = autoclass('org.kivy.android.PythonActivity')
+            Intent = autoclass('android.content.Intent')
+            Uri = autoclass('android.net.Uri')
+            intent = Intent()
+            intent.setAction(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse(
+                'https://api.whatsapp.com/send?phone='+self.model.current_item['author']['phone']))
+            currentActivity = cast(
+                'android.app.Activity', PythonActivity.mActivity)
+            currentActivity.startActivity(intent)
 
     def call_phone(self, *args):
-        call.makecall(self.model.current_item['author']['phone'])
+        if platform == 'android':
+            call.makecall(self.model.current_item['author']['phone'])
 
     def model_is_changed(self) -> None:
         """

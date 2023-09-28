@@ -9,10 +9,7 @@ from Utility.helper import save_file
 
 class MainScreenController:
     """
-    The `MainScreenController` class represents a controller implementation.
-    Coordinates work of the view with the model.
-    The controller implements the strategy pattern. The controller connects to
-    the view to control its actions.
+    Main screen controller.
     """
 
     def __init__(self, model):
@@ -22,26 +19,37 @@ class MainScreenController:
     def get_view(self) -> MainScreenView:
         return self.view
 
+    def on_load_data_error(self, req, error):
+        print("Error loading data.")
+        self.app.close_app()
+
     def generate_category_items(self, *args) -> None:
-        req = UrlRequest(self.model.HOST_API + 'categories/')
+        req = UrlRequest(
+            self.model.HOST_API + 'categories/',
+            on_error=self.on_load_data_error,
+            on_failure=self.on_load_data_error
+        )
         req.wait()
         self.model.category_items = req.result
 
     def generate_items(self, *args) -> None:
-        req = UrlRequest(self.model.HOST_API + 'items/')
+        req = UrlRequest(
+            self.model.HOST_API + 'items/',
+            on_error=self.on_load_data_error,
+            on_failure=self.on_load_data_error
+        )
         req.wait()
         items = req.result
+
         # append additional fields
         for item in items:
             item['id'] = str(item['id'])
             item['image_count'] = self.model.ITEM_IMAGE_COUNT
             item['is_favorite'] = False
             item['controller'] = self
-            # fulltext search field
-            s = [item['title'].lower(), item['text'].lower()]
-            item['fulltext'] = ('#').join(s)
-            item['controller'] = self
-        self.model.items = items      
+            item['fulltext'] = ('#').join(
+                [item['title'].lower(), item['text'].lower()])
+        self.model.items = items
 
     def generate_fav_items(self, *args) -> None:
         f_items = []
@@ -66,20 +74,16 @@ class MainScreenController:
         for i in range(last_items_count):
             last_items.append(self.model.items[i])
         self.model.last_items = last_items
-    
+
     def set_user_settings(self, *args) -> None:
         path_to_settings = self.model.DATA_DIR.joinpath(
             self.model.DATA_DIR, "user_settings.json"
         )
-        
         if path_to_settings.exists():
             with open(path_to_settings) as json_file:
                 self.model.user = json.loads(json_file.read())
-        
-        self.model.browse_type = 'list'
-        if 'browse_type' in self.model.user:
-            self.model.browse_type = self.model.user['browse_type'] if self.model.user['browse_type'] else 'list'
-    
+        self.model.browse_type = self.model.user['browse_type']
+
     def load_data(self) -> None:
         async def start_load():
             ak.sleep(0)
@@ -88,10 +92,12 @@ class MainScreenController:
             self.generate_fav_items()
             self.generate_last_items()
             self.set_user_settings()
+            self.model.is_loading = False
             self.model.notify_observers()
-            
+
+        self.model.is_loading = True
         ak.start(start_load())
-    
+
     def set_target_screen(self, target_screen: str) -> None:
         self.model.target_screen = target_screen
 
@@ -130,18 +136,16 @@ class MainScreenController:
                 self.model.fav_items.append(res[0])
             else:
                 self.model.fav_items.remove(res[0])
-
             fav_items = []
             for item in self.model.fav_items:
                 fav_items.append({'id': item['id']})
-            
-            save_file(self.model.DATA_DIR, "fav_items.json", fav_items)    
+            save_file(self.model.DATA_DIR, "fav_items.json", fav_items)
 
     def set_current_item(self, id: int) -> None:
         res = [d for d in self.model.items if d['id'] == id]
         if res:
             self.model.current_item = res[0]
-    
+
     def set_current_category(self, id: int) -> None:
         res = [d for d in self.model.category_items if d['id'] == id]
         if res:

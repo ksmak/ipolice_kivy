@@ -14,8 +14,7 @@ from Model.base_model import BaseScreenModel
 
 class MainModel(BaseScreenModel, EventDispatcher):
     """
-    Implements the logic of the
-    :class:`~View.main_screen.MainScreen.MainScreenView` class.
+    Main model
     """
     # constants
     BASE_DIR = Path(__file__).resolve().parent.parent
