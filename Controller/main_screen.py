@@ -71,10 +71,14 @@ class MainScreenController:
         path_to_settings = self.model.DATA_DIR.joinpath(
             self.model.DATA_DIR, "user_settings.json"
         )
+        
         if path_to_settings.exists():
             with open(path_to_settings) as json_file:
                 self.model.user = json.loads(json_file.read())
-        self.model.browse_type = self.model.user['browse_type']
+        
+        self.model.browse_type = 'list'
+        if 'browse_type' in self.model.user:
+            self.model.browse_type = self.model.user['browse_type'] if self.model.user['browse_type'] else 'list'
     
     def load_data(self) -> None:
         async def start_load():
