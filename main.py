@@ -28,7 +28,7 @@ Loader.num_workers = 4
 
 colors = {
     "Teal": {
-        "200": "#FFFFFF",
+        "200": "#e6ffff",
         "500": "#008B8B",
         "700": "#008B8B",
         "A700": "#008B8B",
@@ -43,8 +43,8 @@ colors = {
     "Light": {
         "StatusBar": "E0E0E0",
         "AppBar": "#f2f2f2",
-        "Background": "#ffffff",
-        "CardsDialogs": "#FFFFFF",
+        "Background": "#e6ffff",
+        "CardsDialogs": "#e6ffff",
         "FlatButtonDown": "#CCCCCC",
     },
 }
