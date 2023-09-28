@@ -2,9 +2,9 @@ from datetime import datetime
 from plyer import call
 
 from kivy.properties import BooleanProperty, StringProperty
+from kivy.uix.image import AsyncImage
 
 from kivymd.uix.relativelayout import MDRelativeLayout
-from kivymd.uix.fitimage import FitImage
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDFloatingActionButtonSpeedDial
 
@@ -61,7 +61,7 @@ class ItemScreenView(BaseScreenView):
         for i in range(self.model.ITEM_IMAGE_COUNT):
             if self.model.current_item['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
-                image = FitImage(
+                image = AsyncImage(
                     source=self.model.current_item['photo' + str(i + 1)])
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)

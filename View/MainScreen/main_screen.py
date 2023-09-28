@@ -11,26 +11,15 @@ from .components.recycleview.message_label import MessageLabel  # noqa
 
 
 class MainScreenView(BaseScreenView):
-    def on_pre_enter(self) -> None:
-        self.controller.set_controller_for_items()
-        self.generate_category_cards()
+    def on_enter(self) -> None:
         self.app.target_screen = None
-        if self.model.browse_type == 'gallery':
-            self.ids.gallery_rv.refresh_from_data()
-        elif self.model.browse_type == 'list':
-            self.ids.list_rv.refresh_from_data()
-        elif self.model.browse_type == 'grid':
-            self.ids.grid_rv.refresh_from_data()
         self.controller.set_target_screen('main screen')
-
+        self.controller.load_data()
 
     def generate_category_cards(self) -> None:
         self.ids.category_list_container.clear_widgets()
         for category in self.model.category_items:
-            image_path = 'default.png'
-            image = self.model.BASE_DIR.joinpath('category', category['photo'])
-            if image.exists():
-                image_path = str(image)
+            image_path = category['photo'] if category['photo'] else 'default.png'
             card = CategoryCard(
                 category_icon=image_path,
                 category_name=category['title']
@@ -53,9 +42,20 @@ class MainScreenView(BaseScreenView):
     def remove_all_messages(self, *args) -> None:
         self.controller.remove_all_messages()
 
+    def switch_browse_type(self) -> None:
+        if self.model.browse_type == 'gallery':
+            self.ids.gallery_rv.refresh_from_data()
+        elif self.model.browse_type == 'list':
+            self.ids.list_rv.refresh_from_data()
+        elif self.model.browse_type == 'grid':
+            self.ids.grid_rv.refresh_from_data()
+
     def model_is_changed(self) -> None:
         """
         Called whenever any change has occurred in the data model.
         The view in this method tracks these changes and updates the UI
         according to these changes.
         """
+        self.generate_category_cards()
+        self.switch_browse_type()
+        

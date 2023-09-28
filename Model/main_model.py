@@ -20,6 +20,7 @@ class MainModel(BaseScreenModel, EventDispatcher):
     # constants
     BASE_DIR = Path(__file__).resolve().parent.parent
     DATA_DIR = BASE_DIR.joinpath("assets", "data")
+    IMAGE_DIR = BASE_DIR.joinpath("assets", "images")
     ITEM_IMAGE_COUNT = 5
     LAST_ITEMS_COUNT = 10
     HOST_API = 'https://ipolice-production.up.railway.app/api/'

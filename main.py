@@ -10,14 +10,12 @@ You can read more about this template at the links below:
 https://github.com/HeaTTheatR/LoginAppMVC
 https://en.wikipedia.org/wiki/Model–view–controller
 """
-import json
 import asynckivy as ak
 
 from kivy.loader import Loader
 from kivy.core.window import Window
 from kivy.logger import Logger
 from kivy.uix.popup import Popup
-from kivy.network.urlrequest import UrlRequest
 
 from kivymd.app import MDApp
 from kivymd.uix.screenmanager import MDScreenManager
@@ -82,22 +80,16 @@ class ipolice_kivy(MDApp):
         # application.
         self.manager_screens = MDScreenManager()
         self.target_screen = ''
-        self.is_finished_loading_data = False
+        # self.is_finished_loading_data = False
         Window.bind(on_keyboard=self.on_keyboard)
 
     def build(self) -> MDScreenManager:
         self.theme_cls.material_style = "M3"
         self.theme_cls.theme_style = "Light"
-        # self.theme_cls.primary_palette = "Blue"
-        # self.theme_cls.primary_hue = "800"
-        # self.theme_cls.primary_light_hue = "50"
-        # self.theme_cls.accent_palette = 'BlueGray'
-        # self.theme_cls.accent_hue = "900"
         self.theme_cls.colors = colors
         self.theme_cls.primary_palette = "Teal"
         self.theme_cls.accent_palette = "Red"
         self.generate_application_screens()
-        ak.start(self.load_data())
         return self.manager_screens
 
     def generate_application_screens(self) -> None:
@@ -134,84 +126,5 @@ class ipolice_kivy(MDApp):
                               size=(500, 300), size_hint=(None, None))
             popup.open()
             return True
-    
-    def show_error(self, req, error):
-        popup = ErrorPopup(separator_height=0, title="Ошибка при запуске приложения!",
-                              size=(500, 300), size_hint=(None, None))
-        popup.open()
-
-    def generate_category_items(self, *args) -> None:
-        # req = UrlRequest(self.model.HOST_API + 'categories/', on_error=self.show_error)
-        # req.wait()
-        # self.model.category_items = req.result
-        c_items = []
-        
-        path_to_c_items = self.model.DATA_DIR.joinpath(
-            self.model.DATA_DIR, "category_items.json"
-        )
-        
-        if path_to_c_items.exists():
-            with open(path_to_c_items) as json_file:
-                c_items = json.loads(json_file.read())
-        
-        self.model.category_items = c_items
-
-    def generate_items(self, *args) -> None:
-        req = UrlRequest(self.model.HOST_API + 'items/')
-        req.wait()
-        items = req.result
-        # append additional fields
-        for item in items:
-            item['id'] = str(item['id'])
-            item['image_count'] = self.model.ITEM_IMAGE_COUNT
-            item['is_favorite'] = False
-            item['controller'] = self
-            # fulltext search field
-            s = [item['title'].lower(), item['text'].lower()]
-            item['fulltext'] = ('#').join(s)
-        self.model.items = items      
-
-    def generate_fav_items(self, *args) -> None:
-        f_items = []
-        self.model.fav_items = []
-        path_to_fav_items = self.model.DATA_DIR.joinpath(
-            self.model.DATA_DIR, "fav_items.json"
-        )
-        if path_to_fav_items.exists():
-            with open(path_to_fav_items) as json_file:
-                f_items = json.loads(json_file.read())
-        fav_items = []
-        for item in self.model.items:
-            if any(item['id'] == f['id'] for f in f_items):
-                item['is_favorite'] = True
-                fav_items.append(item)
-        self.model.fav_items = fav_items
-
-    def generate_last_items(self, *args) -> None:
-        last_items = []
-        last_items_count = min(
-            self.model.LAST_ITEMS_COUNT, len(self.model.items))
-        for i in range(last_items_count):
-            last_items.append(self.model.items[i])
-        self.model.last_items = last_items
-    
-    def set_user_settings(self, *args) -> None:
-        path_to_settings = self.model.DATA_DIR.joinpath(
-            self.model.DATA_DIR, "user_settings.json"
-        )
-        if path_to_settings.exists():
-            with open(path_to_settings) as json_file:
-                self.model.user = json.loads(json_file.read())
-        self.model.browse_type = self.model.user['browse_type']
-    
-    async def load_data(self) -> None:
-        await ak.sleep(0)
-        self.generate_category_items()
-        self.generate_items()
-        self.generate_fav_items()
-        self.generate_last_items()
-        self.set_user_settings()
-        self.manager_screens.current = 'main screen'
-        
 
 ipolice_kivy().run()
