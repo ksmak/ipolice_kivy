@@ -11,10 +11,14 @@ from .components.recycleview.message_label import MessageLabel  # noqa
 
 
 class MainScreenView(BaseScreenView):
-    def on_enter(self) -> None:
+    def __init__(self, **kw):
+        super().__init__(**kw)
         self.app.target_screen = None
         self.controller.set_target_screen('main screen')
         self.controller.load_data()
+    
+    def on_pre_enter(self) -> None:
+        self.switch_browse_type()
 
     def generate_category_cards(self) -> None:
         self.ids.category_list_container.clear_widgets()
@@ -57,5 +61,5 @@ class MainScreenView(BaseScreenView):
         according to these changes.
         """
         self.generate_category_cards()
-        self.switch_browse_type()
+        
         

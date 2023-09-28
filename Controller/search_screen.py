@@ -114,6 +114,10 @@ class SearchScreenController:
             self.model.current_item = res[0]
     
     def set_current_category(self, title: str) -> None:
-        res = [d for d in self.model.category_items if d['title'] == title]
-        if res:
-            self.model.current_category = res[0]
+        self.model.current_category = {}
+        
+        if title:
+            res = [d for d in self.model.category_items if d['title'] == title]
+            if res:
+                self.model.current_category = res[0]
+

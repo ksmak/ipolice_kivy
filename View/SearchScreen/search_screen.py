@@ -73,14 +73,20 @@ class SearchScreenView(BaseScreenView):
     def create_category_menu(self):
         self.menu_items = [
             {
+                "text": "Все",
+                "on_release": lambda x="Все": self.category_menu_callback(x),
+            }
+        ]
+        self.menu_items.extend([
+            {
                 "text": c['title'],
                 "on_release": lambda x=c['title']: self.category_menu_callback(x),
             } for c in self.model.category_items
-        ]
+        ])
         self.category_menu = MDDropdownMenu(
             caller=self.ids.cat_item, 
             items=self.menu_items,
-            position="center"
+            position="bottom"
         )
         self.category_menu.bind()
         if self.model.current_category:

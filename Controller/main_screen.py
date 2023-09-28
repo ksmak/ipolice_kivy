@@ -114,6 +114,7 @@ class MainScreenController:
         ak.start(search())
 
     def open_search(self):
+        self.model.current_category = {}
         self.model.find_items = []
         self.model.is_first_open = True
 
