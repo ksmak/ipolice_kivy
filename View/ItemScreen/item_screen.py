@@ -111,7 +111,7 @@ class ItemScreenView(BaseScreenView):
             intent = Intent()
             intent.setAction(Intent.ACTION_VIEW)
             intent.setData(Uri.parse(
-                'https://api.whatsapp.com/send?phone='+self.model.current_item['author']['phone']))
+                'https://api.whatsapp.com/send?phone='+str(self.model.current_item['author']['phone'])))
             currentActivity = cast(
                 'android.app.Activity', PythonActivity.mActivity)
             currentActivity.startActivity(intent)

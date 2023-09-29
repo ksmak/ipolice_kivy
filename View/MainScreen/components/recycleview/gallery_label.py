@@ -43,7 +43,12 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
 
         self.ids.count_info.text = '1/' + str(len(self.ids.carousel.slides))
 
-        self.ids.favorite_button.bind(on_release=self.on_click_favorite_button)
+        if self.item_type == 'item':
+            self.ids.favorite_button.opacity = 1
+            self.ids.favorite_button.bind(
+                on_release=self.on_click_favorite_button)
+        else:
+            self.ids.favorite_button.opacity = 0
 
         super(GalleryLabel, self).refresh_view_attrs(rv, index, data)
 
