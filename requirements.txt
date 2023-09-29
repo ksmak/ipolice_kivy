@@ -13,5 +13,8 @@ materialyoucolor==1.2.0
 Pillow==10.0.0
 plyer==2.1.0
 Pygments==2.16.1
+pyjnius==1.5.0
+python-dateutil==2.8.2
 requests==2.31.0
+six==1.16.0
 urllib3==2.0.4

@@ -1,10 +1,12 @@
 import json
 import asynckivy as ak
+import dateutil.parser
 
 from kivy.network.urlrequest import UrlRequest
+from kivy.logger import Logger
 
 from View.MainScreen.main_screen import MainScreenView
-from Utility.helper import save_file
+from Utility.helper import save_file, format_date
 
 
 class MainScreenController:
@@ -20,8 +22,33 @@ class MainScreenController:
         return self.view
 
     def on_load_data_error(self, req, error):
-        print("Error loading data.")
+        Logger.info("Python info: ", "Error loading data.")
         self.app.close_app()
+
+    def generate_info_items(self, *args) -> None:
+        req = UrlRequest(
+            self.model.HOST_API + 'info/',
+            on_error=self.on_load_data_error,
+            on_failure=self.on_load_data_error
+        )
+        req.wait()
+        info_items = req.result
+
+        # append additional fields
+        for item in info_items:
+            item['id'] = str(item['id'])
+            item['item_type'] = 'info'
+            item['image_count'] = 1
+            item['is_favorite'] = False
+            item['controller'] = self
+            item['date'] = format_date(
+                dateutil.parser.isoparse(item['date_of_creation']))
+            item['date_add'] = 'Добавлен: ' + format_date(
+                dateutil.parser.isoparse(item['date_of_creation']))
+            item['place_info'] = ''
+            item['place_info_with_date'] = item['date']
+
+        self.model.info_items = info_items
 
     def generate_category_items(self, *args) -> None:
         req = UrlRequest(
@@ -44,11 +71,20 @@ class MainScreenController:
         # append additional fields
         for item in items:
             item['id'] = str(item['id'])
+            item['item_type'] = 'item'
             item['image_count'] = self.model.ITEM_IMAGE_COUNT
             item['is_favorite'] = False
             item['controller'] = self
             item['fulltext'] = ('#').join(
                 [item['title'].lower(), item['text'].lower()])
+            item['date'] = format_date(
+                dateutil.parser.isoparse(item['date_of_action']))
+            item['date_add'] = 'Добавлен: ' + format_date(
+                dateutil.parser.isoparse(item['date_of_creation']))
+            item['place_info'] = ", ".join(
+                [item['region']['title'], item['district']['title'], item['punkt']])
+            item['place_info_with_date'] = ", ".join(
+                [item['region']['title'], item['district']['title'], item['punkt'], item['date']])
         self.model.items = items
 
     def generate_fav_items(self, *args) -> None:
@@ -89,6 +125,7 @@ class MainScreenController:
             ak.sleep(0)
             self.generate_category_items()
             self.generate_items()
+            self.generate_info_items()
             self.generate_fav_items()
             self.generate_last_items()
             self.set_user_settings()
@@ -145,6 +182,11 @@ class MainScreenController:
         res = [d for d in self.model.items if d['id'] == id]
         if res:
             self.model.current_item = res[0]
+
+    def set_current_info(self, id: int) -> None:
+        res = [d for d in self.model.info_items if d['id'] == id]
+        if res:
+            self.model.current_info = res[0]
 
     def set_current_category(self, id: int) -> None:
         res = [d for d in self.model.category_items if d['id'] == id]

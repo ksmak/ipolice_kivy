@@ -6,6 +6,7 @@ from Model.main_model import MainModel
 from Controller.main_screen import MainScreenController
 from Controller.search_screen import SearchScreenController
 from Controller.item_screen import ItemScreenController
+from Controller.info_screen import InfoScreenController
 
 main_model = MainModel
 
@@ -18,5 +19,8 @@ screens = {
     },
     "item screen": {
         "controller": ItemScreenController,
+    },
+    "info screen": {
+        "controller": InfoScreenController,
     },
 }

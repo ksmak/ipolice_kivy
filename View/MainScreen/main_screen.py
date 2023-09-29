@@ -7,18 +7,18 @@ from .components.recycleview.list_label import ListLabel  # noqa
 from .components.recycleview.grid_label import GridLabel  # noqa
 from .components.recycleview.rv_box_layout import BoxRecycleLayout  # noqa
 from .components.recycleview.rv_grid_layout import GridRecycleLayout  # noqa
-from .components.recycleview.message_label import MessageLabel  # noqa
 
 
 class MainScreenView(BaseScreenView):
     def __init__(self, **kw):
         super().__init__(**kw)
         self.controller.load_data()
-    
+        self.refresh_data_info()
+
     def on_pre_enter(self) -> None:
         self.app.target_screen = None
         self.controller.set_target_screen('main screen')
-        self.switch_browse_type()
+        self.refresh_data_items()
 
     def generate_category_cards(self) -> None:
         self.ids.category_list_container.clear_widgets()
@@ -46,13 +46,18 @@ class MainScreenView(BaseScreenView):
     def remove_all_messages(self, *args) -> None:
         self.controller.remove_all_messages()
 
-    def switch_browse_type(self) -> None:
+    def refresh_data_items(self) -> None:
         if self.model.browse_type == 'gallery':
             self.ids.gallery_rv.refresh_from_data()
         elif self.model.browse_type == 'list':
             self.ids.list_rv.refresh_from_data()
         elif self.model.browse_type == 'grid':
             self.ids.grid_rv.refresh_from_data()
+
+    def refresh_data_info(self) -> None:
+        self.ids.gallery_rv_info.refresh_from_data()
+        self.ids.list_rv_info.refresh_from_data()
+        self.ids.grid_rv_info.refresh_from_data()
 
     def model_is_changed(self) -> None:
         """
@@ -61,5 +66,3 @@ class MainScreenView(BaseScreenView):
         according to these changes.
         """
         self.generate_category_cards()
-        
-        

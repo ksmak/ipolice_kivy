@@ -40,6 +40,8 @@ class MainModel(BaseScreenModel, EventDispatcher):
     browse_type = StringProperty()
     is_finished = BooleanProperty(False)
     current_category = DictProperty()
+    info_items = ListProperty()
+    current_info = DictProperty()
 
     def __init__(self):
         self.user = {}

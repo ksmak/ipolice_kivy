@@ -1,4 +1,3 @@
-from datetime import datetime
 from plyer import call
 from jnius import cast
 from jnius import autoclass
@@ -12,7 +11,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDFloatingActionButtonSpeedDial
 
 from View.base_screen import BaseScreenView
-from Utility.helper import get_by_id, format_date, format_date_without_time
+from Utility.helper import get_by_id
 
 
 class ItemScreenView(BaseScreenView):
@@ -51,13 +50,7 @@ class ItemScreenView(BaseScreenView):
     def on_pre_enter(self):
         self.app.target_screen = self.model.target_screen
         self.ids.title.text = self.model.current_item['title']
-
-        dt = datetime.strptime(
-            self.model.current_item['date_of_action'], '%Y-%m-%d')
-        self.ids.place_info.text = ", ".join([self.model.current_item['region']['title'],
-                                              self.model.current_item['district']['title'],
-                                              self.model.current_item['punkt'],
-                                              format_date_without_time(dt)])
+        self.ids.place_info.text = self.model.current_item['place_info_with_date']
         self.ids.text.text = self.model.current_item['text']
 
         self.ids.carousel.clear_widgets()
@@ -65,7 +58,8 @@ class ItemScreenView(BaseScreenView):
             if self.model.current_item['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
                 image = AsyncImage(
-                    source=self.model.current_item['photo' + str(i + 1)])
+                    source=self.model.current_item['photo' + str(i + 1)],
+                    fit_mode='fill')
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)
 
@@ -101,13 +95,7 @@ class ItemScreenView(BaseScreenView):
             self.model.current_item['id'] == d['id'] for d in self.model.fav_items)
         self.ids.favorite_button.bind(on_release=self.on_click_favorite_button)
 
-        dt = datetime.strptime(
-            self.model.current_item['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        self.ids.date_of_creation.text = 'Добавлен: ' + format_date(dt)
-
-        dt = datetime.strptime(
-            self.model.current_item['date_of_change'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        self.ids.date_of_change.text = 'Изменен: ' + format_date(dt)
+        self.ids.date_add.text = self.model.current_item['date_add']
 
         self.create_floating_button()
 

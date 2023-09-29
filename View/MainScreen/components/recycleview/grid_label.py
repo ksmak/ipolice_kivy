@@ -1,4 +1,3 @@
-from datetime import datetime
 from kivy.properties import (
     StringProperty,
     BooleanProperty,
@@ -7,7 +6,6 @@ from kivy.properties import (
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 
-from Utility.helper import format_date
 
 class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
     index = 0
@@ -19,6 +17,7 @@ class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
     is_favorite = BooleanProperty()
     controller = ObjectProperty()
     sliding = False
+    item_type = StringProperty()
 
     def refresh_view_attrs(self, rv, index, data):
         self.index = index
@@ -26,8 +25,9 @@ class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
         self.photo = data['photo1']
         self.title = data['title']
         self.text = data['text']
-        dt = datetime.strptime(data['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        self.place_info = ", ".join([data['punkt'], format_date(dt)])
+        self.item_type = data['item_type']
+        self.date = data['date']
+        self.place_info = data['place_info_with_date']
         self.is_favorite = data['is_favorite']
         self.controller = data['controller']
 
@@ -41,8 +41,6 @@ class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
         self.is_favorite = not self.is_favorite
 
     def on_touch_up(self, touch):
-        # if super(GalleryLabel, self).on_touch_up(touch):
-        #     return True
         if self.collide_point(*touch.pos):
             self.parent.select_with_touch(self.index, touch)
             self.parent.clear_selection()
@@ -50,7 +48,11 @@ class GridLabel(RecycleDataViewBehavior, MDBoxLayout):
 
     def apply_selection(self, rv, index, is_selected):
         if is_selected and not self.sliding:
-            self.controller.set_current_item(rv.data[index]['id'])
-            self.controller.view.manager_screens.current = 'item screen'
+            if rv.data[index]['item_type'] == 'item':
+                self.controller.set_current_item(rv.data[index]['id'])
+                self.controller.view.manager_screens.current = 'item screen'
+            elif rv.data[index]['item_type'] == 'info':
+                self.controller.set_current_info(rv.data[index]['id'])
+                self.controller.view.manager_screens.current = 'info screen'
         else:
             self.sliding = False

@@ -1,0 +1,78 @@
+<InfoScreenView>
+           
+    MDBoxLayout:
+        orientation: 'vertical'
+        md_bg_color: app.theme_cls.primary_light
+                        
+        MDScrollView:
+            do_scroll_x: False
+            do_scroll_y: True
+            
+            MDBoxLayout:
+                orientation: 'vertical'
+                adaptive_height: True
+
+                MDRelativeLayout:
+                    size_hint_y: None
+                    height: '350dp'
+
+                    AsyncImage:
+                        id: photo
+                        fit_mode: 'fill'
+                    
+                    MDIconButton:
+                        id: back_button
+                        pos_hint: {'top': 1, 'x': 0}
+                        icon: 'arrow-left'
+                        theme_icon_color: "Custom"
+                        icon_color: app.theme_cls.primary_color
+                        on_press:  root.manager_screens.current = root.model.target_screen
+                    
+                MDBoxLayout:
+                    orientation: 'vertical'
+                    adaptive_height: True
+                    padding: ('20dp', '5dp', '20dp', '5dp')
+                    spacing: '15dp'
+
+                    MDLabel:
+                        id: title
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                        font_style: 'H6'
+                        theme_text_color: 'Custom'
+                        text_color: app.theme_cls.primary_color
+                        adaptive_height: True
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True
+                        spacing: '5dp'
+                    
+                        MDLabel:
+                            text: 'Описание:'
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            font_style: 'Button'
+                            theme_text_color: 'Custom'
+                            text_color: app.theme_cls.accent_color
+                            bold: True,
+                            adaptive_height: True
+                        
+                        MDLabel:
+                            id: text
+                            pos_hint: {"center_x": .52, "center_y": .5}
+                            font_style: 'Caption'
+                            theme_text_color: 'Custom'
+                            text_color: app.theme_cls.primary_color
+                            adaptive_height: True
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        adaptive_height: True                    
+                    
+                        MDLabel:
+                            id: date_add
+                            pos_hint: {"center_x": .5, "center_y": .5}
+                            font_style: 'Caption'
+                            font_size: '11sp'
+                            theme_text_color: 'Custom'
+                            text_color: app.theme_cls.primary_color
+                            adaptive_height: True 

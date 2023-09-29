@@ -7,7 +7,7 @@
             size_hint: 1, .7
             pos_hint: {'top': 1}
             source: root.photo
-            # fit_mode: 'fill'
+            fit_mode: 'fill'
         
         MDIconButton:
             id: favorite_button
@@ -25,17 +25,15 @@
 
             MDLabel:
                 text: root.title[:20]
-                # pos_hint: {'top': .3, 'x': .05}
                 theme_text_color: "Custom"
                 text_color: app.theme_cls.primary_color
                 font_style: 'Caption'
                 bold: True
                 adaptive_size: True
-                # shorten: True
+                shorten: True
             
             MDLabel:
-                text: root.place_info
-                # pos_hint: {'top': .16, 'x': .05}
+                text: root.place_info[:25]
                 theme_text_color: "Custom"
                 text_color: app.theme_cls.primary_color
                 font_style: 'Caption'

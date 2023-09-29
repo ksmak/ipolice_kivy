@@ -1,4 +1,3 @@
-from datetime import datetime
 from kivy.properties import (
     NumericProperty,
     StringProperty,
@@ -9,8 +8,6 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivy.uix.image import AsyncImage
-
-from Utility.helper import format_date
 
 
 class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
@@ -23,19 +20,15 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
     image_count = NumericProperty()
     controller = ObjectProperty()
     sliding = False
+    item_type = StringProperty()
 
     def refresh_view_attrs(self, rv, index, data):
         self.index = index
         self.item_id = data['id']
         self.title = data['title']
-        self.place_info = ", ".join(
-            [data['region']['title'], data['district']['title'], data['punkt']])
-        self.is_favorite = data['is_favorite']
-        self.controller = data['controller']
-
-        dt = datetime.strptime(
-            data['date_of_creation'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        self.date = format_date(dt)
+        self.item_type = data['item_type']
+        self.date = data['date']
+        self.place_info = data['place_info']
 
         self.ids.carousel.clear_widgets()
         for i in range(data['image_count']):
@@ -46,7 +39,6 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
 
                 )
                 lt.add_widget(image)
-                # image.fit_mode = 'fill'
                 self.ids.carousel.add_widget(lt)
 
         self.ids.count_info.text = '1/' + str(len(self.ids.carousel.slides))
@@ -70,7 +62,11 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
 
     def apply_selection(self, rv, index, is_selected):
         if is_selected and not self.sliding:
-            self.controller.set_current_item(rv.data[index]['id'])
-            self.controller.view.manager_screens.current = 'item screen'
+            if rv.data[index]['item_type'] == 'item':
+                self.controller.set_current_item(rv.data[index]['id'])
+                self.controller.view.manager_screens.current = 'item screen'
+            elif rv.data[index]['item_type'] == 'info':
+                self.controller.set_current_info(rv.data[index]['id'])
+                self.controller.view.manager_screens.current = 'info screen'
         else:
             self.sliding = False
