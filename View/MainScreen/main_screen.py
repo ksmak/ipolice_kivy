@@ -59,6 +59,9 @@ class MainScreenView(BaseScreenView):
         self.ids.list_rv_info.refresh_from_data()
         self.ids.grid_rv_info.refresh_from_data()
 
+    def open_category_list(self) -> None:
+        self.manager_screens.current = 'category list screen'
+
     def model_is_changed(self) -> None:
         """
         Called whenever any change has occurred in the data model.

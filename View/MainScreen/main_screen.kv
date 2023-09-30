@@ -31,12 +31,20 @@
                         padding: '5dp', '20dp', '5dp', '10dp'
                         spacing: '15dp'
                     
-                        MDLabel:
-                            pos_hint: {'x': .02, 'center_y': .5}
-                            text: 'Категории'
-                            font_style: 'Button'
-                            theme_text_color: "Custom"
-                            text_color: app.theme_cls.accent_color
+                        MDBoxLayout:
+                            pos_hint: {'x': .02}
+
+                            MDLabel:
+                                pos_hint: {'center_y': .5}
+                                text: 'Категории'
+                                font_style: 'Button'
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.accent_color
+                            
+                            MDFlatButton:
+                                pos_hint: {'center_y': .5}
+                                text: 'Посмотреть все'
+                                on_release: root.open_category_list()
 
                         MDScrollView:
                             do_scroll_x: True

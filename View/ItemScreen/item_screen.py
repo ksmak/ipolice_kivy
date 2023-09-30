@@ -1,4 +1,3 @@
-from plyer import call
 from jnius import cast
 from jnius import autoclass
 
@@ -118,6 +117,7 @@ class ItemScreenView(BaseScreenView):
 
     def call_phone(self, *args):
         if platform == 'android':
+            from plyer import call
             call.makecall(self.model.current_item['author']['phone'])
 
     def model_is_changed(self) -> None:

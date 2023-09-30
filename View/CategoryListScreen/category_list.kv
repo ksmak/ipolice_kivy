@@ -1,0 +1,33 @@
+<CategoryListScreenView>
+    
+    MDScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+
+        MDBoxLayout:
+            orientation: 'vertical'
+            adaptive_height: True
+            padding: '20dp', '20dp', '20dp', '5dp'
+
+            MDBoxLayout:
+                spacing: '10dp'
+                
+                MDIconButton:
+                    id: back_button
+                    pos_hint: {'center_y': .5}
+                    icon: 'arrow-left'
+                    theme_icon_color: "Custom"
+                    icon_color: app.theme_cls.primary_color
+                    on_press:  root.manager_screens.current = root.model.target_screen
+
+                MDLabel:
+                    pos_hint: {'center_y': .5}
+                    text: 'Категории'
+                    font_style: 'Button'
+                    theme_text_color: "Custom"
+                    text_color: app.theme_cls.accent_color
+                    adaptive_height: True
+
+            MDList:
+                id: category_container
+                adaptive_height: True

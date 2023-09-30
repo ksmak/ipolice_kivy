@@ -3,7 +3,7 @@
 # (str) Title of your application
 title = E-KRIM-V
 
-# (str) Package name
+# (str) Package name 
 package.name = ekrimv
 
 # (str) Package domain (needed for android/ios packaging)
@@ -13,16 +13,16 @@ package.domain = kz.kdp
 source.dir = .
 
 # (list) Source files to include (let empty to include all the files)
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,atlas,json
 
 # (list) List of inclusions using pattern matching
 #source.include_patterns = assets/*,images/*.png
 
 # (list) Source files to exclude (let empty to not exclude anything)
-source.exclude_exts = spec
+#source.exclude_exts = spec
 
 # (list) List of directory to exclude (let empty to not exclude anything)
-source.exclude_dirs = tests, bin, venv
+#source.exclude_dirs = tests, bin, venv
 
 # (list) List of exclusions using pattern matching
 # Do not prefix with './'
@@ -44,7 +44,8 @@ requirements = python3,kivy==2.2.1,asynckivy,asyncgui,exceptiongroup,plyer,pytho
 # requirements.source.kivy = ../../kivy
 
 # (str) Presplash of the application
-presplash.filename = %(source.dir)s/ekrim_presplash.png
+#presplash.filename = %(source.dir)s/data/presplash.png
+presplash.filename = ekrim_presplash.jpg
 
 # (str) Icon of the application
 icon.filename = %(source.dir)s/ekrim_icon.png
@@ -81,7 +82,7 @@ fullscreen = 0
 # red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
 # darkgray, grey, lightgrey, darkgrey, aqua, fuchsia, lime, maroon, navy,
 # olive, purple, silver, teal.
-#android.presplash_color = #FFFFFF
+android.presplash_color = #008B8B
 
 # (string) Presplash animation using Lottie format.
 # see https://lottiefiles.com/ for examples and https://airbnb.design/lottie/
@@ -94,8 +95,9 @@ fullscreen = 0
 #icon.adaptive_background.filename = %(source.dir)s/data/icon_bg.png
 
 # (list) Permissions
-# (See https://python-for-android.readthedocs.io/en/latest/buildoptions/#build-options-1 for all the supported syntaxes and properties)
-android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18), android.permission.CALL_PHONE
+# (See https://python-for-android.readthedocs.io/en/latest/buildoptionsfrom jnius import autoclass/#build-options-1 for all the supported syntaxes and properties)
+# android.permissions = android.permission.INTERNET, (name=android.permission.WRITE_EXTERNAL_STORAGE;maxSdkVersion=18), android.permission.CALL_PHONE
+android.permissions = android.permission.INTERNET, android.permission.READ_EXTERNAL_STORAGE, android.permission.WRITE_EXTERNAL_STORAGE, android.permission.CALL_PHONE
 
 # (list) features (adds uses-feature -tags to manifest)
 #android.features = android.hardware.usb.host
