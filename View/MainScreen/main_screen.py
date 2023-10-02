@@ -26,6 +26,9 @@ class MainScreenView(BaseScreenView):
     def on_pre_enter(self) -> None:
         self.app.screen_stack.append('main screen')
 
+    def show_error(self) -> None:
+        pass
+
     def generate_info_cards(self) -> None:
         if self.model.info_items and len(self.model.info_items) > 0:
             self.ids.info_container.opacity = 1

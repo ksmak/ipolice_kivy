@@ -89,14 +89,17 @@ class SearchScreenView(BaseScreenView):
         )
         self.category_menu.bind()
         if self.model.current_category:
-            self.ids.cat_item.set_item(self.model.current_category['title'])
+            # self.ids.cat_item.set_item(self.model.current_category['title'])
+            self.ids.cat_item.text = self.model.current_category['title']
         else:
-            self.ids.cat_item.set_item('Все')
+            # self.ids.cat_item.set_item('Все')
+            self.ids.cat_item.text = 'Все'
 
     def category_menu_callback(self, category_title: str):
         self.category_menu.dismiss()
         self.controller.set_current_category(category_title)
-        self.ids.cat_item.set_item(category_title)
+        # self.ids.cat_item.set_item(category_title)
+        self.ids.cat_item.text = category_title
         self.controller.search(self.ids.search_field.text.lower())
 
     def model_is_changed(self) -> None:

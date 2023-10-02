@@ -10,6 +10,7 @@ You can read more about this template at the links below:
 https://github.com/HeaTTheatR/LoginAppMVC
 https://en.wikipedia.org/wiki/Model–view–controller
 """
+import os
 import asynckivy as ak
 
 from kivy.loader import Loader
@@ -22,9 +23,6 @@ from kivymd.uix.screenmanager import MDScreenManager
 
 from View.screens import screens, main_model
 
-
-Loader.num_workers = 4
-Loader.loading_image = 'loading.gif'
 
 colors = {
     "Teal": {
@@ -80,6 +78,8 @@ class ipolice_kivy(MDApp):
         Window.bind(on_keyboard=self.on_keyboard)
 
     def build(self) -> MDScreenManager:
+        Loader.num_workers = 4
+        Loader.loading_image = 'loading.zip'
         self.theme_cls.material_style = "M3"
         self.theme_cls.theme_style = "Light"
         self.theme_cls.colors = colors
@@ -112,11 +112,8 @@ class ipolice_kivy(MDApp):
         super(ipolice_kivy, self).stop(*largs)
 
     def show_error(self):
-        # popup = ErrorPopup(separator_height=0, title="Ошибка! Сервер не доступен.",
-        #                    size=(500, 300), size_hint=(None, None))
-        popup = ExitPopup(separator_height=0, title="Закрыть приложение?",
-                          size=(500, 300), size_hint=(None, None))
-
+        popup = ErrorPopup(separator_height=0, title="Ошибка! Сервер не доступен.",
+                           size=(500, 300), size_hint=(None, None))
         popup.open()
 
     def on_keyboard(self, window, key, *largs):

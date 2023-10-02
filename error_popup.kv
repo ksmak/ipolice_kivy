@@ -10,21 +10,18 @@
         MDLabel:
             valign: 'top'
             halign: 'center'
-            text: 'Ошибка при запуске приложения!'
+            text: 'Ошибка! Сервер не доступен.'
             font_style: 'H6'
         
-        MDLabel:
-            valign: 'top'
-            halign: 'center'
-            text: 'Сервер не доступен'
-            font_style: 'Caption'
-            bold: True
-           
-        
-        MDRectangleFlatButton:
-            text: 'Закрыть'
-            theme_text_color: "Custom"
-            text_color: app.theme_cls.primary_color
-            line_color: "white"
-            font_style: 'Button'
-            on_release: root.dismiss()
+        MDBoxLayout:
+            pos_hint: {'right': 1, 'top': .1}
+            spacing: '10dp'
+            adaptive_width: True
+
+            MDRectangleFlatButton:
+                text: 'Закрыть'
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                line_color: "white"
+                font_style: 'Button'
+                on_release: root.confirm()

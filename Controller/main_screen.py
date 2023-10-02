@@ -28,6 +28,7 @@ class MainScreenController:
 
     def on_load_data_error(self, req, error):
         Logger.info("Error loading data.")
+        self.view.app.show_error()
 
     async def generate_info_items(self, *args) -> None:
         ak.sleep(0)
@@ -156,7 +157,10 @@ class MainScreenController:
         if path_to_settings.exists():
             with open(path_to_settings) as json_file:
                 self.model.user = json.loads(json_file.read())
-        self.model.browse_type = self.model.user['browse_type']
+        try:
+            self.model.browse_type = self.model.user['browse_type']
+        except:
+            self.model.browse_type = 'list'
 
     def set_browse_type(self, browse_type: str, *args) -> None:
         self.model.browse_type = browse_type

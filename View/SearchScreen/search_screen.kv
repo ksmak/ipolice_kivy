@@ -49,12 +49,19 @@
                     text_color: app.theme_cls.accent_color
                     
 
-                MDDropDownItem:
+                # MDDropDownItem:
+                #     id: cat_item
+                #     pos_hint: {'center_y': .5}
+                #     font_style: 'Caption'
+                #     theme_text_color: 'Custom'
+                #     text_color: app.theme_cls.accent_color
+                #     on_release: root.category_menu.open()
+                MDRectangleFlatButton:
                     id: cat_item
                     pos_hint: {'center_y': .5}
-                    font_style: 'Caption'
-                    theme_text_color: 'Custom'
+                    theme_text_color: "Custom"
                     text_color: app.theme_cls.accent_color
+                    line_color: app.theme_cls.accent_color
                     on_release: root.category_menu.open()
 
             MDBoxLayout:

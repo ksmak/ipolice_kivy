@@ -42,8 +42,7 @@ class ItemScreenView(BaseScreenView):
             if self.model.current_item['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
                 image = AsyncImage(
-                    source=self.model.current_item['photo' + str(i + 1)],
-                    fit_mode='fill')
+                    source=self.model.current_item['photo' + str(i + 1)])
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)
 
