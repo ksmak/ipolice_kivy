@@ -24,7 +24,7 @@ from View.screens import screens, main_model
 
 
 Loader.num_workers = 4
-# Loader.loading_image = Image('loading.gif')
+Loader.loading_image = 'loading.gif'
 
 colors = {
     "Teal": {
@@ -62,16 +62,13 @@ class ExitPopup(Popup):
 class ErrorPopup(Popup):
     def __init__(self, **kwargs):
         super(ErrorPopup, self).__init__(**kwargs)
-    
+
     def confirm(self):
         app = MDApp.get_running_app()
         app.close_app()
 
 
 class ipolice_kivy(MDApp):
-    dialog = None
-    
-    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # load kv
@@ -79,8 +76,7 @@ class ipolice_kivy(MDApp):
         # This is the screen manager that will contain all the screens of your
         # application.
         self.manager_screens = MDScreenManager()
-        self.target_screen = ''
-        # self.is_finished_loading_data = False
+        self.screen_stack = []
         Window.bind(on_keyboard=self.on_keyboard)
 
     def build(self) -> MDScreenManager:
@@ -111,20 +107,37 @@ class ipolice_kivy(MDApp):
             view.manager_screens = self.manager_screens
             view.name = name_screen
             self.manager_screens.add_widget(view)
-    
+
     def close_app(self, *largs):
         super(ipolice_kivy, self).stop(*largs)
+
+    def show_error(self):
+        # popup = ErrorPopup(separator_height=0, title="Ошибка! Сервер не доступен.",
+        #                    size=(500, 300), size_hint=(None, None))
+        popup = ExitPopup(separator_height=0, title="Закрыть приложение?",
+                          size=(500, 300), size_hint=(None, None))
+
+        popup.open()
 
     def on_keyboard(self, window, key, *largs):
         if key == 27:
             Logger.info('python. Escape key pressed...')
-            if self.target_screen:
-                self.manager_screens.current = self.target_screen
-                return True
 
             popup = ExitPopup(separator_height=0, title="Закрыть приложение?",
                               size=(500, 300), size_hint=(None, None))
-            popup.open()
+
+            if len(self.screen_stack) == 0:
+                popup.open()
+                return True
+
+            screen = self.screen_stack.pop()
+
+            if screen == 'main screen':
+                popup.open()
+                return True
+
+            self.manager_screens.current = self.screen_stack[-1]
             return True
+
 
 ipolice_kivy().run()

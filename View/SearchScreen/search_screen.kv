@@ -25,7 +25,8 @@
                     icon_color: app.theme_cls.primary_color
                     on_press:
                         search_field.text = ''
-                        root.manager_screens.current = 'main screen'
+                        app.screen_stack.pop()
+                        root.manager_screens.current = app.screen_stack[-1]
             
                 MDTextField:
                     id: search_field

@@ -7,8 +7,7 @@ from View.base_screen import BaseScreenView
 
 class CategoryListScreenView(BaseScreenView):
     def on_pre_enter(self) -> None:
-        self.app.target_screen = self.model.target_screen
-        self.controller.set_target_screen('category list screen')
+        self.app.screen_stack.append('category list screen')
         self.generate_category_list()
 
     def generate_category_list(self) -> None:

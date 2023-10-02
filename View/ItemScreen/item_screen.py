@@ -30,24 +30,9 @@ class ItemScreenView(BaseScreenView):
 
         self.float_button = None
 
-    def create_floating_button(self):
-        if self.float_button:
-            self.remove_widget(self.float_button)
-
-        self.float_button = MDFloatingActionButtonSpeedDial(
-            icon="card-account-phone",
-            label_text_color="white",
-            hint_animation=True,
-            bg_hint_color=self.app.theme_cls.primary_dark,
-            bg_color_root_button=self.app.theme_cls.primary_color,
-            bg_color_stack_button=self.app.theme_cls.primary_color,
-            data=self.data
-        )
-
-        self.add_widget(self.float_button)
-
     def on_pre_enter(self):
-        self.app.target_screen = self.model.target_screen
+        self.app.screen_stack.append('item screen')
+
         self.ids.title.text = self.model.current_item['title']
         self.ids.place_info.text = self.model.current_item['place_info_with_date']
         self.ids.text.text = self.model.current_item['text']
@@ -97,6 +82,22 @@ class ItemScreenView(BaseScreenView):
         self.ids.date_add.text = self.model.current_item['date_add']
 
         self.create_floating_button()
+
+    def create_floating_button(self):
+        if self.float_button:
+            self.remove_widget(self.float_button)
+
+        self.float_button = MDFloatingActionButtonSpeedDial(
+            icon="card-account-phone",
+            label_text_color="white",
+            hint_animation=True,
+            bg_hint_color=self.app.theme_cls.primary_dark,
+            bg_color_root_button=self.app.theme_cls.primary_color,
+            bg_color_stack_button=self.app.theme_cls.primary_color,
+            data=self.data
+        )
+
+        self.add_widget(self.float_button)
 
     def on_click_favorite_button(self, *args):
         self.controller.set_favorite_item(self.model.current_item['id'])

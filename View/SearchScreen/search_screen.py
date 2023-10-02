@@ -19,8 +19,7 @@ class SearchScreenView(BaseScreenView):
         self.controller.generate_history_items()
 
     def on_pre_enter(self):
-        self.app.target_screen = 'main screen'
-        self.controller.set_target_screen('search screen')
+        self.app.screen_stack.append('search screen')
         self.create_history_items()
         self.refresh_layouts()
         self.create_category_menu()
@@ -67,9 +66,9 @@ class SearchScreenView(BaseScreenView):
         if not self.model.is_first_open \
                 and not self.model.is_loading:
             self.ids.result_layout.opacity = 1
-        else:  
+        else:
             self.ids.result_layout.opacity = 0
-    
+
     def create_category_menu(self):
         self.menu_items = [
             {
@@ -84,7 +83,7 @@ class SearchScreenView(BaseScreenView):
             } for c in self.model.category_items
         ])
         self.category_menu = MDDropdownMenu(
-            caller=self.ids.cat_item, 
+            caller=self.ids.cat_item,
             items=self.menu_items,
             position="bottom"
         )
@@ -99,7 +98,6 @@ class SearchScreenView(BaseScreenView):
         self.controller.set_current_category(category_title)
         self.ids.cat_item.set_item(category_title)
         self.controller.search(self.ids.search_field.text.lower())
-
 
     def model_is_changed(self) -> None:
         """

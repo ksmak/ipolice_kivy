@@ -5,6 +5,10 @@ import dateutil.parser
 from kivy.network.urlrequest import UrlRequest
 from kivy.logger import Logger
 
+from kivymd.app import MDApp
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
+
 from View.MainScreen.main_screen import MainScreenView
 from Utility.helper import save_file, format_date
 
@@ -13,6 +17,7 @@ class MainScreenController:
     """
     Main screen controller.
     """
+    error_dialog = None
 
     def __init__(self, model):
         self.model = model
@@ -22,70 +27,102 @@ class MainScreenController:
         return self.view
 
     def on_load_data_error(self, req, error):
-        Logger.info("Python info: ", "Error loading data.")
-        self.app.close_app()
+        Logger.info("Error loading data.")
 
-    def generate_info_items(self, *args) -> None:
+    async def generate_info_items(self, *args) -> None:
+        ak.sleep(0)
+
+        self.model.info_result = False
+
+        def get_result(req, result):
+            info_items = req.result
+            # append additional fields
+            for item in info_items:
+                item['id'] = str(item['id'])
+                item['item_type'] = 'info'
+                item['image_count'] = 1
+                item['is_favorite'] = False
+                item['controller'] = self
+                item['date'] = format_date(
+                    dateutil.parser.isoparse(item['date_of_creation']))
+                item['date_add'] = 'Добавлен: ' + format_date(
+                    dateutil.parser.isoparse(item['date_of_creation']))
+                item['place_info'] = ''
+                item['place_info_with_date'] = item['date']
+
+            self.model.info_items = info_items
+            self.view.generate_info_cards()
+            self.info_result = True
+            self.model.notify_observers()
+
         req = UrlRequest(
             self.model.HOST_API + 'info/',
+            on_success=get_result,
             on_error=self.on_load_data_error,
             on_failure=self.on_load_data_error
         )
-        req.wait()
-        info_items = req.result
 
-        # append additional fields
-        for item in info_items:
-            item['id'] = str(item['id'])
-            item['item_type'] = 'info'
-            item['image_count'] = 1
-            item['is_favorite'] = False
-            item['controller'] = self
-            item['date'] = format_date(
-                dateutil.parser.isoparse(item['date_of_creation']))
-            item['date_add'] = 'Добавлен: ' + format_date(
-                dateutil.parser.isoparse(item['date_of_creation']))
-            item['place_info'] = ''
-            item['place_info_with_date'] = item['date']
+        # req.wait()
 
-        self.model.info_items = info_items
+    async def generate_category_items(self, *args) -> None:
+        ak.sleep(0)
 
-    def generate_category_items(self, *args) -> None:
+        self.model.category_result = False
+
+        def get_result(req, result):
+            self.model.category_items = req.result
+            self.view.generate_category_cards()
+            self.model.category_result = True
+            self.model.notify_observers()
+
         req = UrlRequest(
             self.model.HOST_API + 'categories/',
+            on_success=get_result,
             on_error=self.on_load_data_error,
             on_failure=self.on_load_data_error
         )
-        req.wait()
-        self.model.category_items = req.result
 
-    def generate_items(self, *args) -> None:
+        # req.wait()
+
+    async def generate_items(self, *args) -> None:
+        ak.sleep(0)
+
+        self.model.items_result = False
+
+        def get_result(req, result):
+            items = req.result
+            # append additional fields
+            for item in items:
+                item['id'] = str(item['id'])
+                item['item_type'] = 'item'
+                item['image_count'] = self.model.ITEM_IMAGE_COUNT
+                item['is_favorite'] = False
+                item['controller'] = self
+                item['fulltext'] = ('#').join(
+                    [item['title'].lower(), item['text'].lower()])
+                item['date'] = format_date(
+                    dateutil.parser.isoparse(item['date_of_action']))
+                item['date_add'] = 'Добавлен: ' + format_date(
+                    dateutil.parser.isoparse(item['date_of_creation']))
+                item['place_info'] = ", ".join(
+                    [item['region']['title'], item['district']['title'], item['punkt']])
+                item['place_info_with_date'] = ", ".join(
+                    [item['region']['title'], item['district']['title'], item['punkt'], item['date']])
+            self.model.items = items
+            self.generate_fav_items()
+            self.generate_last_items()
+            self.view.refresh_data_items()
+            self.model.items_result = True
+            self.model.notify_observers()
+
         req = UrlRequest(
             self.model.HOST_API + 'items/',
+            on_success=get_result,
             on_error=self.on_load_data_error,
             on_failure=self.on_load_data_error
         )
-        req.wait()
-        items = req.result
 
-        # append additional fields
-        for item in items:
-            item['id'] = str(item['id'])
-            item['item_type'] = 'item'
-            item['image_count'] = self.model.ITEM_IMAGE_COUNT
-            item['is_favorite'] = False
-            item['controller'] = self
-            item['fulltext'] = ('#').join(
-                [item['title'].lower(), item['text'].lower()])
-            item['date'] = format_date(
-                dateutil.parser.isoparse(item['date_of_action']))
-            item['date_add'] = 'Добавлен: ' + format_date(
-                dateutil.parser.isoparse(item['date_of_creation']))
-            item['place_info'] = ", ".join(
-                [item['region']['title'], item['district']['title'], item['punkt']])
-            item['place_info_with_date'] = ", ".join(
-                [item['region']['title'], item['district']['title'], item['punkt'], item['date']])
-        self.model.items = items
+        # req.wait()
 
     def generate_fav_items(self, *args) -> None:
         f_items = []
@@ -111,7 +148,8 @@ class MainScreenController:
             last_items.append(self.model.items[i])
         self.model.last_items = last_items
 
-    def set_user_settings(self, *args) -> None:
+    async def set_user_settings(self, *args) -> None:
+        ak.sleep(0)
         path_to_settings = self.model.DATA_DIR.joinpath(
             self.model.DATA_DIR, "user_settings.json"
         )
@@ -119,24 +157,6 @@ class MainScreenController:
             with open(path_to_settings) as json_file:
                 self.model.user = json.loads(json_file.read())
         self.model.browse_type = self.model.user['browse_type']
-
-    def load_data(self) -> None:
-        async def start_load():
-            ak.sleep(0)
-            self.generate_category_items()
-            self.generate_items()
-            self.generate_info_items()
-            self.generate_fav_items()
-            self.generate_last_items()
-            self.set_user_settings()
-            self.model.is_loading = False
-            self.model.notify_observers()
-
-        self.model.is_loading = True
-        ak.start(start_load())
-
-    def set_target_screen(self, target_screen: str) -> None:
-        self.model.target_screen = target_screen
 
     def set_browse_type(self, browse_type: str, *args) -> None:
         self.model.browse_type = browse_type

@@ -7,6 +7,7 @@ from kivy.properties import (
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivymd.uix.relativelayout import MDRelativeLayout
+# from kivymd.uix.fitimage import FitImage
 from kivy.uix.image import AsyncImage
 
 
@@ -35,8 +36,8 @@ class GalleryLabel(RecycleDataViewBehavior, MDBoxLayout):
             if data['photo' + str(i + 1)]:
                 lt = MDRelativeLayout()
                 image = AsyncImage(
-                    source=data['photo' + str(i + 1)]
-
+                    source=data['photo' + str(i + 1)],
+                    radius=(12, 12, 0, 0)
                 )
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)

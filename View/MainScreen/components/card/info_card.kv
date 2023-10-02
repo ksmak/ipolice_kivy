@@ -1,0 +1,21 @@
+<InfoCard>
+    md_bg_color: '#ffffff'
+    radius: 12
+    
+    MDRelativeLayout:
+
+        FitImage:
+            id: info_image
+            size_hint_y: .85
+            pos_hint: {'top': 1}
+            source: root.icon
+            radius: 12, 12, 0, 0
+        
+        MDLabel:
+            text: root.title
+            pos_hint: {'top': .15, 'x': .05}
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
+            font_style: 'Caption'
+            adaptive_height: True
+            shorten: True

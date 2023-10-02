@@ -17,9 +17,6 @@ class SearchScreenController:
     def get_view(self) -> SearchScreenView:
         return self.view
 
-    def set_target_screen(self, target_screen: str) -> None:
-        self.model.target_screen = target_screen
-
     def generate_history_items(self, *args) -> None:
         history_items = []
         path_to_history_items = self.model.DATA_DIR.joinpath(

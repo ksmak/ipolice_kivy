@@ -32,7 +32,6 @@ class MainModel(BaseScreenModel, EventDispatcher):
     message_items = ListProperty()
     history_items = ListProperty()
     is_loading = BooleanProperty(False)
-    target_screen = StringProperty()
     is_first_open = BooleanProperty()
     current_item = ObjectProperty()
     current_message = ObjectProperty()
@@ -42,6 +41,9 @@ class MainModel(BaseScreenModel, EventDispatcher):
     current_category = DictProperty()
     info_items = ListProperty()
     current_info = DictProperty()
+    category_result = BooleanProperty(False)
+    items_result = BooleanProperty(False)
+    info_result = BooleanProperty(False)
 
     def __init__(self):
         self.user = {}

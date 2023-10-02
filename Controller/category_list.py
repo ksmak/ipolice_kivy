@@ -15,9 +15,6 @@ class CategoryListScreenController:
     def get_view(self) -> CategoryListScreenView:
         return self.view
 
-    def set_target_screen(self, target_screen: str) -> None:
-        self.model.target_screen = target_screen
-
     def search_by_category(self, id: int) -> None:
         async def search() -> None:
             find_items = []

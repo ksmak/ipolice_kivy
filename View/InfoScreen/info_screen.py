@@ -4,7 +4,8 @@ from Utility.helper import format_date
 
 class InfoScreenView(BaseScreenView):
     def on_pre_enter(self) -> None:
-        self.app.target_screen = self.model.target_screen
+        self.app.screen_stack.append('info screen')
+
         self.ids.photo.source = self.model.current_info['photo1']
         self.ids.title.text = self.model.current_info['title']
         self.ids.text.text = self.model.current_info['text']
