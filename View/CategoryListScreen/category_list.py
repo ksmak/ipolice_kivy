@@ -3,6 +3,7 @@ from functools import partial
 from kivymd.uix.list import OneLineAvatarListItem, ImageLeftWidget
 
 from View.base_screen import BaseScreenView
+from .components.list.category_item import CategoryItem
 
 
 class CategoryListScreenView(BaseScreenView):
@@ -10,15 +11,27 @@ class CategoryListScreenView(BaseScreenView):
         self.app.screen_stack.append('category list screen')
         self.generate_category_list()
 
+    def calc_count_items(self) -> dict:
+        cnts = {}
+        for item in self.model.items:
+            category = 'id_' + str(item['category'])
+            if category in cnts:
+                cnts[category] = cnts[category] + 1
+            else:
+                cnts[category] = 1
+
+        return cnts
+
     def generate_category_list(self) -> None:
+        cnts = self.calc_count_items()
         self.ids.category_container.clear_widgets()
         for category in self.model.category_items:
-            widget = OneLineAvatarListItem(
-                ImageLeftWidget(
-                    source=category['photo'],
-                    size_hint=(.7, .7)
-                ),
-                text=category['title'],
+            cnt_text = 'Количество: ' + \
+                str(cnts.get('id_' + str(category['id']), 0))
+            widget = CategoryItem(
+                photo=category['photo'],
+                title=category['title'],
+                text=cnt_text
             )
             callable_function = partial(
                 self.open_category_item, category['id'])

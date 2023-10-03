@@ -41,7 +41,7 @@
                                 id: info_container
                                 opacity: 0
                                 size_hint_y: None
-                                height: '150dp' if self.opacity == 1 else 0
+                                height: '200dp' if self.opacity == 1 else 0
                                 loop: True
                     
                         MDBoxLayout:
@@ -56,19 +56,19 @@
                             
                             MDFlatButton:
                                 pos_hint: {'center_y': .5}
-                                text: 'Посмотреть все'
+                                text: 'Смотреть все'
                                 on_release: root.open_category_list()
 
                         MDScrollView:
                             do_scroll_x: True
                             do_scroll_y: False
                             size_hint_y: None
-                            height: '135dp'
+                            height: '150dp'
 
                             MDBoxLayout:
                                 id: category_list_container
                                 adaptive_size: True
-                                spacing: '5dp'
+                                # spacing: '5dp'
                         
                         MDBoxLayout:
                             orientation: 'vertical'
@@ -275,8 +275,7 @@
                                 cols: 2
         
     MDSpinner:
-        id: loading
         size_hint: None, None
         size: '64dp', '64dp'
         pos_hint: {'center_x': .5, 'center_y': .5}
-        active: True
+        active: root.model.is_loading

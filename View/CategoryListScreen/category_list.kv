@@ -8,9 +8,10 @@
             orientation: 'vertical'
             adaptive_height: True
             padding: '20dp', '20dp', '20dp', '5dp'
+            spacing: '20dp'
 
             MDBoxLayout:
-                spacing: '10dp'
+                spacing: '5dp'
                 
                 MDIconButton:
                     id: back_button
@@ -18,7 +19,7 @@
                     icon: 'arrow-left'
                     theme_icon_color: "Custom"
                     icon_color: app.theme_cls.primary_color
-                    on_press:  
+                    on_release:  
                         app.screen_stack.pop()
                         root.manager_screens.current = app.screen_stack[-1]
 
@@ -30,6 +31,8 @@
                     text_color: app.theme_cls.accent_color
                     adaptive_height: True
 
-            MDList:
+            MDBoxLayout:
                 id: category_container
                 adaptive_height: True
+                orientation: 'vertical'
+                spacing: '10dp'

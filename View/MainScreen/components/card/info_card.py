@@ -1,8 +1,8 @@
-from kivymd.uix.card import MDCard
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.properties import StringProperty
 
 
-class InfoCard(MDCard):
+class InfoCard(MDBoxLayout):
     """The class implements the info card."""
     icon = StringProperty()
     title = StringProperty()

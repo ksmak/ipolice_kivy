@@ -4,6 +4,7 @@ from jnius import autoclass
 from kivy.properties import BooleanProperty, StringProperty
 from kivy.uix.image import AsyncImage
 from kivy.utils import platform
+from kivy.cache import Cache
 
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.uix.label import MDLabel
@@ -11,6 +12,10 @@ from kivymd.uix.button import MDFloatingActionButtonSpeedDial
 
 from View.base_screen import BaseScreenView
 from Utility.helper import get_by_id
+
+
+def change_fit_mode(obj):
+    obj.fit_mode = 'fill'
 
 
 class ItemScreenView(BaseScreenView):
@@ -43,6 +48,9 @@ class ItemScreenView(BaseScreenView):
                 lt = MDRelativeLayout()
                 image = AsyncImage(
                     source=self.model.current_item['photo' + str(i + 1)])
+                image.bind(on_load=change_fit_mode)
+                if Cache.get('kv.loader', self.model.current_item['photo' + str(i + 1)]):
+                    image.fit_mode = 'fill'
                 lt.add_widget(image)
                 self.ids.carousel.add_widget(lt)
 

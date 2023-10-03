@@ -78,8 +78,8 @@ class SearchScreenView(BaseScreenView):
         ]
         self.menu_items.extend([
             {
-                "text": c['title'],
-                "on_release": lambda x=c['title']: self.category_menu_callback(x),
+                "text": c['title'].replace('\n', ' '),
+                "on_release": lambda x=c['title'].replace('\n', ' '): self.category_menu_callback(x),
             } for c in self.model.category_items
         ])
         self.category_menu = MDDropdownMenu(
@@ -90,7 +90,8 @@ class SearchScreenView(BaseScreenView):
         self.category_menu.bind()
         if self.model.current_category:
             # self.ids.cat_item.set_item(self.model.current_category['title'])
-            self.ids.cat_item.text = self.model.current_category['title']
+            self.ids.cat_item.text = self.model.current_category['title'].replace(
+                '\n', ' ')
         else:
             # self.ids.cat_item.set_item('Все')
             self.ids.cat_item.text = 'Все'

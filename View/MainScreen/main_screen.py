@@ -26,9 +26,6 @@ class MainScreenView(BaseScreenView):
     def on_pre_enter(self) -> None:
         self.app.screen_stack.append('main screen')
 
-    def show_error(self) -> None:
-        pass
-
     def generate_info_cards(self) -> None:
         if self.model.info_items and len(self.model.info_items) > 0:
             self.ids.info_container.opacity = 1
@@ -40,7 +37,7 @@ class MainScreenView(BaseScreenView):
                 callback_function = partial(self.open_info_item, info['id'])
                 widget.bind(on_touch_up=callback_function)
                 self.ids.info_container.add_widget(widget)
-        Clock.schedule_interval(self.ids.info_container.load_next, 12)
+        Clock.schedule_interval(self.ids.info_container.load_next, 15)
 
     def generate_category_cards(self) -> None:
         self.ids.category_list_container.clear_widgets()
@@ -90,4 +87,4 @@ class MainScreenView(BaseScreenView):
         The view in this method tracks these changes and updates the UI
         according to these changes.
         """
-        self.ids.loading.active = self.model.category_result and self.model.items_result and self.model.info_result
+        self.model.is_loading = self.model.category_result and self.model.items_result and self.model.info_result

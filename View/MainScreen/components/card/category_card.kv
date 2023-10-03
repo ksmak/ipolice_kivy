@@ -1,13 +1,12 @@
 <CategoryCard>:
     md_bg_color: app.theme_cls.primary_light
     size_hint: None, None
-    size: dp(110), dp(130)
-    # padding: dp(5)
+    size: '130dp', '140dp'
             
     MDRelativeLayout:
                     
         MDLabel:
-            pos_hint: {'top': 0.32}
+            pos_hint: {'top': 0.3}
             text_size: self.size
             text: root.category_name
             valign: 'top'
@@ -20,7 +19,7 @@
         AsyncImage:
             id: card_button
             source: root.category_icon
-            pos_hint: {'top': .97, 'center_x': .5}
+            pos_hint: {'top': .95, 'center_x': .5}
             size_hint: .6, .6
             canvas.before:
                 Color:

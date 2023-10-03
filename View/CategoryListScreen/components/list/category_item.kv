@@ -1,0 +1,34 @@
+<CategoryItem>
+    size_hint_y: None
+    height: '70dp'
+    md_bg_color: '#ccffff'
+
+    AsyncImage:
+        source: root.photo
+        size_hint: .35, 1
+    
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: '10dp'
+
+        MDRelativeLayout:
+
+            MDLabel:
+                pos_hint: {'top': .9}
+                text: root.title
+                font_style: 'Caption'
+                font_size: '13sp'
+                bold: True
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                adaptive_height: True
+                shorten: True
+
+            MDLabel:
+                pos_hint: {'top': .5}
+                text: root.text
+                font_style: 'Caption'
+                font_size: '10sp'
+                theme_text_color: "Custom"
+                text_color: app.theme_cls.primary_color
+                adaptive_height: True
