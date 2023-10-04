@@ -44,6 +44,7 @@ class MainModel(BaseScreenModel, EventDispatcher):
     category_result = BooleanProperty(False)
     items_result = BooleanProperty(False)
     info_result = BooleanProperty(False)
+    counts = DictProperty()
 
     def __init__(self):
         self.user = {}

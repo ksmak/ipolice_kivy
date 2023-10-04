@@ -14,18 +14,16 @@ from View.MainScreen.components.recycleview.rv_grid_layout import GridRecycleLay
 
 
 class SearchScreenView(BaseScreenView):
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.controller.generate_history_items()
-
     def on_pre_enter(self):
-        self.app.screen_stack.append('search screen')
-        self.create_history_items()
+        if len(self.app.screen_stack) > 0 and self.app.screen_stack[-1] != 'search screen':
+            self.app.screen_stack.append('search screen')
+        self.ids.history_container.clear_widgets()
+        if self.model.is_first_open:
+            self.create_history_items()
         self.refresh_layouts()
         self.create_category_menu()
 
     def create_history_items(self):
-        self.ids.history_container.clear_widgets()
         for history_item in self.model.history_items:
             item = HistoryItem(
                 title=history_item['title']
@@ -61,7 +59,7 @@ class SearchScreenView(BaseScreenView):
         else:
             self.ids.history_layout.opacity = 1
             self.ids.history_container.opacity = 1
-            self.create_history_items()
+            # self.create_history_items()
 
         if not self.model.is_first_open \
                 and not self.model.is_loading:

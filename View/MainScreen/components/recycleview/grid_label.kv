@@ -1,12 +1,13 @@
 <GridLabel>:
     orientation: 'vertical'
-    md_bg_color: '#ccffff'
+    md_bg_color: app.theme_cls.primary_light
 
     MDRelativeLayout:
         AsyncImage:
             size_hint: 1, .7
             pos_hint: {'top': 1}
             source: root.photo
+            color: app.theme_cls.primary_light
         
         MDIconButton:
             id: favorite_button
@@ -16,26 +17,25 @@
             icon_size: '18dp'
             icon: 'star' if root.is_favorite else 'star-outline'
     
-        MDBoxLayout:
-            orientation: 'vertical'
-            pos_hint: {'top': .3}
-            adaptive_size: True
-            padding: '4dp'
-
-            MDLabel:
-                text: root.title[:20]
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                font_style: 'Caption'
-                bold: True
-                adaptive_size: True
-                shorten: True
-            
-            MDLabel:
-                text: root.place_info[:25]
-                theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
-                font_style: 'Caption'
-                font_size: '9sp'
-                adaptive_size: True
-                shorten: True
+     
+        MDLabel:
+            pos_hint: {'top': .3, 'x': .02}
+            size_hint_x: .95
+            text: root.title
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.primary_color
+            font_style: 'Caption'
+            bold: True
+            adaptive_height: True
+            shorten: True
+        
+        MDLabel:
+            pos_hint: {'top': .15, 'x': .02}
+            size_hint_x: .95
+            text: root.place_info
+            theme_text_color: "Custom"
+            text_color: app.theme_cls.accent_color
+            font_style: 'Caption'
+            font_size: '9sp'
+            adaptive_height: True
+            shorten: True

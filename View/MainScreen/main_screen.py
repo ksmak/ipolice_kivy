@@ -22,6 +22,7 @@ class MainScreenView(BaseScreenView):
         ak.start(self.controller.generate_items())
         ak.start(self.controller.generate_info_items())
         ak.start(self.controller.set_user_settings())
+        ak.start(self.controller.generate_history_items())
 
     def on_pre_enter(self) -> None:
         self.app.screen_stack.append('main screen')

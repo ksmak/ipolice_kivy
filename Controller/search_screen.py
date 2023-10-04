@@ -17,16 +17,6 @@ class SearchScreenController:
     def get_view(self) -> SearchScreenView:
         return self.view
 
-    def generate_history_items(self, *args) -> None:
-        history_items = []
-        path_to_history_items = self.model.DATA_DIR.joinpath(
-            self.model.DATA_DIR, "history_items.json"
-        )
-        if path_to_history_items.exists():
-            with open(path_to_history_items) as json_file:
-                history_items = json.loads(json_file.read())
-        self.model.history_items = history_items
-
     def remove_history_item(self, item):
         if item in self.model.history_items:
             self.model.history_items.remove(item)

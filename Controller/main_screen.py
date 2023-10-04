@@ -10,7 +10,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 
 from View.MainScreen.main_screen import MainScreenView
-from Utility.helper import save_file, format_date, format_date_without_time
+from Utility.helper import save_file, format_date, get_string
 
 
 class MainScreenController:
@@ -91,6 +91,7 @@ class MainScreenController:
         self.model.items_result = False
 
         def get_result(req, result):
+            self.model.counts = {}
             items = req.result
             # append additional fields
             for item in items:
@@ -102,13 +103,29 @@ class MainScreenController:
                 item['fulltext'] = ('#').join(
                     [item['title'].lower(), item['text'].lower()])
                 item['date'] = dateutil.parser.isoparse(
-                    item['date_of_action']).strftime('%d.%m.%Y')
+                    item['date_of_action']).strftime('%d %B %Yг.')
                 item['date_add'] = 'Добавлен: ' + format_date(
                     dateutil.parser.isoparse(item['date_of_creation']))
-                item['place_info'] = ", ".join(
-                    [item['region'].get('title', ''), item['district'].get('title', '') if item['district'] else '', item['punkt']])
-                item['place_info_with_date'] = ", ".join(
-                    [item['region'].get('title', ''), item['district'].get('title', '') if item['district'] else '', item['punkt'], item['date']])
+                item['place_info'] = get_string([
+                    item['punkt'],
+                    item['district'].get(
+                        'title', '') if item['district'] else '',
+                    item['region'].get('title', '')
+                ])
+                item['place_info_with_date'] = get_string([
+                    item['punkt'],
+                    item['district'].get(
+                        'title', '') if item['district'] else '',
+                    item['region'].get('title', ''),
+                    item['date']
+                ])
+                # counts
+                category = 'id_' + str(item['category'])
+                if category in self.model.counts:
+                    self.model.counts[category] = self.model.counts[category] + 1
+                else:
+                    self.model.counts[category] = 1
+
             self.model.items = items
             self.generate_fav_items()
             self.generate_last_items()
@@ -161,6 +178,17 @@ class MainScreenController:
             self.model.browse_type = self.model.user['browse_type']
         except:
             self.model.browse_type = 'list'
+
+    async def generate_history_items(self, *args) -> None:
+        ak.sleep(0)
+        history_items = []
+        path_to_history_items = self.model.DATA_DIR.joinpath(
+            self.model.DATA_DIR, "history_items.json"
+        )
+        if path_to_history_items.exists():
+            with open(path_to_history_items) as json_file:
+                history_items = json.loads(json_file.read())
+        self.model.history_items = history_items
 
     def set_browse_type(self, browse_type: str, *args) -> None:
         self.model.browse_type = browse_type

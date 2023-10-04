@@ -21,6 +21,3 @@ class ItemScreenController:
                 self.model.fav_items.append(res[0])
             else:
                 self.model.fav_items.remove(res[0])
-
-    def set_current_message(self, data: dict, *args) -> None:
-        self.model.current_message = data

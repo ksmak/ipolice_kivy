@@ -1,9 +1,10 @@
 <ListLabel>
-    md_bg_color: '#ccffff'
+    md_bg_color: app.theme_cls.primary_light
 
     AsyncImage:
         source: root.photo
         size_hint: .45, 1
+        color: app.theme_cls.primary_light
     
     MDBoxLayout:
         orientation: 'vertical'
@@ -32,11 +33,11 @@
 
             MDLabel:
                 pos_hint: {'top': .85}
-                text: root.text
+                text: root.text[:240]
                 font_style: 'Caption'
                 font_size: '10sp'
                 theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
+                text_color: app.theme_cls.accent_color
                 adaptive_height: True
             
             MDLabel:
@@ -45,5 +46,5 @@
                 font_style: 'Caption'
                 font_size: '10sp'
                 theme_text_color: "Custom"
-                text_color: app.theme_cls.primary_color
+                text_color: app.theme_cls.accent_color
                 adaptive_height: True

@@ -23,7 +23,6 @@ from kivymd.uix.screenmanager import MDScreenManager
 
 from View.screens import screens, main_model
 
-
 colors = {
     "Teal": {
         "200": "#e6ffff",
@@ -41,7 +40,7 @@ colors = {
     "Light": {
         "StatusBar": "E0E0E0",
         "AppBar": "#f2f2f2",
-        "Background": "#e6ffff",
+        "Background": "#ffffff",
         "CardsDialogs": "#e6ffff",
         "FlatButtonDown": "#CCCCCC",
     },
@@ -112,16 +111,21 @@ class ipolice_kivy(MDApp):
         super(ipolice_kivy, self).stop(*largs)
 
     def show_error(self):
-        popup = ErrorPopup(separator_height=0, title="Ошибка! Сервер не доступен.",
-                           size=(500, 300), size_hint=(None, None))
+        popup = ErrorPopup(
+            title="Ошибка! Сервер не доступен.",
+            separator_height=0,
+            size_hint=(.7, .2)
+        )
         popup.open()
 
     def on_keyboard(self, window, key, *largs):
         if key == 27:
             Logger.info('python. Escape key pressed...')
 
-            popup = ExitPopup(separator_height=0, title="Закрыть приложение?",
-                              size=(500, 300), size_hint=(None, None))
+            popup = ExitPopup(
+                title='Закрыть приложение?',
+                separator_height=0,
+                size_hint=(.7, .2))
 
             if len(self.screen_stack) == 0:
                 popup.open()

@@ -8,26 +8,15 @@ from .components.list.category_item import CategoryItem
 
 class CategoryListScreenView(BaseScreenView):
     def on_pre_enter(self) -> None:
-        self.app.screen_stack.append('category list screen')
+        if len(self.app.screen_stack) > 0 and self.app.screen_stack[-1] != 'category list screen':
+            self.app.screen_stack.append('category list screen')
         self.generate_category_list()
 
-    def calc_count_items(self) -> dict:
-        cnts = {}
-        for item in self.model.items:
-            category = 'id_' + str(item['category'])
-            if category in cnts:
-                cnts[category] = cnts[category] + 1
-            else:
-                cnts[category] = 1
-
-        return cnts
-
     def generate_category_list(self) -> None:
-        cnts = self.calc_count_items()
         self.ids.category_container.clear_widgets()
         for category in self.model.category_items:
             cnt_text = 'Количество: ' + \
-                str(cnts.get('id_' + str(category['id']), 0))
+                str(self.model.counts.get('id_' + str(category['id']), 0))
             widget = CategoryItem(
                 photo=category['photo'],
                 title=category['title'],

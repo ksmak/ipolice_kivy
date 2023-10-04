@@ -1,5 +1,4 @@
 <SearchScreenView>
-    md_bg_color: app.theme_cls.primary_light
     on_enter:
         search_field.focus = True
     
@@ -35,7 +34,7 @@
                     on_text_validate: root.search()
                     hint_text: 'Поиск'
                     mode: 'round'
-                    fill_color_normal: app.theme_cls.primary_light
+                    fill_color_normal: 'white'
 
             MDBoxLayout:   
                 adaptive_height: True 
@@ -47,15 +46,7 @@
                     font_style: 'Caption'
                     theme_text_color: 'Custom'
                     text_color: app.theme_cls.accent_color
-                    
-
-                # MDDropDownItem:
-                #     id: cat_item
-                #     pos_hint: {'center_y': .5}
-                #     font_style: 'Caption'
-                #     theme_text_color: 'Custom'
-                #     text_color: app.theme_cls.accent_color
-                #     on_release: root.category_menu.open()
+               
                 MDRectangleFlatButton:
                     id: cat_item
                     pos_hint: {'center_y': .5}
@@ -92,7 +83,7 @@
                 id: result_layout
                 orientation: 'vertical'
                 adaptive_height: True
-                padding: '10dp', '20dp', '10dp', '10dp'
+                padding: 0, '10dp', 0, '10dp'
                 spacing: '15dp'
                 
                 MDRelativeLayout:

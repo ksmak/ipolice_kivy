@@ -5,6 +5,15 @@ import calendar
 import json
 
 
+def get_string(items: list[str]) -> str:
+    result = []
+    for item in items:
+        if item:
+            result.append(item)
+
+    return ", ".join(result)
+
+
 def get_by_id(id: int, items: list) -> object | None:
     res = None
     for item in items:
