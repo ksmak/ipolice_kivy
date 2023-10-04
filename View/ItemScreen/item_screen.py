@@ -55,13 +55,13 @@ class ItemScreenView(BaseScreenView):
                 self.ids.carousel.add_widget(lt)
 
         self.ids.counter.text = str(
-            self.ids.carousel.index + 1) + '/' + str(len(self.ids.carousel.slides))
+            self.ids.carousel.index if self.ids.carousel.index else 0 + 1) + '/' + str(len(self.ids.carousel.slides))
         category = get_by_id(
             self.model.current_item['category'], self.model.category_items)
 
         self.ids.details_container.clear_widgets()
         for field in category['fields']:
-            if self.model.current_item[field]:
+            if self.model.current_item.get(field):
                 txt: str
                 if category['fields'][field]['type'] == 'text':
                     txt = str(self.model.current_item[field])
@@ -86,7 +86,7 @@ class ItemScreenView(BaseScreenView):
             self.model.current_item['id'] == d['id'] for d in self.model.fav_items)
         self.ids.favorite_button.bind(on_release=self.on_click_favorite_button)
 
-        self.ids.date_add.text = self.model.current_item['date_add']
+        # self.ids.date_add.text = self.model.current_item['date_add']
 
         self.create_floating_button()
 

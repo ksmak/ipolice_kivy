@@ -22,7 +22,7 @@ class ListLabel(RecycleDataViewBehavior, MDBoxLayout):
     def refresh_view_attrs(self, rv, index, data):
         self.index = index
         self.item_id = data['id']
-        self.photo = data['photo1']
+        self.photo = data['photo1'] if data['photo1'] else ''
         self.title = data['title']
         self.text = data['text']
         self.item_type = data['item_type']

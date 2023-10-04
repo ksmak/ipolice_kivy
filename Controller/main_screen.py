@@ -10,7 +10,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 
 from View.MainScreen.main_screen import MainScreenView
-from Utility.helper import save_file, format_date
+from Utility.helper import save_file, format_date, format_date_without_time
 
 
 class MainScreenController:
@@ -101,14 +101,14 @@ class MainScreenController:
                 item['controller'] = self
                 item['fulltext'] = ('#').join(
                     [item['title'].lower(), item['text'].lower()])
-                item['date'] = format_date(
-                    dateutil.parser.isoparse(item['date_of_action']))
+                item['date'] = dateutil.parser.isoparse(
+                    item['date_of_action']).strftime('%d.%m.%Y')
                 item['date_add'] = 'Добавлен: ' + format_date(
                     dateutil.parser.isoparse(item['date_of_creation']))
                 item['place_info'] = ", ".join(
-                    [item['region']['title'], item['district']['title'], item['punkt']])
+                    [item['region'].get('title', ''), item['district'].get('title', '') if item['district'] else '', item['punkt']])
                 item['place_info_with_date'] = ", ".join(
-                    [item['region']['title'], item['district']['title'], item['punkt'], item['date']])
+                    [item['region'].get('title', ''), item['district'].get('title', '') if item['district'] else '', item['punkt'], item['date']])
             self.model.items = items
             self.generate_fav_items()
             self.generate_last_items()

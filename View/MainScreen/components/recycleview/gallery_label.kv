@@ -12,7 +12,7 @@
             on_slide_progress: root.sliding = True
             on_slide_complete: 
                 root.sliding = False
-                root.ids.count_info.text = str(self.index + 1) + '/' + str(len(self.slides))
+                root.ids.count_info.text = str(self.index if self.index else 0 + 1) + '/' + str(len(self.slides))
 
         MDBoxLayout:
             orientation: 'vertical'
