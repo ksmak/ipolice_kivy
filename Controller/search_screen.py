@@ -44,11 +44,8 @@ class SearchScreenController:
                     check = True
                 if check:
                     if sf:
-                        arr = sf.split()
-                        for st in arr:
-                            if (item['fulltext'].find(st) >= 0):
-                                find_items.append(item)
-                                await ak.sleep(0)
+                        if (item['fulltext'].find(sf) >= 0):
+                            find_items.append(item)
                     else:
                         find_items.append(item)
                         await ak.sleep(0)
